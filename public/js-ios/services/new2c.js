@@ -32,7 +32,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 "new2cevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div><div class = "header blue-dark"><span data-dest="bind: setHeader, username"></span><div class="close-popup" data-new2cevent="listen:touchstart, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, twocentplaceholder" data-new2c="bind: value, message"></textarea></p><div><span class="errormsg" data-errormsg="bind:innerHTML, error"></span><div class="sendmail" data-new2cevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, sendlbl"></div></div></form></div>';
+                        _widget.template = '<div id="new2c-popup"><div class = "header blue-dark"><span data-dest="bind: setHeader, username"></span><div class="close-popup" data-new2cevent="listen:touchstart, cancel"></div></div><form class="form"><p><textarea class="description input" data-labels="bind:placeholder, twocentplaceholder" data-new2c="bind: value, message"></textarea></p><div><span class="errormsg" data-errormsg="bind:innerHTML, error"></span><div class="sendmail" data-new2cevent="listen:touchstart, press; listen:touchend, upload" data-labels="bind:innerHTML, sendlbl"></div></div></form></div>';
                         
                         _widget.render();
                         

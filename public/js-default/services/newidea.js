@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -24,7 +24,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         _store.set("lang", l);
                                         _languages.loop(function(v,i){
                                                 (v.name === l) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
-                                        });        
+                                        });
                               },
                               _labels = Config.get("labels"),
                               _error = new Store({"error": ""}),
@@ -120,7 +120,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         _widget.template = '<div id="newidea-popup"><div class = "header blue-dark"><span data-labels="bind: innerHTML, createidealbl"></span><div class="close-popup" data-newideaevent="listen:mousedown, cancel"></div></div><form class="form"><div class="idealang"><div class="currentlang" data-newidea="bind: displayLang, lang" data-newideaevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-newideaevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><input maxlength=40 type="text" class="input newideatitle" data-labels="bind:placeholder, ideatitleplaceholder" data-newidea="bind: value, title" data-newideaevent="listen: input, resetError"><textarea class="description input" data-labels="bind:placeholder, ideadescplaceholder" data-newidea="bind: value, description" data-newideaevent="listen: input, resetError"></textarea><textarea class="solution input" data-labels="bind:placeholder, ideasolplaceholder" data-newidea="bind: value, solution" data-newideaevent="listen: input, resetError"></textarea><legend class="a-legend" data-labels="bind:innerHTML, alegend"></legend><div data-place="place:AddAttachment"></div><ul class="a-list" data-alist="foreach" style="display:none"><li data-alist="bind:setBg, category"><label class="a-type" data-alist="bind:setType, type"></label><label class="a-name" data-alist="bind:innerHTML, name"></label><div class="a-del" data-newideaevent="listen:mousedown, removeAttachment"></div></li></ul><div class="visibility-input"><input class="visibility-slider" type="range" min=0 max=1 value =1 data-newideaevent="listen:change, toggleVisibility"><div class="private" data-newidea="bind: setVisibility, visibility"></div></div><div class="newidea-footer"><div class="publicwarning invisible" data-newidea="bind: setWarning, visibility"><div data-labels="bind: innerHTML, publicwarning"></div><div class="close-warning" data-newideaevent="listen:mousedown, closeWarning"></div></div><span class="errormsg" data-errormsg="bind:setError, error"></span><div class="sendmail" data-newideaevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, publishlbl">Publish</div></div></form></div>';
                         
-                       _widget.reset = function(){
+                        _widget.reset = function(){
                                 document.getElementById("cache").classList.add("appear");
                                 
                                 _store.reset({
@@ -162,9 +162,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 // display popup
                                 _widget.dom.classList.add("appear");
                                          
-                       };
+                        };
                        
-                       _widget.showLang = function(event, node){
+                        _widget.showLang = function(event, node){
                                 event.stopPropagation();
                                 event.preventDefault();
                                 _widget.dom.querySelector(".idealang ul").classList.remove("invisible");        
@@ -231,7 +231,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         _alist.loop(function(v,i){
                                                 Utils.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
-                                                        delCount++;     
+                                                        return true;     
                                                 });
                                         });    
                                 };
@@ -240,7 +240,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                          };
                         
                         _widget.closePopup = function closePopup(){
-                                var delCount = 0;
                                 // hide window
                                 document.getElementById("newidea-popup").classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
@@ -254,8 +253,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 
                                 // reset _store and _error
                                 _store.unsync();
-                                
-                                      
                         };
                         
                         _widget.resetError = function(event, node){

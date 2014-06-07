@@ -232,7 +232,7 @@ function AppUtils(){
                         else{
                                 _getDocAsAdmin(deckId, deckCDB)
                                 .then(function(){
-                                        var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || {}, i;
+                                        var allCards = [], content = deckCDB.get("content"), trans = deckCDB.get("translations") || null, i;
                                         // check if deck has been shared with at least an other user
                                         if (deckCDB.get("sharedwith") && deckCDB.get("sharedwith").length){
                                                 // simply remove deck from user document
@@ -248,15 +248,17 @@ function AppUtils(){
                                                         }); 
                                                 });
                                 
-                                                for (i in trans){
-                                                        if (trans[i] && trans[i].content){
-                                                                ["characters", "contexts", "problems", "techno"].forEach(function(type){
-                                                                        var arr = trans[i].content[type];
-                                                                        arr.forEach(function(id){
-                                                                                if (id !== "newcard") allCards.push(id);        
-                                                                        });        
-                                                                });
-                                                        }          
+                                                if (trans) {
+                                                        for (i in trans){
+                                                                if (trans[i] && trans[i].content){
+                                                                        ["characters", "contexts", "problems", "techno"].forEach(function(type){
+                                                                                var arr = trans[i].content[type];
+                                                                                arr.forEach(function(id){
+                                                                                        if (id !== "newcard") allCards.push(id);        
+                                                                                });        
+                                                                        });
+                                                                }          
+                                                        }
                                                 }
                                 
                                                 // remove deck reference in card document or card document altogether

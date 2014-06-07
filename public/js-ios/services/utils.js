@@ -1,27 +1,28 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument"], function(Config, Observable, Promise, LocalStore, Transport, Store){
         var _utils = {},
+              user = Config.get("user"),
               transport = Config.get("transport"),
-              user = Config.get("user"); 
+              socket = Config.get("socket");
 
         _utils.formatDate = function(array){
 	       var month = array[1] + 1;
                
-                if (user.get("lang").search("en") === 0){
-                        return month + "/" + array[2] + "/" + array[0];
-                }
-                else {
-                        if(month < 10) {
+               if (user.get("lang").search("en") === 0){
+                       return month + "/" + array[2] + "/" + array[0];
+               }
+               else {
+                       if(month < 10) {
                                 month = "0" + month;
                         }
-                        return array[2] + "/" + month + "/" + array[0];
-                }
+                       return array[2] + "/" + month + "/" + array[0];
+               }
         };
 		
         _utils.formatDateStamp = function(stamp){
@@ -71,6 +72,19 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 return res;
         };
 		
+        /*
+         * Compute a time stamp from a date and/or time, adding time zone offset
+         */
+        _utils.computeTimeStamp = function(date, time){
+                var now = new Date(),
+                      offSet = now.getTimezoneOffset(),
+                      d = date ||now.getTime(),
+                      t = time || 0,
+                      stamp;
+                stamp = d+t+offSet;
+                return stamp;
+        };
+        
         /* 
         * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it
         * goes beyond 140 characters
@@ -315,12 +329,8 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         * Disconnect the socket
         */
         _utils.disconnectSocket = function(){
-                user.set("online", false);
-                user.upload()
-                .then(function(){
-                         Config.get("socket").socket.disconnect();
-                        Config.get("observer").notify("disconnect");        
-                });      
+                Config.get("socket").socket.disconnect();
+                Config.get("observer").notify("disconnect");
         };
                 
 			
@@ -446,7 +456,17 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 });
                 return res;
         };
-                
+        
+        /*
+        *  A function that extracts a list of all contact usernames from a user document
+        */
+        _utils.getContactUsernames = function(){
+                var res = [], contacts = user.get("connections").concat();
+                contacts.forEach(function(contact){
+                        if (contact.type === "user") {res.push(contact.username);}        
+                });
+                return res;
+        };
                 
         /*
         * A function to check if user profile is completed
@@ -518,7 +538,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 var listener = function(e){
                         var element;
                         for (element = e.target; element; element = element.parentNode) {
-                                if (element.id === id) {
+                                if (element.id && element.id === id) {
                                         return;
                                 }
                         }

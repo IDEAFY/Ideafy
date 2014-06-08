@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils"], 
@@ -20,7 +20,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 "labels": new Model(_labels),
                                 "mail" : new Model(_mail, {
                                         setUserAvatar : function(from){
-                                                if (from) this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center;background-size: cover;");
+                                                if (from) this.setAttribute("style", "background: url('"+ Config.get("avatar") + "') no-repeat center center; background-size: cover;");
                                         },
                                         date : function date(date){
                                                 if (date) this.innerHTML = Utils.formatDate(date);

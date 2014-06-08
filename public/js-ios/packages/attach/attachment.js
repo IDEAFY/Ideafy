@@ -1,30 +1,29 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "service/utils", "service/confirm", "Promise", "lib/spin.min"],
-        function(Widget, Config, Map, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Utils, Confirm, Promise, Spinner){
+define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise", "lib/spin.min"],
+        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm, Promise, Spinner){
                 
-                return new function AttachmentConstructor($type){
+                function AttachmentConstructor($type){
                        
                         // declaration
-                        var ui = new Widget(),
-                             _attachmentTwocentListUI,
-                             _twocentWriteUI,
-                            cdb = new CouchDBDocument(),
-                            cdbEdit = new Store(),
-                            _progress = new Store({status: null}),
-                            _uploadReq,
-                            labels = Config.get("labels"),
-                            transport = Config.get("transport"),
-                            user = Config.get("user"),
-                            _cat = Config.get("cat"),
-                            vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
-                            _voted = false,
-                            ConfirmUI;
+                        var ui = this,
+                             _attachmentTwocentListUI = new TwocentList("attach"),
+                             _twocentWriteUI = new WriteTwocent("attach"),
+                             cdb = new CouchDBDocument(),
+                             cdbEdit = new Store(),
+                             _progress = new Store({status: null}),
+                             _uploadReq,
+                             labels = Config.get("labels"),
+                             transport = Config.get("transport"),
+                             user = Config.get("user"),
+                             _cat = Config.get("cat"),
+                             vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
+                             _voted = false;
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
@@ -176,27 +175,16 @@ define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", 
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
+                                "place": new Place({"LibraryTwocentUI" : _attachmentTwocentListUI}),
                                 "attachevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:touchstart, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:touchstart, press"><input type="file" class="a-input" data-attachevent="listen:touchstart, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name" data-edit="bind:innerHTML, name" data-attachevent="listen:input, updateName"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: setAuthors, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-edit="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-edit="bind:innerHTML, fileName"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:touchstart, press; listen:touchend, download"></a></li><li><div class="a-2cent" data-attachevent="listen:touchstart, press; listen:touchend, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:touchstart, press; listen:touchend, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:touchstart, press; listen:touchend, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen:touchstart, press; listen: touchend, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div></li></ul><p class="a-desc invisible" data-attach="bind: setDescription, description" data-attachevent="listen:input, updateDesc"></p><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents"></div></div></div>';
+                        ui.template = '<div class = "attachment-screen invisible"><div class="close-popup" data-attachevent = "listen:touchstart, close"></div><div class="attach-header" data-attach="bind:innerHTML, name"></div><div class="attach-details"><div class="attach-body"><div class="a-type" data-attach="bind:setType, type"></div><div class="a-type-edit" data-attachevent="listen:touchstart, press"><input type="file" class="a-input" data-attachevent="listen:touchstart, check;listen:change, uploadFile"></div><div class="a-left"><div class="a-name" data-attach="bind:innerHTML, name" data-edit="bind:innerHTML, name" data-attachevent="listen:input, updateName"></div><div class="a-contrib"><span class="a-span" data-labels="bind: innerHTML, contrib"></span><span class="a-author" data-attach="bind: setAuthors, authornames"></span></div><div class="a-date" data-attach="bind:setDate, _id"></div></div><div class="a-cat"><span data-attach="bind:setCat, category"></span><select class="acolor invisible" data-edit="bind:setSelectCat, category" data-attachevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat invisible" data-edit="bind:show, custom" data-attachevent="listen:input, setCat"></div><div class="a-rating invisible" data-attach="bind:showRating, votes"><a class="item-acorn"></a><span data-attach="bind:displayRating, votes"></span><span class="votes" data-attach="bind:displayNbVotes, votes"></span></div><div class="a-preview invisible"><div class="a-content" data-edit="bind:innerHTML, fileName"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-vote" data-attach="bind:showVoting, _id"><legend data-labels="bind:innerHTML, rateit"></legend><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-attachevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div><ul class="actionbtn"><li><a class="attach-download" data-attach="bind: setRef, fileName" data-attachevent="listen:touchstart, press; listen:touchend, download"></a></li><li><div class="a-2cent" data-attachevent="listen:touchstart, press; listen:touchend, displayWriteTwocent"></div></li><li data-attach="bind:displayEdit, authors"><div class="a-edit" data-attachevent="listen:touchstart, press; listen:touchend, edit"></div></li><li data-attach="bind:displayDelete, twocents"><div class="a-delete" data-attachevent="listen:touchstart, press; listen:touchend, confirmDelete"></div></li><li class="a-publish invisible"><div class="sendmail" data-labels="bind: innerHTML, publishlbl" data-attachevent="listen:touchstart, press; listen: touchend, update"></div></li><li class="a-cancel invisible"><div class="cancelmail" data-labels="bind: innerHTML, cancellbl" data-attachevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div></li></ul><p class="a-desc invisible" data-attach="bind: setDescription, description" data-attachevent="listen:input, updateDesc"></p><div class="attach-preview invisible"></div><div id="attach-writetwocents" data-attach="bind:showWriteTwocent, twocents"></div><div id="attach-twocents" class="twocents" data-attach="bind:displayTwocentList, twocents" data-place="place:LibraryTwocentUI"></div></div></div>';
                         
-                        ui.render();
-                        ui.place(Map.get("attachment-popup"));
-                        
-                        ui.reset = function(id){
+                        ui.reset = function reset(id){
                                 // complete UI build (twocents) and display
-                                var _domWrite = ui.dom.querySelector("#attach-writetwocents"),
-                                       _domList = ui.dom.querySelector("#attach-twocents");
+                                var _domWrite = ui.dom.querySelector("#attach-writetwocents");
                                 
-                                
-                                // create and/or reset twocents
-                                
-                              if (!_attachmentTwocentListUI) {
-                                      _attachmentTwocentListUI = new TwocentList("attach");
-                              }
-                              if (!_twocentWriteUI) _twocentWriteUI = new WriteTwocent("attach"),
-                               
                                 _twocentWriteUI.reset(id);
                                 _attachmentTwocentListUI.reset(id);
                                 
@@ -204,14 +192,7 @@ define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", 
                                 _voted = false;
                                 
                                 ui.dom.classList.remove("invisible");
-                                
-                               _attachmentTwocentListUI.place(_domList);
                                 _twocentWriteUI.place(_domWrite);
-                                
-                                if (!ConfirmUI){
-                                        ConfirmUI = new Confirm(ui.dom, labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
-                                        ConfirmUI.hide();
-                                }
                                 
                                 // retrieve attachment document form database
                                 cdb.unsync();
@@ -239,9 +220,8 @@ define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", 
                         
                         ui.close = function(event, node){
                                 if (ui.dom.classList.contains("edit-a")) ui.dom.classList.remove("edit-a");
-                               // hide window
-                                document.getElementById("attachment-popup").classList.remove("appear");
-                                document.getElementById("cache").classList.remove("appear");
+                                ui.dom.classList.add("invisible");
+                                document.querySelector(".cache").classList.remove("appear");
                         };
                         
                         ui.previewVote = function(event, node){
@@ -457,8 +437,8 @@ define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", 
                         
                         ui.confirmDelete = function(event, node){
                                 node.classList.remove("a-pressed");
-                                ConfirmUI.reset(labels.get("deleteattachment"), ui.deleteAttachment);
-                                ConfirmUI.show();
+                                Confirm.reset(labels.get("deleteattachment"), ui.deleteAttachment, "a-delconfirm");
+                                Confirm.show();
                         };
                         
                         ui.deleteAttachmentFile = function(fileName){
@@ -510,7 +490,7 @@ define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", 
                                         });
                                 }
                                 else{
-                                        ConfirmUI.hide();                
+                                        Confirm.hide();                
                                 }     
                         };
                         
@@ -545,7 +525,11 @@ define(["OObject", "service/config", "service/map", "Store", "CouchDBDocument", 
                                                                
                                 return promise;
                         };
-                        
-                        return ui;
+
+                };
+                
+                return function AttachmentFactory($type){
+                        AttachmentConstructor.prototype = new Widget();
+                        return new AttachmentConstructor($type);
                 };
         });

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -128,7 +128,6 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                 frag = document.createDocumentFragment(); 
                                 currentBar.place(frag); // render action bar    
                                 node.appendChild(frag); // display action bar
-                                display = true; // prevent from showing it multiple times
                         }
                 };
                 

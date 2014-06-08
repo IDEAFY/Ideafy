@@ -1,3 +1,9 @@
+/*
+ * https://github.com/IDEAFY/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
+ */
 
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "service/config", "twocents/writetwocentreply", "service/avatar"],
         function(Widget, Store, ModelPlugin, EventPlugin, Utils, Config, WriteTwocentReply, Avatar){
@@ -80,7 +86,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                         
                         ui.reply = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
-                                    twocentParent = ui.dom.parentN,
+                                    twocentParent = ui.dom.parentNode,
                                     parent = twocentParent.querySelector(".writePublicTwocentReply[data-reply_id='"+id+"']"),
                                     frag = document.createDocumentFragment(),
                                     writeUI = new WriteTwocentReply(parent);

@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBView", "CouchDBDocument", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min", "Promise"],
@@ -28,7 +28,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _currentSearch = "", // the current search, if empty _sessionData is used
                   _sessionsCDB = new CouchDBView(),
                   spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin(),
-                  confirmUI, confirmCallback;
+                  confirmCallback;
                   
               
               // setup
@@ -114,6 +114,26 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.innerHTML = _labels.get("noscore");
                                         }
                                         else this.innerHTML = "ip";
+                                },
+                                showReplay : function(status){
+                                        if (status === "completed") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
+                                        else this.setAttribute("style", "display: none;");    
+                                },
+                                showDelete : function(leader){
+                                        var idx = this.getAttribute("data-sessions_id");
+                                        if (leader.id !== _user.get("_id")) this.setAttribute("style", "display: none;");
+                                        else{
+                                                if (_sessions.get(idx)._id === _user.get("sessionInProgress").id) this.setAttribute("style", "display: none;");
+                                                else{
+                                                        if (_sessions.get(idx).status === "deleted") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
+                                                        else{
+                                                                if (_sessions.get(idx).participants && _sessions.get(idx).participants.length>0){
+                                                                        this.setAttribute("style", "display: none;");        
+                                                                }
+                                                                else this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
+                                                        }
+                                                }
+                                        }
                                 }
                         }),
                   "sortevent": new Event(_widget),
@@ -280,18 +300,18 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 });
                                 return promise;
                              },
-                             // confirmation window invoked with question and callback
-                            confirmUI, question = _labels.get("deletereplay"), confirmCallback = function(decision){
+                            // confirmation window invoked with question and callback
+                            question = _labels.get("deletereplay"), confirmCallback = function(decision){
                                         if (decision){
                                                 spinner.spin(document.getElementById("sessionlistspinner"));
                                                 // remove session from database
                                                 removeFromDB(_sid).then(function(){
                                                         spinner.stop();
-                                                        confirmUI.close();
+                                                        Confirm.hide();
                                                 });   
                                         }
                                         else{
-                                                confirmUI.close();        
+                                                Confirm.hide();        
                                         }
                                 };
                         
@@ -302,8 +322,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // if sessionReplay is enabled display confirmation UI
                         if (_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length ){
                                 spinner.stop();
-                                confirmUI = new Confirm(document.getElementById("session-list"), question, confirmCallback);
-                                confirmUI.show();        
+                                Confirm.reset(question, confirmCallback);
+                                Confirm.show();       
                         }
                         else {
                                 removeFromDB(_sid).then(function(){

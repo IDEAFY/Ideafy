@@ -1,26 +1,25 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
 	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min"], 
-	function(Widget, Control, Model, Place, Delegate, Store, Map, 
-		Config, Detail, List, Stack, Spinner){
+	function(Widget, Control, Model, Place, Delegate, Store, Map, Config, Detail, List, Stack, Spinner, NewIdea){
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
-			      _searchInput = new Store({"search": ""}),
-			      _db = Config.get("db"),
-			      _observer = Config.get("observer"),
-			      _radio = new Control(_widget),
+                              _searchInput = new Store({"search": ""}),
+                              _db = Config.get("db"),
+                              _observer = Config.get("observer"),
+                              _radio = new Control(_widget),
                               _detail = new Detail(),
                               listDate, listRating, listSearch, listFav,
-			      initldQuery, initlrQuery,
-			      _user = Config.get("user"),
+                              initldQuery, initlrQuery,
+                              _user = Config.get("user"),
                               _labels = Config.get("labels"),
                               _currentLang = _user.get("lang").substring(0,2),
                               _btns = new Store([
@@ -31,7 +30,7 @@ define(["OObject", "Amy/Control-plugin" ,
                               ]),
                               _languages = new Store([{name:"*"}]),
                               _usrLg = Config.get("userLanguages"),
-		              _stack = new Stack(),
+                              _stack = new Stack(),
                               _listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
                 
                 //setup
@@ -187,8 +186,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			};
 			
 			_widget.plus = function(){
-			        Map.get("newidea-popup").classList.add("appear");
-			        Map.get("cache").classList.add("appear");        
+                                NewIdea.reset();       
 			};
 			
 			_widget.search = function (event, node){
@@ -244,7 +242,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			// INIT
 			
 			// get user preferred language for content
-                        (_user.get("settings").contentLang) ? _currentLang = _user.get("settings").contentLang : _currentLang = _user.get("lang").substring(0,2); 
+                        (_user.get("settings").contentLang) ? _currentLang = _user.get("settings").contentLang : _currentLang = _user.get("lang").substring(0,2);
                         if (_currentLang === "all") _currentLang = "*";
                         
                         // update lang button
@@ -265,21 +263,21 @@ define(["OObject", "Amy/Control-plugin" ,
 			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
-			listDate = new List(_db, "library", "_view/ideas", initldQuery);
-			listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
-			listRating = new List(_db, "ideas", "_view/privatebyvotes", initlrQuery);
-			listFav = new List(_db, "library", "_view/allideas", "fav");
+                        listDate = new List(_db, "library", "_view/ideas", initldQuery);
+                        listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
+                        listRating = new List(_db, "ideas", "_view/privatebyvotes", initlrQuery);
+                        listFav = new List(_db, "library", "_view/allideas", "fav");
 			
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
 			_stack.getStack().add("#list-fav", listFav);
 			
-			listDate.init()
-			.then(function(){
-                              _stack.getStack().show("#list-date");
-                              (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
-                              return listFav.setLang(_currentLang);     
+                        listDate.init(_currentLang)
+                        .then(function(){
+                                _stack.getStack().show("#list-date");
+                                (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                                return listFav.setLang(_currentLang);     
                         })
                         .then(function(){
                                 // Watch for favorites changes in user document and update list accordingly
@@ -313,7 +311,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         }
                                 });
                         });
-                        listRating.init();
+                        listRating.init(_currentLang);
                         
                         /*
                         * Manage idea related events

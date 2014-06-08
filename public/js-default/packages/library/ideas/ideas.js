@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -8,8 +8,7 @@
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
 	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min", "service/newidea"], 
-	function(Widget, Control, Model, Place, Delegate, Store, Map, 
-		Config, Detail, List, Stack, Spinner, NewIdea){
+	function(Widget, Control, Model, Place, Delegate, Store, Map, Config, Detail, List, Stack, Spinner, NewIdea){
 		return function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
@@ -244,7 +243,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			// INIT
 			
 			// get user preferred language for content
-			(_user.get("settings").contentLang) ? _currentLang = _user.get("settings").contentLang : _currentLang = _user.get("lang").substring(0,2); 
+                        (_user.get("settings").contentLang) ? _currentLang = _user.get("settings").contentLang : _currentLang = _user.get("lang").substring(0,2);
                         if (_currentLang === "all") _currentLang = "*";
                         
                         // update lang button
@@ -265,7 +264,7 @@ define(["OObject", "Amy/Control-plugin" ,
 			// for library for the time being only propose list by date or search tool
 			// additional options (rating/favorites etc. may be offered in the future)
 			
-			listDate = new List(_db, "library", "_view/ideas", initldQuery);
+                        listDate = new List(_db, "library", "_view/ideas", initldQuery);
                         listSearch = new List("_fti/local/"+_db, "indexedideas", "userbyname", {q: "init_listSearch_UI", sort: '\\creation_date<date>', limit:30, include_docs: true});
                         listRating = new List(_db, "ideas", "_view/privatebyvotes", initlrQuery);
                         listFav = new List(_db, "library", "_view/allideas", "fav");
@@ -273,13 +272,13 @@ define(["OObject", "Amy/Control-plugin" ,
 			_stack.getStack().add("#list-date", listDate);
 			_stack.getStack().add("#list-rating", listRating);
 			_stack.getStack().add("#list-search", listSearch);
-                        _stack.getStack().add("#list-fav", listFav);
+			_stack.getStack().add("#list-fav", listFav);
                         
                         listDate.init(_currentLang)
                         .then(function(){
-                              _stack.getStack().show("#list-date");
-                              (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
-                              return listFav.setLang(_currentLang);     
+                                _stack.getStack().show("#list-date");
+                                (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                                return listFav.setLang(_currentLang);     
                         })
                         .then(function(){
                                 // Watch for favorites changes in user document and update list accordingly

@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
@@ -10,14 +10,14 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 		return function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
-			     _emptyList = new Widget(),
-			     _ideaDetail, _sendmail, _share, _edit,
-		             _stack = new Stack(),
-		             _labels = Config.get("labels"),
-		             _observer = Config.get("observer"),
-		             _store = new Store(),
-		             current = 0,
-		             spinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
+                               _emptyList = new Widget(),
+                               _ideaDetail, _sendmail, _share, _edit,
+                               _stack = new Stack(),
+                               _labels = Config.get("labels"),
+                               _observer = Config.get("observer"),
+                               _store = new Store(),
+                               current = 0,
+                               spinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
 
 		//setup
 		        
@@ -32,14 +32,14 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
                         _emptyList.plugins.add("labels", new Model(_labels));
                         
 		//detail
-			_widget.reset = function reset(viewStore, index){
-			        _store = viewStore;
-			        current = index;
-			        if (_store.getNbItems()){
-			             _stack.getStack().show("#public-ideadetail");
+                        _widget.reset = function reset(viewStore, index){
+                                _store = viewStore;
+                                current = index;
+                                if (_store.getNbItems()){
+                                        _stack.getStack().show("#public-ideadetail");
                                         _ideaDetail.hideCache();
                                         spinner.spin(_widget.dom);
-			             _ideaDetail.reset(viewStore, index)
+                                        _ideaDetail.reset(viewStore, index)
                                         .then(function(){
                                                 spinner.stop();
                                                 cache.classList.add("invisible");
@@ -54,8 +54,8 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 			        _stack.getStack().show("#empty-list");                     
 			};
 			
-			_widget.action = function action(name){
-			        var id = _store.get(current).id;
+                        _widget.action = function action(name){
+                                var id = _store.get(current).id;
                                 switch(name){
                                         
                                         case "#public-edit":

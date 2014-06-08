@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/config", "Store", "service/utils", "CouchDBBulkDocuments"],
@@ -83,7 +83,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                         }
                                         else{
                                                 this.innerHTML = " ";
-                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png'); background-size:contain;");
+                                                this.setAttribute("style", "background-image:url('img/flags/"+l+".png'); background-size: contain;");
                                         }
                                 }
                            }),
@@ -129,7 +129,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                 {"name": labels.get("dashboard"), "dest": "#dahsboard"}
                                         ]);
                                         // reset active filter language
-                                        (settings.get("contentLang")) ? options.set("contentLang", settings.get("contentLang")) : options.set("contentLang", user.get("lang").substring(0,2));      
+                                        (settings.get("contentLang")) ? options.set("contentLang", settings.get("contentLang")) : options.set("contentLang", user.get("lang").substring(0,2));
                                 });
                         }        
                    };
@@ -245,7 +245,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    };
                    
                    settingsUI.clearOK = function(event, node){
-                        options.set("pwdchange", "");        
+                        options.set("pwdchange", "");
                    };
                    
                    settingsUI.changePWD = function(event, node){

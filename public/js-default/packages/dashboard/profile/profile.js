@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -32,7 +32,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                            "stats" : new Model(stats,{
                                    setViewLbl : function(view){
                                         this.innerHTML = labels.get(view);
-                                        (view === "info") ? this.setAttribute("style", "background: #9ac9cd;"):this.setAttribute("style", "background: #5F8F28;");           
+                                        (view === "info") ? this.setAttribute("style", "background: #9ac9cd;"):this.setAttribute("style", "background: #5F8F28;");
                                    },
                                    toggleInformation : function(view){
                                         (view === "info") ? this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -205,7 +205,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         else if (type.search("RWD")>-1 || type.search("RANK") >-1) this.setAttribute("style", "background: url('img/brainstorm/yourScore40.png') no-repeat center center; background-size: 40px;");
                                         else if (type.search("ID")>-1) this.setAttribute("style", "background: url('img/libraryIdeaDisabled40.png') no-repeat center center; background-size: 40px;");
                                         else if (type.search("2Q")>-1) this.setAttribute("style", "background: url('img/2questionDisable50.png') no-repeat center center; background-size: 40px;");
-                                        else if (type.search("2CTS")>-1) this.setAttribute("style", "background: url('img/2centDisable.png') no-repeat center center; background-size: 40px;");    
+                                        else if (type.search("2CTS")>-1) this.setAttribute("style", "background: url('img/2centDisable.png') no-repeat center center; background-size: 40px;");
                                    },
                                    setContent : function(content){
                                         var id = this.getAttribute("data-news_id");
@@ -253,7 +253,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    profileUI.switchLeaderboard = function(event, node){
                         var lb = document.getElementById("leaderboard"), pc = document.getElementById("profile-content");
                         
-                       if (node.value == 1){
+                        if (node.value == 1){
                                 stats.set("view", "leaderboard");
                                 if (LB) LB.refresh();
                                 else {
@@ -395,11 +395,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    };
                    
                    profileUI.cleanOldNews = function cleanOldNew(){
-                        var now = new Date(), n = user.get("news"), l = n.length, i, then,
+                        var now = new Date(), n = user.get("news").concat(), l = n.length, i, s, then,
                             promise = new Promise();
                         if (l){
                                 for (i = l-1; i>=0; i--){
-                                        then = new Date(n[i].date[0],n[i].date[1],n[i].date[2]);
+                                        s = n[i].date[0] + '/' + (n[i].date[1] + 1) + '/' + n[i].date[2];
+                                        then = new Date(s);
                                         if (now.getTime()-then.getTime() > 1296000000){
                                                 n.splice(i, 1);
                                         }       

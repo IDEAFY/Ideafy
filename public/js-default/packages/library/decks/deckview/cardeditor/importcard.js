@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -237,7 +237,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         });
                 
                         if (warning.length){
-                                document.getElementById("cache").classList.add("appear");
                                 warning.forEach(function(card){
                                         warningMSG += card.title+", ";
                                 });
@@ -253,6 +252,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                         }
                                         Confirm.hide();
                                 }, "importcard-confirm");
+                                Confirm.show();
                         }
                         else{
                                 currentDeck.delAll(toRemove);

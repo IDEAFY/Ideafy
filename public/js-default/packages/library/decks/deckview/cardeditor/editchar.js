@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -367,7 +367,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                                         // editChar.checkValidity();
                                         model.sync(Config.get("db"), model.get("_id"))
                                         .then(function(){
-                                                console.log("new card created : ", model.toJSON());
                                                 editChar.uploadCard();        
                                         });
                                 }
@@ -399,7 +398,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                        // upload card to database
                         model.upload()
                         .then(function(){
-                                console.log("card upload successful :", model.get("_rev"));
                                 return $update(model.get("type"), model.get("_id"));
                         })
                         .then(function(){
@@ -410,8 +408,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                         });
                };
                                 
-               
-               MODEL = model;
                return editChar;         
            };   
         });

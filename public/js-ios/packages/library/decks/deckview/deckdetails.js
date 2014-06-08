@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
@@ -247,31 +247,33 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         };
                         
                         deckDetails.changePic = function(event, node){
-                                var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
-                                    _img = new Image(),
-                                    _options = {quality:50, correctOrientation: true, sourceType: source},
-                                    onSuccess, onFail,
-                                    picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
+                                if (deckModel.get("created_by") === user.get("_id")){
+                                        var source = navigator.camera.PictureSourceType.PHOTOLIBRARY,
+                                              _img = new Image(),
+                                              _options = {quality:50, correctOrientation: true, sourceType: source},
+                                              onSuccess, onFail,
+                                              picSpinner = new Spinner({color:"#4d4d4d", lines:12, length: 12, width: 6, radius:10}).spin();
                         
-                                onSuccess = function(imageData){
-                                        _img.src = imageData;
-                                        node.setAttribute("style", "background-image: none");
-                                        picSpinner.spin(node);
-                                        setTimeout(function(){
-                                                cropImage(resizeImage(_img), function(result){
-                                                        node.setAttribute("style", "background-image: url('"+result+"')");
-                                                        picSpinner.stop();
-                                                        _currentDataURL = result;
-                                                        deckDetails.displayButtons();       
-                                                });
-                                        }, 750);
-                                };
+                                        onSuccess = function(imageData){
+                                                _img.src = imageData;
+                                                node.setAttribute("style", "background-image: none");
+                                                picSpinner.spin(node);
+                                                setTimeout(function(){
+                                                        cropImage(resizeImage(_img), function(result){
+                                                                node.setAttribute("style", "background-image: url('"+result+"')");
+                                                                picSpinner.stop();
+                                                                _currentDataURL = result;
+                                                                deckDetails.displayButtons();       
+                                                        });
+                                                }, 750);
+                                        };
                         
-                                onFail = function(message){
-                                        alert("error: "+message);
-                                };
+                                        onFail = function(message){
+                                                alert("error: "+message);
+                                        };
                         
-                                navigator.camera.getPicture(onSuccess, onFail, _options);        
+                                        navigator.camera.getPicture(onSuccess, onFail, _options);
+                                }       
                         };
                         
                         deckDetails.press = function(event, node){

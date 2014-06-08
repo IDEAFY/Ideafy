@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -145,7 +145,6 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 			
 			_widget.place(Map.get("library-edit"));
 
-
                         _widget.reset = function reset(id){
                                 
                                 // reset store
@@ -194,11 +193,14 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         };
                         
                         _widget.editVisibility = function(event, node){
+                                node.classList.add("pressed");
                                 // confirmation
                                 Confirm.reset(_labels.get("setpublicquestion"), function(decision){
+                                        node.classList.remove("pressed");
                                         (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");
                                         Confirm.hide();
-                                        });       
+                                });
+                                Confirm.show();       
                         };
                         
                         _widget.press = function(event, node){
@@ -269,7 +271,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
                                 _attachmentUI.reset(_alist.get(idx).docId);
-                                document.querySelector(".cache").classList.add("appear");      
+                                document.querySelector(".cache").classList.add("appear");
                         };
                         
                         _widget.enableReplay = function(event, node){

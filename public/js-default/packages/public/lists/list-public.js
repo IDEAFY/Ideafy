@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -8,19 +8,19 @@
 define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                    _usr =  Config.get("user"),
-                    display = false,
-                    currentBar = null,
-                    _options = {
-                        db : $db,
-                        view : $view,
-                        design : $design,
-                        query : {
-                                descending : true,
-                                limit : 50
-                        }
-                     },
-                     widget = this;
+                      _usr =  Config.get("user"),
+                      display = false,
+                      currentBar = null,
+                      _options = {
+                              db : $db,
+                              view : $view,
+                              design : $design,
+                              query : {
+                                      descending : true,
+                                      limit : 50
+                              }
+                      },
+                      widget = this;
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -130,8 +130,9 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 
                 widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
-                            display = false, frag,
-                            dom = document.getElementById("public");
+                              display = false,
+                              frag,
+                              dom = document.getElementById("public");
                         
                         // check if actionbar exists for this element
                         if (currentBar && currentBar.getParent() === node){

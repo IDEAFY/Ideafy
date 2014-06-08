@@ -1,27 +1,27 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                _usr =  Config.get("user"),
-                touchStart,
-                touchPoint,
-                currentBar = null,
-                _options = {
-                        db : $db,
-                        view : $view,
-                        design : $design,
-                        query : {
-                                descending : true,
-                                limit : 50
-                        }
-                },
-                widget = this;
+                      _usr =  Config.get("user"),
+                      touchStart,
+                      touchPoint,
+                      currentBar = null,
+                      _options = {
+                              db : $db,
+                              view : $view,
+                              design : $design,
+                              query : {
+                                      descending : true,
+                                      limit : 50
+                              }
+                      },
+                      widget = this;
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -131,7 +131,9 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 
                 widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
-                            frag, display = false;
+                              display = false,
+                              frag,
+                              dom = document.getElementById("public");
                         
                         touchPoint = [event.pageX, event.pageY];
                                 
@@ -140,7 +142,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 display = true;
                         }
                         
-                        if (!display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                        if (!dom.classList.contains("mosaic") && !display && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
                                 currentBar = new ActionBar("idea", node, _store.get(id).id);
                                 frag = document.createDocumentFragment();  
                                 currentBar.place(frag); // render action bar    

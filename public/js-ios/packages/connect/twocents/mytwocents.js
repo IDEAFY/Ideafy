@@ -1,12 +1,12 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store"],
-        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store", "service/new2q"],
+        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store, New2Q){
                 
                 return function MyTwocentsConstructor(){
                         
@@ -88,8 +88,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         
                         // ask a twoquestion
                         myTwocentUI.plus = function(){
-                                Map.get("new2q-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");        
+                                New2Q.reset();
                         };
                         
                         // manage button events
@@ -131,7 +130,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                                     auto = dom.querySelector(".autocontact");
                                 
                                 // display div if not present
-                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible");  
+                                if (auto.classList.contains("invisible")) auto.classList.remove("invisible");
                                 
                                 // clear the search field if backspace is hit
                                 if (event.keyCode === 8){node.value = "";}

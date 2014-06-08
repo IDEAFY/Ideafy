@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -72,11 +72,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 if (!uploaded){
                                                         var custom = [], arr, i, l, key,
                                                                 res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>",
-                                                                node =this;
+                                                                node = this;
                                                         
                                                         for (i=0, l=cats.length; i<l;i++){
-                                                                        key = cats[i];
-                                                                        res+="<option>"+_labels.get(key)+"</option>";
+                                                                key = cats[i];
+                                                                res+="<option>"+_labels.get(key)+"</option>";
                                                         };
                                                         
                                                         node.innerHTML = res;

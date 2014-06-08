@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -134,7 +134,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 contactList.reset(_user.get("connections").concat());
                                 contactList.loop(function(v, i){
                                         contactList.update(i, "selected", true);
-                                        if (v.type === "user") shareContacts.alter("push", v);        
+                                        if (v.type === "user") shareContacts.alter("push", v);
                                 });  
                         };
                         
@@ -190,7 +190,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 else{
                                         for(i=0, l=contact.contacts.length; i<l; i++){
                                                 shareContacts.loop(function(val,idx){
-                                                        if (val.userid === contact.contacts[i].userid) add = false;                
+                                                        if (val.userid === contact.contacts[i].userid) add = false;
                                                 });
                                                 if (add) {
                                                         shareContacts.alter("push", contact.contacts[i]);

@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min", "attach/attachment"], 
@@ -12,7 +12,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         var  _widget = new Widget(),
                              _libraryTwocentList = new TwocentList("library"),
                              _twocentWriteUI = new WriteTwocent("library"),
-                             _attachmentUI = Attachment,
+                             _attachmentUI = new Attachment("idea"),
                              _labels = Config.get("labels"),
                              vote = new Store([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]),
                              _voted = false,
@@ -205,11 +205,11 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
-                                "place" : new Place({"LibraryTwocentUI" : _libraryTwocentList}),
+                                "place" : new Place({"LibraryTwocentUI" : _libraryTwocentList, "AttachmentUI" : _attachmentUI}),
                                 "ideadetailevent" : new Event(_widget)
                         });
 
-                        _widget.template='<div class="library-idea invisible" data-ideadetail="bind:displayView, _id"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleFavEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-ideadetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-ideadetail="bind:setSolution,solution"></p><div class="attachments invisible" data-ideadetail="bind:showAttachments, attachments"><legend class="idealegend" data-label="bind:innerHTML, attachments"></legend><div class="toggleattach" data-ideadetailevent="listen: touchstart, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><div class="a-type" name="download" data-alist="bind:setType, type; bind: setRef, fileName" data-ideadetailevent="listen: touchstart, press; listen: touchend, release"></div><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><div class="a-rating"><a class="item-acorn"></a><label class="rating" data-alist="bind:setRating,docId"></label></div><label class="a-zoom" data-ideadetailevent="listen: touchstart, press; listen: touchend, release; listen:touchend, zoom"></label></li></ul></div></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents" data-place="place: LibraryTwocentUI"></div></div>';
+                        _widget.template='<div class="library-idea invisible" data-ideadetail="bind:displayView, _id"><div class="header blue-dark"><a href="#library-2cents" data-ideadetail="bind: toggleTwocentShare, authors" data-ideadetailevent="listen: touchstart, action" class="option left"></a><span data-label="bind: innerHTML, ideadetailsheadertitle"></span><a href="#library-favorites" data-ideadetail="bind: toggleFavEdit, authors" data-ideadetailevent="listen: touchstart, action" class="option right"></a></div><div id="idea-cache" class="invisible"></div><div class = "detail-contents"><div class="detail-header"><div class="avatar" data-ideadetail="bind:setAvatar, authors"></div><h2 data-ideadetail="bind:innerHTML,title"></h2><span class="date" data-ideadetail="bind:date, creation_date"></span><br><span class="author" data-ideadetail="bind:setAuthor,authornames"></span><span class="commentlbl" data-ideadetail="bind: setWrotelbl, authors"></span></div><div class="detail-body"><legend class="idealegend" data-label="bind:innerHTML, principle"></legend><p class="ideap" data-ideadetail="bind:setDescription,description"></p><legend class="idealegend" data-label="bind:innerHTML, solution"></legend><p class="ideap" data-ideadetail="bind:setSolution,solution"></p><div class="attachments invisible" data-ideadetail="bind:showAttachments, attachments"><legend class="idealegend" data-label="bind:innerHTML, attachments"></legend><div class="toggleattach" data-ideadetailevent="listen: touchstart, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><div class="a-type" name="download" data-alist="bind:setType, type; bind: setRef, fileName" data-ideadetailevent="listen: touchstart, press; listen: touchend, release"></div><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><div class="a-rating"><a class="item-acorn"></a><label class="rating" data-alist="bind:setRating,docId"></label></div><label class="a-zoom" data-ideadetailevent="listen: touchstart, press; listen: touchend, release; listen:touchend, zoom"></label></li></ul></div></div><div class="detail-footer"><div class="sharedwith invisible" data-ideadetail="bind: setSharedWith, sharedwith" data-ideadetailevent="listen:touchstart, displayList"></div><div id="sharelist" class="autocontact invisible"><div class="autoclose" data-ideadetailevent="listen:touchstart,close"></div><ul data-share="foreach"><li data-share="bind:innerHTML, value.username"></li></ul></div><div class ="rateIdea" data-ideadetail="bind:hideRating, id"><a class="item-acorn"></a><div class="rating" data-ideadetail="bind:setRating,votes"></div><div class="publicButton" data-ideadetail="bind: toggleVoteButton, votes" name="vote" data-ideadetailevent="listen: touchstart, press; listen: touchend, vote;" data-label="bind: innerHTML, votebuttonlbl"></div><div id="ratingPopup" class="popup"><ul class="acorns" data-vote="foreach"><li class="item-acorn" data-vote="bind: setIcon, active" data-ideadetailevent="listen: touchstart, previewVote; listen: touchend, castVote"></li></ul></div></div></div></div><div id="library-writetwocents" class="invisible" data-ideadetail="bind: displayWriteTwocent, authors"></div><div id="library-twocents" class="twocents" data-ideadetail="bind: displayTwocentList, twocents" data-place="place: LibraryTwocentUI"></div><div data-place="place: AttachmentUI"></div></div>';
                 
                 //library
                         _widget.showCache = function showCache(){
@@ -330,13 +330,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
                                 _attachmentUI.reset(_alist.get(idx).docId);
-                                Map.get("attachment-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");        
+                                document.querySelector(".cache").classList.add("appear");      
                         };
                         
                         _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
+                                        document.getElementById("cache").classList.add("appear1");
                                         document.getElementById("ratingPopup").classList.add("appear");
                                 }
                                 node.classList.remove("pressed");
@@ -371,6 +371,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
+                                                        document.getElementById("cache").classList.remove("appear1");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

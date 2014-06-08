@@ -1,9 +1,10 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
  * Copyright (c) 2014 IDEAFY LLC
  */
+
 define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBDocument", "Promise", "lib/spin.min"], 
         function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBDocument, Promise, Spinner){
                 return function LibraryShareConstructor($action){
@@ -131,7 +132,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 contactList.reset(_user.get("connections").concat());
                                 contactList.loop(function(v, i){
                                         contactList.update(i, "selected", true);
-                                        if (v.type === "user") shareContacts.alter("push", v);        
+                                        if (v.type === "user") shareContacts.alter("push", v);
                                 });  
                         };
                         

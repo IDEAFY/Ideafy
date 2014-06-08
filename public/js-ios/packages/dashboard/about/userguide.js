@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin", "Store"],
@@ -45,14 +45,14 @@ define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin
                 
                 // fetch howtos from database
                 userGuide.fetch = function fetch(lang){
-                        cdb.unsync();
                         cdb.reset([]);
                         howTolist.reset([]);
                         cdb.sync(Config.get("db"), "about", "_view/howto").then(function(){
                                 cdb.loop(function(v,i){
                                         if (v.value.default_lang === lang || !v.value.translations[lang]) {howTolist.alter("push", v.value);}
                                         else {howTolist.alter("push", v.value.translations[lang]);}
-                                });      
+                                });
+                                cdb.unsync();
                         });
                 };
                 

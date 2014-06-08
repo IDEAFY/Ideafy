@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -10,7 +10,7 @@ define(["OObject", "service/config", "Bind.plugin", "Store"],
                 return function TutorialsConstructor(){
                         var tutorials = new Widget(),
                             labels = Config.get("labels"),
-                            tuto = [{"name": "brainstormtutorial", "src": "http://app.ideafy.com:1664/tuto04.m4v"}],
+                            tuto = [{"name": "brainstormtutorial", "src": Config.get("location")+"/tuto04.m4v"}],
                             store = new Store(tuto);
                             
                             

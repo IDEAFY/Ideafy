@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBDocument"],
@@ -73,20 +73,22 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         support.setSupportMSG = function setSupportMSG(lang){
                                 if (supportCDB.get("lang") === lang || !supportCDB.get("translations")[lang]){
-                                        supportMSG.reset(JSON.parse(supportCDB.toJSON()));        
+                                        supportMSG.reset(JSON.parse(supportCDB.toJSON()));
                                 }
                                 else{
-                                        supportMSG.reset(supportCDB.get("translations")[lang]);        
-                                }      
+                                        supportMSG.reset(supportCDB.get("translations")[lang]);
+                                }
+                                supportCDB.unsync();
                         };
                         
                         support.setMaintenanceMSG = function setMaintenanceMSG(lang){
                                 if (maintenanceCDB.get("lang") === lang || !maintenanceCDB.get("translations")[lang]){
-                                        maintenanceMSG.reset(JSON.parse(maintenanceCDB.toJSON()));        
+                                        maintenanceMSG.reset(JSON.parse(maintenanceCDB.toJSON()));
                                 }
                                 else{
-                                        maintenanceMSG.reset(maintenanceCDB.get("translations")[lang]);        
-                                }      
+                                        maintenanceMSG.reset(maintenanceCDB.get("translations")[lang]);
+                                }
+                                maintenanceCDB.unsync();     
                         };
                         
                         // init --> get support  & maintenance messages from database
@@ -113,7 +115,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 support.setMaintenanceMSG(user.get("lang"));  
                         });
                         
-                        return support;      
-                        
+                        return support;
                 }; 
         });

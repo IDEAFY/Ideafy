@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -10,21 +10,21 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 		return function PublicEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
-                             _attachmentUI = new Attachment("idea"),
-                             _addAttachmentUI = new AddAttachment(),
-			    _store = new CouchDBDocument(),  // the idea
-                            _languages = new Store(Config.get("userLanguages")),
-                            _resetLang = function(){
-                                _languages.loop(function(v,i){
-                                        (_store.get("lang") && (v.name === _store.get("lang").substring(0,2))) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
-                                });        
-                            },
-			    _labels = Config.get("labels"),
-			    _error = new Store({"error": ""}),
-                            _alist = new Store([]),
-                            _addedAttachments = [],
-                            _removedAttachments = [],
-			    updateReplay; // flag, set to true if sessionReplay option is modified
+			      _attachmentUI = new Attachment("idea"),
+			      _addAttachmentUI = new AddAttachment(),
+			      _store = new CouchDBDocument(),  // the idea
+			      _languages = new Store(Config.get("userLanguages")),
+			      _resetLang = function(){
+                                        _languages.loop(function(v,i){
+                                                (_store.get("lang") && (v.name === _store.get("lang").substring(0,2))) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                        });        
+                              },
+                              _labels = Config.get("labels"),
+                              _error = new Store({"error": ""}),
+                              _alist = new Store([]),
+                              _addedAttachments = [],
+                              _removedAttachments = [],
+                              updateReplay; // flag, set to true if sessionReplay option is modified
 		//setup
 	               
                         _store.setTransport(Config.get("transport"));
@@ -190,11 +190,14 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         };
                         
                         _widget.editVisibility = function(event, node){
+                                node.classList.add("pressed");
                                 // confirmation
                                 Confirm.reset(_labels.get("setpublicquestion"), function(decision){
+                                        node.classList.remove("pressed");
                                         (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");
                                         Confirm.hide();
-                                        });       
+                                });
+                                Confirm.show();     
                         };
                         
                         _widget.press = function(event, node){

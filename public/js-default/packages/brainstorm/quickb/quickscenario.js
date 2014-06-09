@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -321,7 +321,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 // reset whiteboard (if sip, need to show existing content)
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
-                                 _wb.init();
+                                _wb.init();
                                 (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode

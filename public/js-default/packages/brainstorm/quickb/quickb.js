@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -162,6 +162,9 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                         // set session deck to active deck
                         _session.set("deck", _user.get("active_deck"));
+                        
+                        // set default lang to user lang
+                        _session.set("lang", _user.get("lang"));
                         
                         // reset all step UIS
                         _stack.getStack().get("quickstart").reset();

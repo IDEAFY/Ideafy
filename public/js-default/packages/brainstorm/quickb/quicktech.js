@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -238,9 +238,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.push = function(event, node){
                                 var name = node.getAttribute("name");
                                 if (node.classList.contains("drawok")){
-                                        if (_draw[name].get("_id") && _next === "step") node.classList.add("pushed");    
+                                        if (_draw[name].get("_id") && _next === "step") node.classList.add("pushed");
                                 }
-                                else {node.classList.add("pushed");}
+                                else node.classList.add("pushed");
                         };
                         
                         _widget.draw = function(event, node){

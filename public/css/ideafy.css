@@ -224,18 +224,15 @@ input::-webkit-file-upload-button{
 }
 
 .squirrel{
-    width: 200px;
+    width: 350px;
     height: 200px;
-    float: right;
     background-image: url('../img/ideafy59-squirrel.png');
     background-size: contain;
     background-position: center center;
-    left: 50%;
     background-repeat: no-repeat;
     position: absolute;
-    top: 50%;
-    margin-top: -100px;
-    margin-left: -100px;
+    top: 100px;
+    left: 300px;
 }
 
 #login-stack    {

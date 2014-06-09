@@ -27,7 +27,6 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
         // init logic
         _body.startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");
-                document.getElementById("logo").classList.remove("invisible");
                 _stack.getStack().show("#dock");
                 _dock.start(firstStart);         
         };
@@ -153,7 +152,7 @@ require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugi
                 "place": new Place({confirm: Confirm})
         });
         
-        _body.template = '<div id="main"><div data-stack="destination"></div><div data-place="place:confirm"></div><div id="logo" class="invisible"></div></div>';
+        _body.template = '<div id="main"><div data-stack="destination"></div><div data-place="place:confirm"></div></div>';
         
         _body.place(document.body);
         

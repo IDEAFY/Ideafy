@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -189,7 +189,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         invited.reset([]);
                         error.set("errormsg", "");
                         // reset contactList with all user connections
-                       contactList.reset(user.get("connections").concat());  
+                       contactList.reset(user.get("connections").concat());
                 };
                 
                 widget.showLang = function(event, node){
@@ -356,7 +356,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         else{
                                 for(i=0, l=contact.contacts.length; i<l; i++){
                                         invited.loop(function(val,idx){
-                                                        if (val.userid === contact.contacts[i].userid) add = false;                
+                                                        if (val.userid === contact.contacts[i].userid) add = false;
                                         });
                                         if (add) {
                                                 invited.alter("push", contact.contacts[i]);

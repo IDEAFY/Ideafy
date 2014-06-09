@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -230,12 +230,11 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                                         if (v.fields.mode.search(filter.mode)>-1 && v.fields.lang.search(filter.lang)>-1) {arr.push(v);}
                                                 }
                                         }
-                                }, function(err){
-                                        alert(err);
                                 });
                                 promise.fulfill();
+                        }, function(err){
+                                        alert(err);
                         });
-                        
                         return promise;        
                 };
                 
@@ -256,7 +255,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                                 cdb.loop(function(v,i){
                                         var now = new Date();
                                         // do not display sessions more than 15 min older than scheduled date
-                                        if (!v.value.scheduled || ((now - v.value.scheduled) <= 900000)) arr.unshift(v);
+                                        if (!v.value.scheduled || ((now.getTime() - v.value.scheduled) <= 900000)) arr.unshift(v);
                                 });
                                 promise.fulfill();
                                 cdb.unsync();
@@ -325,7 +324,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 widget.filterList = function filterList($query){
                         var arr=[], query = $query || widget.dom.querySelector("#mulist-content input").value,
                             promise = new Promise(), mode = "", lang = "";
-                        
                         
                         // escape : characters in query - used in doc._id
                         query = query.replace(/:/g, '\\:');
@@ -465,8 +463,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 Config.get('observer').watch("session-exited", function(){
                         widget.refreshList();
                 });
-                
-                MULISTSPI = spinner;
                 
                 return widget;
                    

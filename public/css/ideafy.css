@@ -777,8 +777,8 @@ input::-webkit-file-upload-button{
 .deedee {
   width:99px;
   height:100px;
-  background:url('../img/littleGreyDeeDee.png') no-repeat center center;
-  background-size:40%;
+  background:url('../img/ideafy.logo.1.png') no-repeat center center;
+  background-size:contain;
 }
 
 .deedee.orange{

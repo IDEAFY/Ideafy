@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -29,7 +29,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 this.setAttribute("style", "display:none;");
                                         }
                                         else{
-                                                this.setAttribute("style", "dispaly:table-cell;");
+                                                this.setAttribute("style", "display:table-cell;");
                                                 this.setAttribute("contenteditable", true);
                                         }
                                 },
@@ -193,7 +193,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 promise.fulfill();
                         });
                         
-                        return promise; 
+                        return promise;
                 };
                 
                 mubChat.clear = function clear(){

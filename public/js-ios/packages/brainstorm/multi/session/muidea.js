@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min", "./mubchat", "./muvote"],
@@ -243,6 +243,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // zoom on selected card
                         _widget.zoom = function(event, node){
+                                event.stopPropagation();
                                 var type, id;
                                 if (node.getAttribute("name") === "scenario") type="scenario";
                                 else{
@@ -317,10 +318,8 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Method called when closing a popup -- passed as a parameter to the popup constructor
                         _widget.closePopup = function closePopup(){
-                                var cardPopup = _tools.get("cardpopup");
-                                cardPopup[_currentPopup] = false;
-                                _tools.set("cardpopup", cardPopup);
-                                _currentPopup = "";    
+                                _tools.set("cardpopup", {"scenario":false, "techs":[false, false, false]});
+                                _currentPopup = "";
                         };
                         
                         // Creating the popup UI
@@ -519,8 +518,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 auth.push($session.get("initiator").id);
                                 names.push($session.get("initiator").username);
                                 $session.get("participants").forEach(function(part){
-                                        auth.push(part.id);
-                                        names.push(part.username);        
+                                        if (part.present){
+                                                auth.push(part.id);
+                                                names.push(part.username);
+                                        }        
                                 });
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));

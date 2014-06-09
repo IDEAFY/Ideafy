@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -85,7 +85,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                                 var idx = this.getAttribute("data-participant_id") || 0;
                                                 (present || (user.get("_id") === participants.get(idx).id) ) ? this.setAttribute("style", "opacity: 1;") : this.setAttribute("style", "opacity: 0.4;");
                                         }
-                                        
                                 }),
                                 info: new Model(info),
                                 place : new Place({"chat": chatUI}),
@@ -150,26 +149,23 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         /*
                          *  Function called by event listener
-                         * If it's an immediate session or a scheduled session about to begin then display confirmation popup
+                         * If it's an immediate session or a scheduled session about to begin then display confirmation pop-up
                          */
                         
                         widget.leave = function leave(target){
                                 var now = new Date().getTime();
                                 exitDest = target.getAttribute("href") || target;
                                 
-                                // init confirmation UI content
                                 if (session.get("initiator").id === user.get("_id")){
-                                        Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");        
+                                        Confirm.reset(labels.get("leaderleave"), confirmCallBack, "musession-confirm");
                                 }
                                 else {
-                                        Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");        
+                                        Confirm.reset(labels.get("participantleave"), confirmCallBack, "musession-confirm");
                                 }
                                 
-                                // href exists it is one of the nav options else probably a notify message or future use
                                 if (!session.get("scheduled") ||((session.get("scheduled") - now) < 300000)) Confirm.show("musession-confirm");
                         };
                         
-                        // manage exit event : init confirm callback
                         confirmCallBack = function confirmCallback(decision){
                                 if (!decision){
                                         Confirm.hide();
@@ -186,7 +182,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }
                         };
                         
-                        // participant decides to leave session
                         widget.leaveSession = function leaveSession() {
                                 var p = session.get("participants"), i;
 
@@ -198,10 +193,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }
                                 
                                 session.set("participants", p);
-                                
-                                // set session status to waiting as it may have been "full" before participant left
                                 session.set("status", "waiting");
-                                
                                 session.upload().then(function() {
                                         return chatUI.leave();
                                 })
@@ -210,28 +202,20 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                         session.unsync();
                                         session.reset({});
                                 });
-                                // no need to wait for upload result to leave session
+                                
                                 $exit();
-                                // remove confirm UI if present
+                                
                                 Confirm.hide();
                         }; 
 
                         
-                        // initiator decides to cancel the session
-                       widget.cancelSession = function cancelSession(){
+                        widget.cancelSession = function cancelSession(){
                                 var countdown = 5000;
-                                
-                                // if there are no participants, exit and delete right away
                                 
                                 if (!session.get("participants").length) {
                                         widget.goToScreen();
-                                        
-                                        // remove confirm UI if present
                                         Confirm.hide(); 
-                                        
-                                        // cancel chat and delete session
                                         chatUI.cancel();
-                                        
                                         session.remove()
                                         .then(function(res){
                                                 console.log("session remove result : ", res);
@@ -242,37 +226,31 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }
                                 else widget.displayInfo("deleting", countdown).then(function(){
                                         session.remove();
-                                        // remove confirm UI if present
                                         Confirm.hide();
                                         widget.goToScreen();
-                                });        
+                                });       
                         };
                         
-                        // display info popup
-                       widget.displayInfo = function displayInfo(message, timeout){
+                        widget.displayInfo = function displayInfo(message, timeout){
                                 var timer, infoUI = document.querySelector(".sessionmsg"),
-                                    promise = new Promise(),
-                                    clearInfo = function(){
-                                            infoUI.classList.add("invisible");
-                                            clearInterval(timer);
-                                            info.set("msg", "");
-                                            promise.fulfill();
-                                    };
+                                      promise = new Promise(),
+                                      clearInfo = function(){
+                                                infoUI.classList.add("invisible");
+                                                clearInterval(timer);
+                                                info.set("msg", "");
+                                                promise.fulfill();
+                                      };
                                 
                                 Confirm.hide();
                                 infoUI.classList.remove("invisible");
                                 timer = setInterval(function(){
-                                                if (message !== "deleting") {info.set("msg", message);}
-                                                else {
-                                                        info.set("msg", labels.get("deletingsession") + timeout/1000 + "s");
-                                                }
-                                                if (timeout <= 0) clearInfo();
-                                                timeout -= 1000;
+                                        if (message !== "deleting") info.set("msg", message);
+                                        else info.set("msg", labels.get("deletingsession") + timeout/1000 + "s");
+                                        if (timeout <= 0) clearInfo();
+                                        timeout -= 1000;
                                 }, 1000);
                                 
-                                // remove session from CouchDB if cancel is called
                                 if (message === "deleting"){
-                                        //set session status to "deleted" to notify participants
                                         session.set("status", "deleted");
                                         session.upload().then(function(){
                                                 chatUI.cancel();
@@ -281,19 +259,16 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 return promise;
                         };
                         
-                        // switch screen to destination if user confirms exit
                         widget.goToScreen = function goToScreen(){
                                 var id;
                                 $exit();
                                 document.removeEventListener("mousedown", exitListener.listener, true); 
                                 
-                                // if dest is specified (e.g. notify popup)
                                 if (exitDest && exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
                                         Config.get("observer").notify("goto-screen", "#connect");  
                                         id = exitDest.getAttribute("data-notify_id");
                                         observer.notify("display-message", parseInt(id, 10));     
                                 }
-                                // handle clicks on nav bar
                                 else {
                                         ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
                                                 if (exitDest === name){
@@ -303,7 +278,6 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }
                         };
                         
-                        // handle edit events
                         widget.checkUpdate = function(event, node){
                                 var field = node.getAttribute("name");
                                 if (event.keyCode === 13){
@@ -324,51 +298,47 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }        
                         };
                         
-                        // handle start button
-                        widget.press = function(event, node){
-                                node.classList.add("pressed");
-                        };
-                        
                         widget.start = function(event, node){
-                                var now = new Date(), chat = session.get("chat");
-                                // notify session start in chat window
-                                chatUI.conclude("start");
-                                node.classList.add("invisible");
-                                node.classList.remove("pressed");
-                                spinner.spin(node.parentNode);
+                                var now = new Date(), chat = session.get("chat"), p = session.get("participants").concat();
                                 
-                                // make changes to session document
-                                session.set("status", "in progress");
-                                session.set("step", "musetup");
-                                session.set("startTime", now.getTime());
-                                session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
-                                chat.push(session.get("_id")+"_1");
-                                session.set("chat", chat);
+                                if (session.get("initiator").id === user.get("_id")){
+                                        chatUI.conclude("start");
+                                        node.classList.add("invisible");
+                                        node.classList.remove("pressed");
+                                        spinner.spin(node.parentNode);
+                                        
+                                        session.set("status", "in progress");
+                                        session.set("step", "musetup");
+                                        session.set("startTime", now.getTime());
+                                        session.set("date", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                        chat.push(session.get("_id")+"_1");
+                                        session.set("chat", chat);
+                                        
+                                        for (i=p.length-1; i>=0; i--){
+                                                if (!p[i].present) p.splice(i, 1);
+                                        }
+                                        session.set("participants", p);
                                 
-                                // create chat document for next phase then upload session
-                                widget.createChat(session.get("chat")[1])
-                                .then(function(){
-                                        return session.upload();
-                                })
-                                .then(function(){
-                                        session.unsync();
-                                        spinner.stop();
-                                        node.classList.remove("invisible");
-                                        
-                                        // remove exitListener
-                                        document.removeEventListener("mousedown", exitListener.listener, true); 
-                                        
-                                        // start session
-                                        $start(session.get("_id"));        
-                                });
+                                        widget.createChat(session.get("chat")[1])
+                                        .then(function(){
+                                                return session.upload();
+                                        })
+                                        .then(function(){
+                                                session.unsync();
+                                                spinner.stop();
+                                                node.classList.remove("invisible");
+                                                document.removeEventListener("mousedown", exitListener.listener, true);
+                                                $start(session.get("_id"));        
+                                        });
+                                }
                         };
                         
                         widget.createChat = function createChat(id){
                                 var cdb = new CouchDBDocument(),
-                                now = new Date().getTime(),
-                                promise = new Promise();
+                                      now = new Date().getTime(),
+                                      promise = new Promise();
+                                
                                 cdb.setTransport(Config.get("transport"));
-                        
                                 cdb.set("users", chatUI.getModel().get("users"));
                                 cdb.set("msg", [{user: "SYS", "type": 5, "arg": "quicksetup", "time": now}]);
                                 cdb.set("sid", session.get("_id"));
@@ -387,21 +357,16 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 return promise;
                         };
 
-                        
-                        // watch for session status change
                         session.watchValue("status", function(value){
-                                // if session is deleted (in case initiator decides to cancel)
                                 if (value === "deleted" && session.get("initiator").id !== user.get("_id")){
                                         session.unsync();
                                         widget.displayInfo(labels.get("canceledbyleader"), 2000).then(function(){
-                                                // remove exitListener
                                                 document.removeEventListener("mousedown", exitListener.listener, true); 
                                                 $exit();     
                                         });
                                 }
                                 if (value === "in progress" && session.get("initiator").id !== user.get("_id")){
                                         session.unsync();
-                                        // remove exitListener
                                         document.removeEventListener("mousedown", exitListener.listener, true); 
                                         $start(session.get("_id"));
                                         session.reset({});
@@ -409,13 +374,10 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                                 }     
                         });
                         
-                        // watch participant changes (new participant, departure etc.)
                         session.watchValue("participants", function(array){
                                participants.reset(array);        
                         });
                         
                         return widget;
-                
                 };
-        
 });

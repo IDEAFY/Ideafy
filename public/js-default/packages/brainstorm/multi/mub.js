@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -22,7 +22,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 
                 widget.place(document.getElementById("ideafy-multi"));
                 
-                 widget.reset = function reset(sip){ 
+                 widget.reset = function reset(sip){
                          if (!sip){
                                 muInit.reset();
                                 stack.getStack().show("mubinit");        

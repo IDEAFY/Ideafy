@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -258,10 +258,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                     spinner.spin(_widget.dom.querySelector("#muvotespinner"));
                                                     setTimeout(function(){
                                                                 spinner.stop();
-                                                                document.getElementById("cache").classList.remove("votingcache");
+                                                                Map.get("cache").classList.remove("votingcache");
                                                                 _onEnd && _onEnd(result);
-                                                        }, 5000);
-                                                    
+                                                        }, 2000);
                                             };
                                         if (vote && vote.public && vote.replay){
                                                 _vote.set("publicResult", vote.publicResult);

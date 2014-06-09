@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -187,7 +187,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers.muidea = _timer.get("timer");
                                                 // update session document
                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);
-                                                if (replay) {$session.set("replayIdeas", []);}
+                                                if (replay) $session.set("replayIdeas", []);
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("duration", duration);
                                                 $session.set("status", "completed");
@@ -319,7 +319,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // Method called when closing a popup -- passed as a parameter to the popup constructor
                         _widget.closePopup = function closePopup(){
                                 _tools.set("cardpopup", {"scenario":false, "techs":[false, false, false]});
-                                _currentPopup = "";    
+                                _currentPopup = "";
                         };
                         
                         // Creating the popup UI
@@ -518,8 +518,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 auth.push($session.get("initiator").id);
                                 names.push($session.get("initiator").username);
                                 $session.get("participants").forEach(function(part){
-                                        auth.push(part.id);
-                                        names.push(part.username);        
+                                        if (part.present){
+                                                auth.push(part.id);
+                                                names.push(part.username);
+                                        }
                                 });
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));

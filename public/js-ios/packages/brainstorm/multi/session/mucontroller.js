@@ -1,12 +1,12 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm){
+define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm", "service/utils"],
+        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm, Utils){
                 
            return function MUControllerConstructor($exit){
                    
@@ -31,7 +31,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                     _session = new CouchDBDocument(),
                     _sessionData = new Store(),
                     info = new Store({"msg":""}),
-                    confirmUI, confirmCallBack,
+                    exitListener = {"listener": null},
+                    confirmCallBack,
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                 // progress bar setup
@@ -79,7 +80,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         else{
                                 if (_session.get("step") === "muwrapup"){
                                         if (_session.get("initiator").id === _user.get("_id")){
-                                                muWrapup.getChatUI().setMsg("end")
+                                                muWrapup.getChatUI().setMessage("end")
                                                 .then(function(){
                                                         // reset sessionInProgress in user doc
                                                         _user.set("sessionInProgress", "");
@@ -87,6 +88,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 })
                                                 .then(function(){
                                                         $exit();
+                                                        document.removeEventListener("touchstart", exitListener.listener, true);
                                                 });
                                         }
                                         else{
@@ -94,12 +96,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                                 // reset sessionInProgress in user doc
                                                 _user.set("sessionInProgress", "");
                                                 _user.upload().then(function(){
-                                                        $exit();        
+                                                        $exit();
+                                                        document.removeEventListener("touchstart", exitListener.listener, true);       
                                                 }); 
                                         }       
                                 }
                                 else {
-                                        confirmUI.show();
+                                        _widget.leave();
                                 }
                         }
                 };
@@ -123,7 +126,76 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    };
                    
                 // initiator or a participant decides to leave the session
-                // participant decides to leave session
+                
+                // manage exit event : init confirm callback
+                confirmCallBack = function confirmCallback(decision){
+                        if (!decision){
+                                Confirm.hide();
+                        }
+                        else{
+                                if (_session.get("step") !== "muwrapup"){
+                                        _user.set("sessionInProgress", "");
+                                        _user.upload();
+                                        if (_session.get("initiator").id === user.get("_id")){
+                                                _widget.cancelSession();
+                                        }
+                                        else {
+                                                _widget.leaveSession();
+                                        }
+                                }
+                                else{
+                                        Confirm.hide();
+                                        _widget.exitSession();
+                                }
+                        }
+                };
+                
+                // leader or participant decides to leave at the end of a session
+                _widget.exitSession = function exitSession(){
+                        if (_session.get("initiator").id === _user.get("_id")){
+                                muWrapup.getChatUI().setMessage("end")
+                                .then(function(){
+                                        // reset sessionInProgress in user doc
+                                        _user.set("sessionInProgress", "");
+                                        return _user.upload();      
+                                })
+                                .then(function(){
+                                        _widget.goToScreen();
+                                });
+                        }
+                        else{
+                                muWrapup.getChatUI().leave();
+                                // reset sessionInProgress in user doc
+                                _user.set("sessionInProgress", "");
+                                _user.upload().then(function(){
+                                        _widget.goToScreen();        
+                                }); 
+                        } 
+                };
+                
+                // switch screen to destination if user confirms exit
+                _widget.goToScreen = function goToScreen(){
+                        var id;
+                        $exit();
+                        document.removeEventListener("mousedown", exitListener.listener, true); 
+                                
+                        // if dest is specified (e.g. notify popup)
+                        if (exitDest.getAttribute && exitDest.getAttribute("data-notify_id")){
+                                Config.get("observer").notify("goto-screen", "#connect");  
+                                id = exitDest.getAttribute("data-notify_id");
+                                observer.notify("display-message", parseInt(id, 10));     
+                        }
+                        // handle clicks on nav bar
+                        else {
+                                ["#public", "#library", "#brainstorm", "#connect", "#dashboard"].forEach(function(name){
+                                        if (exitDest === name){
+                                                Config.get("observer").notify("goto-screen", name);
+                                        }
+                                });
+                        }
+                };
+                
+                // participant decides to leave session in progress
                 _widget.leaveSession = function leaveSession(){
                         var p = _session.get("participants"), i, currentUI = _stack.getStack().get(_session.get("step"));
                         
@@ -138,13 +210,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // notify current chat interface
                                 currentUI.getChatUI().leave();
                                 _session.unsync();
-                                confirmUI.hide();
-                                document.body.removeChild(document.querySelector(".confirm"));
+                                Confirm.hide();
                         }); 
                        // reset sessionInProgress in user doc
                         _user.set("sessionInProgress", "");
                         _user.upload().then(function(){
-                                $exit();        
+                                $exit();
+                                document.removeEventListener("touchstart", exitListener.listener, true);       
                         });          
                    };
                         
@@ -153,6 +225,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         var countdown = 5000; // better to pick a high number and cancel earlier if all actions are finished
                         _widget.displayInfo("deleting", countdown).then(function(){
                                 $exit();
+                                document.removeEventListener("touchstart", exitListener.listener, true);
                         });      
                 };
                         
@@ -167,8 +240,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 promise.fulfill();
                             };
                                 
-                        confirmUI.hide();
-                        document.body.removeChild(document.querySelector(".confirm"));
+                        Confirm.hide();
                         infoUI.classList.remove("invisible");
                         timer = setInterval(function(){
                                 switch(message){
@@ -290,37 +362,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
+                        var promise = new Promise();
                         spinner.spin(document.getElementById("brainstorm"));
                            
                         // connect to couchdb and retrieve session
                         _session.reset({});
                         _session.sync(_db, sid).then(function(){
                                 var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
-                                
-                                if (!replay){
-                                        // init exit confirmation UI
-                                        confirmUI = new Confirm(document.body, null, null, "musession-confirm");
-                                        confirmCallBack = function(decision){
-                                                if (!decision){
-                                                        confirmUI.hide();
-                                                }
-                                                else{
-                                                        if (_session.get("initiator").id === _user.get("_id")){
-                                                                _widget.cancelSession();
-                                                        }
-                                                        else {
-                                                                _widget.leaveSession();
-                                                        }
-                                                }
-                                        };
-                                        // init confirmation UI
-                                        if (_session.get("initiator").id === _user.get("_id")){
-                                                confirmUI.reset(_labels.get("leaderleave"), confirmCallBack);        
-                                        }
-                                        else {
-                                                confirmUI.reset(_labels.get("participantleave"), confirmCallBack);        
-                                        }
-                                }
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -338,14 +386,37 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 
                                 if (replay){
                                         spinner.stop();
+                                        promise.fulfill();
                                         _stack.getStack().show("muwrapup");
                                 }
                                 else{
+                                        // init confirmation UI
+                                        if (_session.get("initiator").id === _user.get("_id")){
+                                                Confirm.reset(_labels.get("leaderleave"), confirmCallBack);        
+                                        }
+                                        else {
+                                                Confirm.reset(_labels.get("participantleave"), confirmCallBack);        
+                                        }
                                         spinner.stop();
+                                        promise.fulfill();
                                         _stack.getStack().show(step);
                                 }
                            });
-                   };
+                           return promise;
+                };
+                   
+                _widget.leave = function leave(){
+                        var lbl = "";
+                        // init confirmation UI content depending on step
+                        if (_session.get("initiator").id === _user.get("_id")){
+                                (_session.get("step") === "muwrapup") ? lbl = labels.get("leaderexit") : lbl = labels.get("leaderleave");
+                        }
+                        else{
+                                (_session.get("step") === "muwrapup") ? lbl = labels.get("participantexit") : lbl = labels.get("participantleave");      
+                        }
+                        Confirm.reset(lbl, confirmCallBack, "musession-confirm");                        
+                        Confirm.show();      
+                };
                    
                 _widget.reset = function reset(sid, replay){
                            
@@ -355,9 +426,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         // reset local session data
                         _sessionData.reset();
                         
-                        // remove confirm UI if present
-                        document.querySelector(".confirm") && document.body.removeChild(document.querySelector(".confirm"));
-                           
                         // reset progress bar
                         _steps.reset([
                                 {name: "mustart", label: _labels.get("quickstepstart"), currentStep: false, status:"done"},
@@ -370,7 +438,11 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         
                         // retrieve session document and launch   
                         if (sid){
-                                _widget.retrieveSession(sid, replay);
+                                _widget.retrieveSession(sid, replay)
+                                .then(function(){
+                                        // if not in replay mode activate the exit listener
+                                        if (!replay) exitListener.listener = Utils.exitListener("musession", _widget.leave);
+                                });
                         } 
                    };
                    
@@ -496,7 +568,8 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 _user.upload();
                                 _widget.displayInfo(_labels.get("canceledbyleader"), 2000).then(function(){
                                         _session.unsync();
-                                        $exit();     
+                                        $exit();
+                                        document.removeEventListener("touchstart", exitListener.listener, true); 
                                 });
                         }    
                 });
@@ -540,7 +613,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 })
                                 .then(function(){
                                         $exit();
-                                        document.body.removeChild(document.querySelector(".confirm"));
+                                        document.removeEventListener("touchstart", exitListener.listener, true);
                                 });
                         }                
                 });
@@ -549,3 +622,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 return _widget;
            };    
         });
+ 
+/*
+ * ALSO SHOULD REGULARLY CHECK IF LEADER IS STILL CONNECTED....
+ */

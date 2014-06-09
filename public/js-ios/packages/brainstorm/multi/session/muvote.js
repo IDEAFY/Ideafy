@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "lib/spin.min"],
@@ -204,7 +204,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.close = function hide(){
-                                Map.get("cache").classList.remove("votingcache");
+                                document.getElementById("cache").classList.remove("votingcache");
                                 _widget.dom.classList.add("invisible");
                                 _session = null;        
                         };
@@ -214,7 +214,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         _widget.show = function show(){
-                                Map.get("cache").classList.add("votingcache");
+                                document.getElementById("cache").classList.add("votingcache");
                                 _widget.dom.classList.remove("invisible");        
                         };
                         
@@ -260,7 +260,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                                 spinner.stop();
                                                                 Map.get("cache").classList.remove("votingcache");
                                                                 _onEnd && _onEnd(result);
-                                                        }, 5000);
+                                                        }, 2000);
                                                     
                                             };
                                         if (vote && vote.public && vote.replay){

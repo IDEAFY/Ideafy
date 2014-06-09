@@ -252,6 +252,7 @@ input::-webkit-file-upload-button{
     width:410px;
     border-radius: 5px;
     background: white;
+    opacity: 0.75;
     -webkit-box-shadow: 0 0 3px 3px #06b7fc;
     margin-bottom:30px;
 }
@@ -280,7 +281,6 @@ input::-webkit-file-upload-button{
     padding-left:30px;
     font-size:16px;
     color:#07789b;
-    opacity: 0;
 }
 
 .login-fields input::-webkit-input-placeholder{

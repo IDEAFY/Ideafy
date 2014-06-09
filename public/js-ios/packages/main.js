@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise", "service/confirm"],
-        function(Widget, LocalStore, Map, Stack, Model, Event, Dock, Login, Config, Utils, Promise, Confirm) {
+require(["OObject", "LocalStore", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "./dock", "./login", "service/config", "service/utils", "Promise", "service/confirm"],
+        function(Widget, LocalStore, Map, Stack, Model, Place, Event, Dock, Login, Config, Utils, Promise, Confirm) {
         
         //declaration
         var _body = new Widget(),

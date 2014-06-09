@@ -39,10 +39,15 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 		//logic
 			_widget.init = function init(){
 			        _public = new Public();
+			        console.log("public ok");
 			        _library = new Library();
+                                console.log("library ok");
 			        _brainstorm = new Brainstorm();
+                                console.log("brainstorm ok");
 			        _connect = new Connect();
+                                console.log("connect ok");
 			        _dashboard = new Dashboard();
+                                console.log("dashboard ok");
 			        
 			        _stack.getStack().add("#public", _public);
 				_stack.getStack().add("#library", _library);

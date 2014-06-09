@@ -38,7 +38,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginstack" : _stack
                         });
                         
-                        _login.template = '<div id="login"><div class="squirrel"></div><div id="login-stack" data-loginstack="destination"></div></div>';
+                        _login.template = '<div id="login"><div id="login-stack" data-loginstack="destination"><div class="squirrel"></div></div></div>';
                         
                         // loading UI
                         _loading.plugins.add("label", new Model(_labels));

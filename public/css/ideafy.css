@@ -264,6 +264,10 @@ input::-webkit-file-upload-button{
     top: 50%;
 }
 
+#signup-form{
+    position: absolute;
+}
+
 #login-form input {
     height:60px;
 }

@@ -312,7 +312,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _login.init = function init(){
                                 // display loading screen and initialize spinner
                                _stack.getStack().show("#loading-screen");
-                               spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
+                               spinner = new Spinner({color:"#cccccc", lines:10, length: 10, width: 4, radius:8}).spin(document.getElementById("loadingspin"));
                         };
                         
                         _login.setScreen = function setScreen(target){

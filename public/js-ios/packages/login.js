@@ -337,6 +337,10 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 spinner && spinner.stop();       
                         };
                 
+                
+                SPI = spinner;
+                LOSPI = loginSpinner;
+                LSTACK = _stack.getStack();
                 //return
                 return _login;
                 };

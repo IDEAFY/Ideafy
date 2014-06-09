@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -30,7 +30,7 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                                                         this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bgselected+"');color:white;");
                                                 }
                                                 else{
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bg+"');color:#4D4D4D;");        
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bg+"');color:#4D4D4D;");
                                                 }
                                         }
                                 }),

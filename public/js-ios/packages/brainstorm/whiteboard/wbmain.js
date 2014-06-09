@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.min", "Store" ],
@@ -50,8 +50,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                             content = _page.get(id).content,
                                             style = _page.get(id).style,
                                             bg = _page.get(id).background,
-                                            dir, json,
-                                            spinner;
+                                            dir, spinner, json;
                                              
                                         switch(type){
                                                 case "postit":
@@ -68,7 +67,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                                         dir = "sessions/"+_sid;
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;"); 
+                                                                node.setAttribute("style", "background:white; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
                                                                 spinner.stop();
                                                         });
                                                         break;
@@ -81,7 +80,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
                                                                 node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
-                                                                spinner.stop();   
+                                                                spinner.stop();
                                                         });
                                                         break;
                                                 default:

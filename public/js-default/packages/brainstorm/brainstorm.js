@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -48,7 +48,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                         };
                         _widget.exitSession = function exitSession(){
                                 _stack.getStack().show("menu");
-                                Config.get("observer").notify("session-exited");     
+                                Config.get("observer").notify("session-exited");
                         };
                         
                         _widget.reset = function reset(){

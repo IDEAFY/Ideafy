@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -77,8 +77,8 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                                                         dir = "sessions/"+_sid;
                                                         json = {"dir":dir, "filename":content};
                                                         _transport.request("GetFile", json, function(data){
-                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;"); 
-                                                                spinner.stop();  
+                                                                node.setAttribute("style", "background:"+bg+"; background-image: url('"+data+"'); background-repeat: no-repeat; background-position: center center; background-size:contain;");
+                                                                spinner.stop();
                                                         });
                                                         break;
                                                 default:

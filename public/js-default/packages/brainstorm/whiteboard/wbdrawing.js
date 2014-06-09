@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -36,7 +36,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                     ]),
                     _labels = Config.get("labels"),
                     _progress = new Store({"status": null}),
-                    _postit = new Store({"type": "drawing", "content":"", "background":""}),
+                    _postit = new Store({"type": "drawing", "content":"", "background":"", "author": Config.get("user").get("_id")}),
                     _uploadCanvas = function(filename){
                             var _promise = new Promise(),
                                 _url = '/upload',
@@ -259,7 +259,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 cv.setAttribute("height", 380);
                         }
                         if (!_pos && _pos !== 0){
-                                _postit.reset({"type": "drawing", "content":"", "background":""});
+                                _postit.reset({"type": "drawing", "content":"", "background":"", "author": Config.get("user").get("_id")});
                         }
                         else{
                                _postit.reset($store.get($pos));

@@ -256,6 +256,13 @@ input::-webkit-file-upload-button{
     margin-bottom:30px;
 }
 
+#login-form{
+    height: 300px;
+    margin-top: -150px;
+    position: absolute;
+    top: 50%;
+}
+
 #login-form input {
     height:60px;
 }
@@ -273,7 +280,7 @@ input::-webkit-file-upload-button{
     padding-left:30px;
     font-size:16px;
     color:#07789b;
-    opacity: 0.8;
+    opacity: 0;
 }
 
 .login-fields input::-webkit-input-placeholder{
@@ -313,8 +320,8 @@ input::-webkit-file-upload-button{
 }
 
 #login-form p.login-error{
-    height:154px;
-    line-height:77px;
+    height:50px;
+    line-height:50px;
 }
 
 #signup-form .login-error {

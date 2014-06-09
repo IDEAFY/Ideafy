@@ -810,7 +810,7 @@ input::-webkit-file-upload-button{
     height: 80px;
     background-size: contain;
     left: 6px;
-    top: -165px;
+    top: -150px;
 }
 
 .info-bubble{
@@ -821,7 +821,7 @@ input::-webkit-file-upload-button{
     height: 80px;
     border-radius: 20px;
     left: 6px;
-    top: -85px;
+    top: -75px;
 }
 
 .info-bubble.pressed{

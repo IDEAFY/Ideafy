@@ -815,7 +815,7 @@ input::-webkit-file-upload-button{
 }
 
 .info-bubble{
-    background: url('../img/info.icon.1.png') no-repeat center center;
+    background: url('../img/Info.icon.1.png') no-repeat center center;
     background-size: contain;
     position: absolute;
     width: 40px;
@@ -826,7 +826,7 @@ input::-webkit-file-upload-button{
 }
 
 .info-bubble.pressed{
-    background: url('../img/info.icon.2.png') no-repeat center center;
+    background: url('../img/Info.icon.2.png') no-repeat center center;
     background-size: contain;
 }
 

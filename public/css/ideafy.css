@@ -806,9 +806,9 @@ input::-webkit-file-upload-button{
 .signout-bubble{
     background: url('../img/close.icon.1.png') no-repeat center center;
     position: absolute;
-    width: 60px;
-    height: 60px;
-    background-size: contain;
+    width: 80px;
+    height: 80px;
+    background-size: 60px 60px;
     left: 6px;
     top: -165px;
     opacity: 0.5;

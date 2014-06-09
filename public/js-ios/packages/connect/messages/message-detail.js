@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
@@ -64,7 +64,25 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = message.get("username") + labels.get("senttc");
                                                         break;
                                                 case "REF":
-                                                        this.innerHTML = message.get("username")+ labels.get("joinedideafy");
+                                                        this.innerHTML = message.get("username") + labels.get("joinedideafy");
+                                                        break;
+                                                case "MUD-":
+                                                        this.innerHTML = labels.get("muinaday");
+                                                        break;
+                                                case "MUQ-":
+                                                        this.innerHTML = labels.get("mufifteen");
+                                                        break;
+                                                case "MUP+":
+                                                        this.innerHTML = labels.get("newpart");
+                                                        break;
+                                                case "MUP-":
+                                                        this.innerHTML = labels.get("partleft");
+                                                        break;
+                                                case "SCANCEL":
+                                                        this.innerHTML = labels.get("scancel");
+                                                        break;
+                                                case "SSTART":
+                                                        this.innerHTML = labels.get("sstart");
                                                         break;
                                                 default :
                                                         this.innerHTML = message.get("object");
@@ -85,6 +103,24 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                 case "REF":
                                                         this.innerHTML = labels.get("referral");
                                                         break;
+                                                case "MUD-":
+                                                        this.innerHTML = labels.get("snamed") + '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("stomorrow")  + new Date(message.get("scheduled")).toLocaleTimeString() + ".<br/><br/>";
+                                                        break;
+                                                case "MUQ-":
+                                                        this.innerHTML = labels.get("snamed") + '<b> "'  + message.get("docTitle") + '"</b> ' + labels.get("sfifteen") + ".<br/><br/>";
+                                                        break;
+                                                 case "MUP+":
+                                                        this.innerHTML = message.get("username") + labels.get("justreg") + labels.get("snamed").toLowercase() + ' <b> "'  + message.get("docTitle") + '"</b>.';
+                                                        break;
+                                                case "MUP-":
+                                                        this.innerHTML = message.get("username") + labels.get("unreg") + labels.get("snamed").toLowercase() + ' <b> "'  + message.get("docTitle") + '"</b>.'; 
+                                                        break;
+                                                case "SCANCEL":
+                                                        this.innerHTML = labels.get("snamed").toLowerCase() +  '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("cclbyorg") + ".";
+                                                        break;
+                                                case "SSTART":
+                                                        this.innerHTML = labels.get("snamed").toLowerCase() +  '<b> "' + message.get("docTitle") + '"</b> ' + labels.get("nowopen") + ".";
+                                                        break;
                                                 default :
                                                         this.innerHTML = message.get("body").replace(/\n/g, "<br>");
                                                         break;
@@ -98,7 +134,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         else {this.classList.add("invisible");}
                                 },
                                 showOptions : function(type){
-                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF")) ? this.classList.add("invisible") : this.classList.remove("invisible");        
+                                        ((type.search("CX")>-1) || (type === "2Q+") || (type === "INV") || (type === "REF") || (type.search("MU") > -1)) ? this.classList.add("invisible") : this.classList.remove("invisible");        
                                 },
                                 setToList : function(toList){
                                         (toList) ? this.innerHTML = toList : this.innerHTML = labels.get("melbl");        
@@ -126,10 +162,10 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         (type === "DOC")?this.classList.remove("invisible"):this.classList.add("invisible");        
                                 },
                                 showSessionBtn : function(sessionStatus){
-                                        (sessionStatus && sessionStatus === "waiting" && !message.get("joined"))?this.classList.remove("invisible"):this.classList.add("invisible");   
+                                        (sessionStatus &&(sessionStatus === "waiting" || sessionStatus === "scheduled")) ? this.classList.remove("invisible") : this.classList.add("invisible");   
                                 },
                                 setJoinMsg : function(sessionStatus){
-                                        if (!sessionStatus) {this.classList.add("invisible");}
+                                        /* if (!sessionStatus) {this.classList.add("invisible");}
                                         else {
                                                 this.classList.remove("invisible");
                                                 if (sessionStatus === "unavailable"){
@@ -142,6 +178,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                         this.innerHTML = labels.get("clicktojoin");
                                                 }
                                         }
+                                        */
                                 },
                                 showTwoQ : function(type){
                                         (type === "2Q+" || type === "2C+") ? this.classList.remove("invisible"):this.classList.add("invisible");        
@@ -166,9 +203,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.showDoc = function showDoc(event, node){
                         node.classList.remove("pushed");
-                        if (message.get("type") === "DOC") {
-                                observer.notify("display-doc", message.get("docId"), message.get("docType"));
-                        }
+                        if (message.get("type") === "DOC") observer.notify("display-doc", message.get("docId"), message.get("docType"));
                 };
                 
                 msgDetailUI.showTwoQ = function showTwoQ(event, node){
@@ -225,10 +260,11 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.deletemsg = function deletemsg(msg){
                         var arr = user.get("notifications").concat(),
+                            userid = msg.get("author"),
                             index;
                         
                         for (i=0, l=arr.length; i<l; i++){
-                                if (arr[i].userid && arr[i].userid === msg.get("author")){
+                                if (arr[i].userid && arr[i].userid === userid){
                                         index = i;
                                         break;
                                 }
@@ -341,8 +377,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         var cdb = new CouchDBDocument();
                         cdb.setTransport(transport);
                         cdb.sync(Config.get("db"), sid).then(function(){
-                                if (cdb.get("status") === "waiting"){
-                                        message.set("sessionStatus", "waiting");
+                                if (cdb.get("status")){
+                                        message.set("sessionStatus", cdb.get("status"));
                                 }
                                 else{message.set("sessionStatus", "unavailable");}
                                 cdb.unsync();
@@ -350,20 +386,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 msgDetailUI.gotoSession = function(event, node){
-                        var arr = user.get("notifications");
                         node.classList.remove("pushed");
-                        message.set("joined", true);
-                        Config.get("observer").notify("join-musession", message.get("docId"));
-                        
-                        // can only join a session once
-                        for (i=0, l=arr.length; i<l; i++){
-                                if (arr[i].type === "INV" && arr[i].docId === message.get("docId")){
-                                        arr[i].joined = true;
-                                        break;
-                                }
-                        }
-                        user.set("notifications", arr);
-                        user.upload();               
+                        Config.get("observer").notify("show-mupreview", message.get("docId"));               
                 };
                 
                 //init
@@ -373,14 +397,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         message.reset(msg);
                         msgReplyUI.reset(msg, "reply");
                         // check if message type is a session invite and if so check session status
-                        if (message.get("type") === "INV"){
-                                if (message.get("joined")){
-                                        message.set("joined", true);
-                                }
-                                else{
-                                        message.set("sessionStatus", null);
-                                        msgDetailUI.checkSessionStatus(message.get("docId"));
-                                }
+                        if (message.get("type") === "INV" || (message.get("type").search("MU") > -1)){
+                                message.set("sessionStatus", null);
+                                msgDetailUI.checkSessionStatus(message.get("docId"));
                         }
                 };
                 

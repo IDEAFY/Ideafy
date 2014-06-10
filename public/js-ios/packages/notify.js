@@ -43,7 +43,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                         "notifevent" : new Event(notify)
                 });
                 
-                notify.template = '<div><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout"></div><div id="notify-popup" data-place="place:notifyPopup"></div></div>';
+                notify.template = '<div id = "notify"><div class = "notif-bubble" data-notif="bind:innerHTML, unread"></div><div class="deedee" data-notif="bind:flashNew, newmsg" data-notifevent="listen: touchstart, push; listen:touchend, showPopup"></div><div class = "signout-bubble" data-notifevent="listen:touchstart, signout"></div><div class = "info-bubble" data-notifevent="listen:touchstart, press; listen:touchend, showAbout"></div><div id="notify-popup" data-place="place:notifyPopup"></div></div>';
                 
                 notify.getUnread = function getUnread(){
                         var msg = user.get("notifications"),

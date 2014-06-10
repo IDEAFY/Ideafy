@@ -7,7 +7,7 @@
 
 define(["OObject", "Amy/Control-plugin" ,
 	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
-	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min"], 
+	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min", "service/newidea"], 
 	function(Widget, Control, Model, Place, Delegate, Store, Map, Config, Detail, List, Stack, Spinner, NewIdea){
 		return function IdeasConstructor(){
 		//declaration
@@ -33,12 +33,10 @@ define(["OObject", "Amy/Control-plugin" ,
                               _stack = new Stack(),
                               _listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
                 
-                //setup
-                       
-                       // build languages & flags
-                      _usrLg.forEach(function(val){
-                              _languages.alter("push", val);
-                      });
+                        // build languages & flags
+                        _usrLg.forEach(function(val){
+                                _languages.alter("push", val);
+                        });
                 
 		       _widget.template='<div id = "ideas"><div id="idea-list" class="list"><div class="header blue-light"><div class="option left" data-ideascontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span><div class="option right" data-ideasevent="listen: touchstart, plus"></div></div><div data-idealiststack="destination" data-ideascontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-search="bind: value, search" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-ideasevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-ideasevent="listen: touchstart, setLang; listen:touchend, stopPropagation"></li></ul></div></div></div><div id="ideas-detail" class="details" data-ideaplace="place:details"></div></div>';
 
@@ -89,8 +87,8 @@ define(["OObject", "Amy/Control-plugin" ,
 			_widget.place(Map.get("ideas"));
 
 			_widget.selectStart = function(event){
-				var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
-				    _id = event.target.getAttribute("data-listideas_id");
+                                var _ideaList = _stack.getStack().getCurrentScreen().getModel(),
+                                      _id = event.target.getAttribute("data-listideas_id");
 				_detail.reset(_ideaList, _id);
 				// clear search field
 				_searchInput.set("search", "");
@@ -175,7 +173,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 event.preventDefault();       
                         };
 
-			_widget.mosaic = function(){
+                        _widget.mosaic = function(){
 			        var domDetail = document.getElementById("ideas-detail");
 				_widget.dom.classList.toggle("mosaic");
 				if (domDetail.classList.contains("invisible")) {
@@ -191,22 +189,22 @@ define(["OObject", "Amy/Control-plugin" ,
 			
 			_widget.search = function (event, node){
 			        var usr;
-			        if (event.keyCode === 13){
-			             if (node.value === ""){
-			                     _widget.dom.querySelector(".listbtns").classList.remove("invisible");
-			                     // default list viewed by date
-			                     _stack.getStack().show("#list-date");
-			                     _btns.loop(function(v,i){
+                                if (event.keyCode === 13){
+                                     if (node.value === ""){
+                                             _widget.dom.querySelector(".listbtns").classList.remove("invisible");
+                                             // default list viewed by date
+                                             _stack.getStack().show("#list-date");
+                                             _btns.loop(function(v,i){
                                                 (v.name === "#list-date") ? _btns.update(i, "pushed", true) : _btns.update(i, "pushed", false);        
                                              });
                                              _widget.displayHighlightedIdea();
-			             }
-			             else{
-			                     usr = _user.get("_id").replace(/@/, "at");
-			                     _widget.searchIdea("users:"+usr+ " AND "+node.value);
-			             }
-			             node.blur();
-			        }
+                                     }
+                                     else{
+                                             usr = _user.get("_id").replace(/@/, "at");
+                                             _widget.searchIdea("users:"+usr+ " AND "+node.value);
+                                     }
+                                     node.blur();
+                                }
 			};
 			
 			_widget.searchIdea = function searchIdea(query){

@@ -137,7 +137,7 @@ input::-webkit-file-upload-button{
 }
  
 ::-webkit-scrollbar-thumb:vertical {
-    background: rgba(7,120,155,0.5);
+    background: rgba(7,120,155,0.75);
     -webkit-border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:vertical:active {
@@ -3894,7 +3894,7 @@ textarea.solution {
     top: 0px;
     margin-left: 15px;
     z-index: 1000;
-    background: #9ac9cd;
+    background: #07789c;
     background-position: left center;
     background-repeat: no-repeat;
     background-size: 20px auto ;

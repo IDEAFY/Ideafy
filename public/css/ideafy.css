@@ -94,6 +94,7 @@ input::-webkit-file-upload-button{
     position: fixed;
     /*margin-top: -374px;
     margin-left: -512px;*/
+   _webkit-box-shadow: 0px 0px 1px 1px black;
 }
 
 #brainstorm{
@@ -133,15 +134,15 @@ input::-webkit-file-upload-button{
 }
 
 ::-webkit-scrollbar:hover {
-    background-color: rgba(6, 183, 252, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
 }
  
 ::-webkit-scrollbar-thumb:vertical {
-    background: rgba(7,120,155,0.75);
+    background: rgba(0,0,0,0.5);
     -webkit-border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:vertical:active {
-    background: rgba(7,120,155,1);
+    background: rgba(0,0,0,0.8);
     -webkit-border-radius: 100px;
 }
 

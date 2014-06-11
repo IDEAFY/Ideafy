@@ -395,7 +395,7 @@ input::-webkit-file-upload-button{
 
 /* utils */
 .blue-light {
-  background:#ebdd12;
+  background:#f27b3d;
 }
 
 .blue-dark {
@@ -551,9 +551,10 @@ input::-webkit-file-upload-button{
     /* background-image:-webkit-linear-gradient(top, #88A5CC 0%, #657B99 80%);
     background-image:-webkit-linear-gradient(top, #f2f2f2 0%, #d4d4d4 80%); 
     -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.3);*/
-    background-image: -webkit-linear-gradient(top, white 0%, rgba(6,183,252,0.3) 80%);
-    -webkit-box-shadow: inset 0 0 3px 1px rgba(7,120,155,13);
+    background-image: -webkit-linear-gradient(top, white 0%, rgba(242,123,61,0.3) 80%);
+    -webkit-box-shadow: inset 0 0 3px 1px rgba(242,123,61,1);
 }
+
 .item-header span, .item-body p, .detail-header .date{
   color:gray;
   font-size: 12px;
@@ -711,7 +712,7 @@ input::-webkit-file-upload-button{
 
 #dock {
     position: relative;
-    background-image: -webkit-linear-gradient(left, rgba(242,123,61, 0.9),rgba(242,123,61, 0.5));
+    /*background-image: -webkit-linear-gradient(left, rgba(242,123,61, 0.9),rgba(242,123,61, 0.5));*/
     -webkit-box-shadow: inset 0px 0px 1px 1px rgba(6,183,252,1);
     -webkit-transform: translate3d(0,0,0);
 }
@@ -725,8 +726,7 @@ input::-webkit-file-upload-button{
   display:block;
   /*-webkit-box-shadow: 0 1px 0 rgba(7,120,155,0.3);*/
   border-bottom: 1px solid #07789c;
-
-  /*width:93px;
+    /*width:93px;
   height:94px;*/
   background-size:93px 93px;
   background-repeat: no-repeat;
@@ -1680,7 +1680,6 @@ ul.notify-list{
 
 .mosaic .item-body{
     height: 108px;
-    overflow-y: auto;
     padding-right: 5px;   
 }
 

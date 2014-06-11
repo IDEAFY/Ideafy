@@ -36,7 +36,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		                })
 		        });
 		        
-		        _widget.template = '<div id="brainstorm"><div id="brainstorm-menu"></div><div class="brainstorm-header header blue-light"><div class="date" data-header="bind: setDate, date"></div><span class="headerTitle" data-header="bind: innerHTML, headertitle"></span><div class="clock" data-header="bind: setTime, date">hh:mm</div></div><div class="stack" data-brainstormstack="destination"></div></div>';
+		        _widget.template = '<div id="brainstorm"><div id="brainstorm-menu"></div><div class="brainstorm-header header blue-dark"><div class="date" data-header="bind: setDate, date"></div><span class="headerTitle" data-header="bind: innerHTML, headertitle"></span><div class="clock" data-header="bind: setTime, date">hh:mm</div></div><div class="stack" data-brainstormstack="destination"></div></div>';
 		                
                         _widget.place(Map.get("brainstorm"));
                         

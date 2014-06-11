@@ -123,10 +123,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                           break;
                               }
                               deckListUI.getDecks(currentDeckList, function(sync){
-                                   if (sync){
+                                   /*if (sync){
                                                   deckListUI.initSelected(deckControl.init,currentSelected);
                                                   deckView.reset(deckListUI.getModel().get(currentSelected));
-                                   }
+                                   }*/
                               });      
               });
               
@@ -153,10 +153,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         
               user.watchValue("taiaut_decks", function(newValue, action, oldValue){
                          ideafyDecks.reset(function(sync){
-                                 if (sync){
+                                 /*if (sync){
                                          ideafyDecks.initSelected(deckControl.init,0);
                                          deckView.reset(ideafyDecks.getModel().get(0));
-                                 }
+                                 }*/
                          });
                         // taiautDecks.getDecks($type);       
               });

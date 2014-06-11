@@ -572,9 +572,16 @@ input::-webkit-file-upload-button{
 }
 
 .item-header h2 {
-  display:inline;
-  font-size: 14px;
-  font-weight:normal;
+    display: inline;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.item-header.mosaic h2 {
+    display: inline;
+    font-size: 12px;
+    font-weight: bold;
+    color: #292929;
 }
 
 .date {

@@ -777,20 +777,21 @@ input::-webkit-file-upload-button{
 
 
 #notify{
-    position: absolute;
-    left: 0;
-    bottom: 0;
+  position: absolute;
+  left: 0;
+  top: 748px;
+  margin-top: -100px;
 }
 
 .deedee {
-  width:99px;
-  height:100px;
+  width:93px;
+  height:93px;
   background:url('../img/ideafy.logo.1.png') no-repeat center center;
   background-size:contain;
 }
 
 .deedee.orange{
-    background:url('../img/littleOrangeDeeDee.png') no-repeat center center;
+    background:url('../img/ideafy.logo.1.png') no-repeat center center;
     background-size:40%;
 }
 

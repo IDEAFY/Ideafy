@@ -277,6 +277,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         D = deltaY;
                         _line = {x : event.pageX - offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
+                        console.log(_line);
                         event.preventDefault();
                 };
 

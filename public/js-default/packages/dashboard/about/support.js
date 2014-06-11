@@ -72,33 +72,37 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         };
                         
                         support.setSupportMSG = function setSupportMSG(lang){
-                                if (supportCDB.get("lang") === lang || !supportCDB.get("translations")[lang]){
-                                        supportMSG.reset(JSON.parse(supportCDB.toJSON()));
-                                }
-                                else{
-                                        supportMSG.reset(supportCDB.get("translations")[lang]);
-                                }
-                                supportCDB.unsync();
+                                supportCDB.sync(Config.get("db"), "SUPPORTMSG").then(function(){
+                                        if (supportCDB.get("lang") === lang || !supportCDB.get("translations")[lang]){
+                                                supportMSG.reset(JSON.parse(supportCDB.toJSON()));        
+                                        }
+                                        else{
+                                                supportMSG.reset(supportCDB.get("translations")[lang]);        
+                                        }
+                                        supportCDB.unsync();
+                                });     
                         };
                         
                         support.setMaintenanceMSG = function setMaintenanceMSG(lang){
-                                if (maintenanceCDB.get("lang") === lang || !maintenanceCDB.get("translations")[lang]){
-                                        maintenanceMSG.reset(JSON.parse(maintenanceCDB.toJSON()));
-                                }
-                                else{
-                                        maintenanceMSG.reset(maintenanceCDB.get("translations")[lang]);
-                                }
-                                maintenanceCDB.unsync();
+                                maintenanceCDB.sync(Config.get("db"), "MAINTENANCE").then(function(){
+                                        if (maintenanceCDB.get("lang") === lang || !maintenanceCDB.get("translations")[lang]){
+                                                maintenanceMSG.reset(JSON.parse(maintenanceCDB.toJSON()));        
+                                        }
+                                        else{
+                                                maintenanceMSG.reset(maintenanceCDB.get("translations")[lang]);        
+                                        }
+                                        maintenanceCDB.unsync();
+                                });     
                         };
                         
                         // init --> get support  & maintenance messages from database
-                        supportCDB.sync(Config.get("db"), "SUPPORTMSG").then(function(){
-                                support.setSupportMSG(user.get("lang"));
-                        });
+                        support.setSupportMSG(user.get("lang"));
+                        support.setMaintenanceMSG(user.get("lang"));
                         
-                        maintenanceCDB.sync(Config.get("db"), "MAINTENANCE").then(function(){
+                        support.refresh = function refresh(){
+                                support.setSupportMSG(user.get("lang"));
                                 support.setMaintenanceMSG(user.get("lang"));
-                        });
+                        };
                         
                         // update support and maintenance messages in case of language change
                         user.watchValue("lang", function(){

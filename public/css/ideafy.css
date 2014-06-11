@@ -3726,7 +3726,7 @@ textarea.solution {
     min-width: 65px;
     font-size: 14px;
     background: #07789c;
-    background-image: url('../img/brainstorm/greybell.png');
+    background-image: url('../img/brainstorm/time-hourglass.png');
     background-repeat: no-repeat;
     background-position: 30px 10px;
     background-size: 14px 16px;    
@@ -5530,7 +5530,7 @@ li.color-item{
     height: 240px;
     z-index: 100;
     top: 650px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     padding-top: 15px;
     background: -webkit-gradient(linear,left bottom,left top,color-stop(0%,#ffffff),color-stop(100%,#f2f2f2));
     background: -webkit-linear-gradient(bottom,#ffffff 0%,#f2f2f2 100%);

@@ -129,7 +129,7 @@ input::-webkit-file-upload-button{
 /* Turn on custom 8px wide scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0.15);
     -webkit-border-radius: 100px;
 }
 
@@ -4264,7 +4264,7 @@ textarea.solution {
 
 .wb-item.postit{
     font-family: Pacifico;
-    overflow-y: scroll;
+    overflow-y: hidden;
     text-align: center;
 }
 
@@ -5328,10 +5328,6 @@ li.color-item{
 
 #quicktech .drawbutton{
     margin-left: 167px;
-}
-
-#quicktech .cards{
-    overflow-x: scroll;
 }
 
 #quicktech .next-button{
@@ -6599,7 +6595,7 @@ li.color-item{
 }
 
 #dashboard-profile .rightprofile{
-    width: 293px;
+    width: 303px;
     left: 710px;
     top: 60px;
 }
@@ -6669,6 +6665,7 @@ li.color-item{
 .userdetails .cd-contentarea p{
     border-top: 1px solid #657b99;
     font-size: 12px;
+    overflow: hidden;
 }
 
 .userdetails .cd-contentarea p.fb, .userdetails .cd-contentarea p.gp, .userdetails .cd-contentarea p.tw, .userdetails .cd-contentarea p.lin{
@@ -6940,6 +6937,7 @@ li.my2q{
     font-family: pacifico;
     color: #657B99;
     line-height: 70px;
+    width: 218px;
 }
 
 .userachievements{

@@ -272,6 +272,9 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 
                 _widget.start = function(event, node){
                         var offsetLeft = node.offsetLeft + _LEFT;
+                        Y = event.pageY;
+                        OT = node.offsetTop;
+                        D = deltaY;
                         _line = {x : event.pageX - offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
                         event.preventDefault();

@@ -138,11 +138,11 @@ input::-webkit-file-upload-button{
 }
  
 ::-webkit-scrollbar-thumb:vertical {
-    background: rgba(0,0,0,0.5);
+    background: #2c2b2b;
     -webkit-border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:vertical:active {
-    background: #2c2b2b;
+    background: rgba(0,0,0,0.6);
     -webkit-border-radius: 100px;
 }
 

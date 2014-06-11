@@ -302,7 +302,7 @@ input::-webkit-file-upload-button{
     font-weight: bold;
 }
 .login-button {
-    margin-bottom:20px;
+    margin-bottom:10px;
     font-size: 14px;
     line-height: 40px;
     color: #06b7fc;
@@ -325,8 +325,8 @@ input::-webkit-file-upload-button{
 }
 
 #login-form p.login-error{
-    height:50px;
-    line-height:50px;
+    height:169px;
+    margin-bottom: 10px;
 }
 
 #signup-form .login-error {

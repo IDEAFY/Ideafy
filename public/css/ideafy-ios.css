@@ -17,17 +17,21 @@ html, body, ul {
   padding:0;
 }
 
-body {
+html, body {
   font-family:Helvetica;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  overflow: auto;
-  background: #f6f6f6;
-  height: 1024px;
-  width: 768px;
+  width:1024px;
+  height:768px;
+  position:fixed;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+html {
   background-image: url('../img/ideafy59.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  z-index: -15;
+  background-position: center center;
 }
 
 #banner{
@@ -133,17 +137,16 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .squirrel{
-    width: 200px;
+    width: 350px;
     height: 200px;
-    float: right;
     background-image: url('../img/ideafy59-squirrel.png');
     background-size: contain;
-    left: 50%;
+    background-position: center center;
     background-repeat: no-repeat;
     position: absolute;
-    top: 50%;
-    margin-top: -100px;
-    margin-left: -100px;
+    top: 100px;
+    left: 300px;
+    z-index: -10;
 }
 
 #login-stack    {
@@ -159,7 +162,6 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 .login-fields{
     width:410px;
     border-radius: 5px;
-    background: white;
     -webkit-box-shadow: 0 0 3px 3px #06b7fc;
     margin-bottom:30px;
 }
@@ -173,12 +175,13 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .login-fields input {
-    background:none;
+    background:rgba(255,255,255, 0.8);
     width:375px;
     outline:0;
     margin:0;
     border:0;
     padding-left:30px;
+    padding-right:0px;
     font-size:16px;
     color:#07789b;
     opacity: 0.8;
@@ -189,7 +192,8 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .login-fields input:nth-child(n+2) {
-    border-top:1px solid #07789b;
+    border-top:1px solid #06b7fc;
+    border-radius:0;
 }
 
 .login-button, .signup-button {
@@ -198,7 +202,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-weight: bold;
 }
 .login-button {
-    margin-bottom:20px;
+    margin-bottom:10px;
     font-size: 14px;
     line-height: 40px;
     color: #06b7fc;
@@ -221,8 +225,8 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 #login-form p.login-error{
-    height:154px;
-    line-height:77px;
+    height:169px;
+    margin-bottom: 10px;
 }
 
 #signup-form .login-error {

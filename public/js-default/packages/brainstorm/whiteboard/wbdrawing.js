@@ -59,7 +59,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             return _promise;
                     },
                     _sid,
-                    _capture = false, deltaX = (document.body.clientWidth-1024)/2, deltaY = (document.body.clientHeight-748)/2,
+                    _capture = false, deltaX, deltaY,
                     _LEFT = 93;
                 
                 _widget.plugins.addAll({
@@ -272,9 +272,8 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 
                 _widget.start = function(event, node){
                         var offsetLeft = node.offsetLeft + _LEFT;
-                        Y = event.pageY;
-                        OT = node.offsetTop;
-                        D = deltaY;
+                        deltaX = (document.body.clientWidth-1024)/2;
+                        deltaY = (document.body.clientHeight-748)/2,
                         _line = {x : event.pageX - offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
                         console.log(_line);

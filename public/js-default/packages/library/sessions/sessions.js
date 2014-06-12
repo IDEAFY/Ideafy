@@ -140,7 +140,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 else{
                                                         if (_sessions.get(idx).status === "deleted") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
                                                         else{
-                                                                if (_sessions.get(idx).participants && _sessions.get(idx).participants.length>0){
+                                                                if (_sessions.get(idx).status !== "scheduled" && _sessions.get(idx).participants && _sessions.get(idx).participants.length>0){
                                                                         this.setAttribute("style", "display: none;");        
                                                                 }
                                                                 else this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
@@ -299,8 +299,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         // remove session attachments (if any) from the server 
                                         _transport.request("cleanUpSession", _sid, function(res){
                                                 if (res.err) {console.log(res.err);}
-                                                cdb.remove().then(function(){
-                                                        cdb.unsync();
+                                                
+                                                // finally set the session status to deleted
+                                                cdb.set("status", "deleted");
+                                                cdb.upload()
+                                                .then(function(){
+                                                        return cdb.remove();
+                                                })
+                                                .then(function(){
                                                         promise.fulfill();       
                                                 });      
                                         });       

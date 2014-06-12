@@ -134,9 +134,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 },
                                 showDelete : function(leader){
                                         var idx = this.getAttribute("data-sessions_id");
-                                        console.log(leader, _user.get("_id"));
                                         if (leader !== _user.get("_id")) this.setAttribute("style", "display: none;");
                                         else{
+                                                console.log (_sessions.get(idx));
                                                 if (_sessions.get(idx)._id === _user.get("sessionInProgress").id) this.setAttribute("style", "display: none;");
                                                 else{
                                                         if (_sessions.get(idx).status === "deleted") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");

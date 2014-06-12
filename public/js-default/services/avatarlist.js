@@ -6,7 +6,7 @@
  */
 
 define(["OObject", "Bind.plugin", "Store", "service/avatar"],
-        function(Widget, Model, Utils, Store, Avatar){
+        function(Widget, Model, Store, Avatar){
                 
                 function AvatarListConstructor($ids){
 

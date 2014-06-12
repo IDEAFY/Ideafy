@@ -68,7 +68,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 },
                                 setAuthornames : function setAuthornames(names){
                                         var dom = document.getElementById("ideas"),
-                                              id = node.getAttribute("data-listideas_id"),
+                                              id = this.getAttribute("data-listideas_id"),
                                               authors = _store.get(id).value.doc.authors;
                                               
                                         if (dom.classList.contains("mosaic") && authors.length > 1){

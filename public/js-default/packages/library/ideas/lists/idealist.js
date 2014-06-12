@@ -70,6 +70,8 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                         var dom = document.getElementById("ideas"),
                                               id = this.getAttribute("data-listideas_id"),
                                               authors = _store.get(id).value.doc.authors;
+                                        
+                                        console.log(_store.get(id));
                                               
                                         if (dom.classList.contains("mosaic") && authors.length > 1){
                                                 this.innerHTML = names.split(/,/)[0] + " and others";

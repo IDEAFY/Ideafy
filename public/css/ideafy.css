@@ -581,7 +581,7 @@ input::-webkit-file-upload-button{
     font-weight: normal;
 }
 
-.item-header.mosaic h2 {
+.mosaic .item-header h2 {
     display: inline;
     font-size: 12px;
     font-weight: bold;

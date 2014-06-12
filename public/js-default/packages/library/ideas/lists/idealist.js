@@ -77,7 +77,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                                               names = _store.get(_id).value.doc.authornames,
                                               authors = _store.get(_id).value.doc.authors;
                                         if (mosaic && authors.length > 1){
-                                                this.innerHTML = names.split(',')[0] + "and others";
+                                                this.innerHTML = names.split(',')[0] + " and others";
                                         }
                                         else this.innerHTML = names;
                                 } 
@@ -120,7 +120,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                 };
 
                 widget.setStart = function(event, node){
-                        var dom = document.getElementById("public");
+                        var dom = document.getElementById("ideas");
                         if (currentBar){
                                  currentBar.hide();
                                  currentBar = null;        

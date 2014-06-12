@@ -88,6 +88,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 },
                                 setAvatars: function(array){
                                         var ui, frag;
+                                        console.log(array);
                                         if (array){
                                                 ui = new AvatarList(array);
                                                 frag = document.createDocumentFragment();

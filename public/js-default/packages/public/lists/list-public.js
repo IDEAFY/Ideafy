@@ -147,8 +147,10 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                                  currentBar.hide();
                                  currentBar = null;        
                         }  // hide previous action bar
-                        if (dom.classList.contains("mosaic")) dom.classList.remove("mosaic");
-                        node.scrollIntoView(); 
+                        if (dom.classList.contains("mosaic")){
+                                dom.classList.remove("mosaic");
+                                node.scrollIntoView();
+                        } 
                 };
                 
                 widget.showActionBar = function(event, node){

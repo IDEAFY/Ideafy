@@ -597,5 +597,6 @@
 	"justreg": " vient de s'inscrire à ",
 	"unreg": " ne participera pas à ",
 	"cclbyorg" : " a été annulée",
-	"nowopen": "est maintenant ouverte"
+	"nowopen": "est maintenant ouverte",
+	"andothers": " et autres..."
 }

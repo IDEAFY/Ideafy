@@ -597,5 +597,6 @@
 	"justreg": " just registered to ",
 	"unreg": " will no longer take part in ",
 	"cclbyorg" : "was canceled",
-	"nowopen": "is now open"
+	"nowopen": "is now open",
+	"andothers": " and others..."
 }

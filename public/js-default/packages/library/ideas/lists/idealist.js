@@ -20,6 +20,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                                 }
                       },
                       user = Config.get("user"),
+                      labels = Config.get("labels"),
                       widget = this;
 
                 //setup
@@ -38,7 +39,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                 }
 
                 widget.plugins.addAll({
-                        "labels": new Model(Config.get("labels")),
+                        "labels": new Model(labels),
                         "listideas": new Model(_store, {
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
@@ -77,7 +78,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                                               names = _store.get(_id).value.doc.authornames,
                                               authors = _store.get(_id).value.doc.authors;
                                         if (mosaic && authors.length > 1){
-                                                this.innerHTML = names.split(',')[0] + " and others";
+                                                this.innerHTML = names.split(',')[0] + labels.get("andothers");
                                         }
                                         else this.innerHTML = names;
                                 } 

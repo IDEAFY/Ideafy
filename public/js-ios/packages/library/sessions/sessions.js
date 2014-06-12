@@ -369,7 +369,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 title:v.value.title,
                                                 date:v.value.date,
                                                 idea:v.value.idea,
-                                                leader: value.initiator.id,
+                                                leader: v.value.initiator.id,
                                                 participants:[],
                                                 usernames:[],
                                                 status:v.value.status,

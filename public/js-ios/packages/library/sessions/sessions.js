@@ -322,7 +322,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 return promise;
                              },
                             // confirmation window invoked with question and callback
-                            question = _labels.get("deletereplay"), confirmCallback = function(decision){
+                            question, confirmCallback = function(decision){
                                         if (decision){
                                                 spinner.spin(document.getElementById("sessionlistspinner"));
                                                 // remove session from database

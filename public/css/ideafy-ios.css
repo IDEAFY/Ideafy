@@ -2398,7 +2398,7 @@ textarea.solution {
 }
 
 .online{
-    -webkit-box-shadow: inset 0px 0px 5px #65f134;    
+    -webkit-box-shadow: inset 0px 0px 0px 2px limegreen;  
 }
 /*
 #public .twocentAvatar{
@@ -2816,7 +2816,7 @@ textarea.solution {
     max-height: 61px;
 }
 
-.avatarlist li{
+.avatarlist li > div{
     float: right;
     height: 40px;
     width: 40px;

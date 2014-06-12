@@ -2532,7 +2532,7 @@ textarea.solution {
 }
 
 .online{
-    -webkit-box-shadow: inset 0px 0px 5px #65f134;    
+    -webkit-box-shadow: inset 0px 0px 0px 2px limegreen; 
 }
 
 /*
@@ -2954,7 +2954,7 @@ textarea.solution {
     overflow-y: hidden;
 }
 
-.avatarlist li{
+.avatarlist li > div{
     float: right;
     height: 40px;
     width: 40px;

@@ -5,8 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "service/utils", "Store", "service/avatar"],
-        function(Widget, Model, Event, Config, Utils, Store, Avatar){
+define(["OObject", "Bind.plugin", "Store", "service/avatar"],
+        function(Widget, Model, Utils, Store, Avatar){
                 
                 function AvatarListConstructor($ids){
 
@@ -27,8 +27,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "service/uti
                                                         (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                                 }
                                         }
-                                }),
-                                "event" : new Event(this)
+                                })
                         });
                         
                         // set template

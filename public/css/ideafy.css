@@ -585,7 +585,7 @@ input::-webkit-file-upload-button{
     display: inline;
     font-size: 12px;
     font-weight: bold;
-    color: #292929;
+    color: #606060;
 }
 
 .date {
@@ -1700,7 +1700,7 @@ ul.notify-list{
 .mosaic .list-item h3{
     padding-top: 0px;
     letter-spacing: 0px;
-    text-align: left;
+    text-align: center;
     font-size: 14px;
     line-height: 14px;
 }
@@ -1712,7 +1712,8 @@ ul.notify-list{
 
 .mosaic .item-body p{
   margin-top: 10px;
-  height: 72px;
+  font-size: 11px;
+  height: 80px;
   overflow-y: hidden;
 }
 

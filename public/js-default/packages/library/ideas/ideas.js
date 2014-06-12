@@ -182,6 +182,19 @@ define(["OObject", "Amy/Control-plugin" ,
 				        _detail.reset(listDate.getModel(), 0);
 				}
 				// else domDetail.classList.add("invisible");
+				
+				// enable specific presentation treatment in mosaic view
+				if (_widget.dom.classList.contains("mosaic")){
+				        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(true);        
+                                        });
+				}
+				else{
+				        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(false);        
+                                        });        
+				}
+				
 			};
 			
 			_widget.plus = function(){

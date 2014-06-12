@@ -8,6 +8,7 @@
 define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function ListPollingConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
+                _mosaic = new Store(),
                 polling, // timer variable (to use clearInterval)
                 display = false,
                 currentBar = null,
@@ -28,7 +29,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         _options.query = $query;
                 }
                 
-                this.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:mousedown, setStart; listen:dblclick, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:setAuthornames,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
+                this.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:mousedown, setStart; listen:dblclick, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames' data-display='bind:setAuthornames, mosaic'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
 
                 this.plugins.addAll({
                         "labels": new Model(Config.get("labels")),
@@ -60,17 +61,18 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
                                         }*/
-                                },
-                                setAuthornames : function setAuthornames(names){
-                                        var dom = document.getElementById("public"),
-                                              id = this.getAttribute("data-listideas_id"),
-                                              authors = _store.get(id).value.doc.authors;
-                                              
-                                        if (dom.classList.contains("mosaic") && authors.length > 1){
-                                                this.innerHTML = names.split(/,/)[0] + " and others";
+                                }
+                        }),
+                        "display" : new Model(_mosaic, {
+                                setAuthornames : function(mosaic){
+                                        var _id = this.getAttribute("data-listideas_id"),
+                                              names = _store.get(_id).value.doc.authornames,
+                                              authors = _store.get(_id).value.doc.authors;
+                                        if (mosaic && authors.length > 1){
+                                                this.innerHTML = names.split(',')[0] + "and others";
                                         }
                                         else this.innerHTML = names;
-                                }
+                                } 
                         }),
                         "listevent" : new Event(this)
                         });

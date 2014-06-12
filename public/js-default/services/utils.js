@@ -380,7 +380,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       else if (avatars.get(id) === "in progress"){
 		      avatars.watchValue(id, function(val){
 		              if (val && val !== "in progress"){
-		                      avatars.unwatch(id);
 		                      promise.fulfill(val);
 		              }        
 		      });
@@ -388,6 +387,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       else {
 		      avatars.set(id, "in progress");
 		      transport.request("GetAvatar", {id: id}, function(result){
+		              console.log(avatars.getNbItems(), id, result);
 		              if (result.error){
 		                      promise.reject();
 		              }

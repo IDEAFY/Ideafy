@@ -341,8 +341,15 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         node.parentNode.setAttribute("style", "display: none;");
                         
                         // if sessionReplay is enabled display confirmation UI
-                        if ((_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length) || _sessions.get(_id).status === "scheduled" ){
+                        if ((_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length)){
                                 spinner.stop();
+                                question = _labels.get("deletereplay");
+                                Confirm.reset(question, confirmCallback, "musession-confirm");
+                                Confirm.show();       
+                        }
+                        else if (_sessions.get(_id).scheduled){
+                                spinner.stop();
+                                question = _labels.get("deletescheduled");
                                 Confirm.reset(question, confirmCallback, "musession-confirm");
                                 Confirm.show();       
                         }

@@ -335,7 +335,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         // if sessionReplay is enabled display confirmation UI
                         if (_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length ){
                                 spinner.stop();
-                                Confirm.reset(question, confirmCallback);
+                                Confirm.reset(question, confirmCallback, "musession-confirm");
                                 Confirm.show();        
                         }
                         else {

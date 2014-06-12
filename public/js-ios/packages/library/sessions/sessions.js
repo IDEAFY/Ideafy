@@ -243,7 +243,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
                       
                                 // Automatically hide bar after 2s
-                                setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                                setTimeout(function(){ab.setAttribute("style", "display: none;");}, 2000);
                         }
               };
               

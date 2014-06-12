@@ -225,10 +225,10 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                           _sid = _sessions.get(_id),
                           ab = node.querySelector(".actionbar");
                       
-                      if (ab.hasChildNode()){
+                      if (ab.hasChildNodes()){
                               ab.setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
                               // Automatically hide bar after 2s
-                              setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                              setTimeout(function(){ab.setAttribute("style", "display: none;");}, 2000);
                       }
               };
               

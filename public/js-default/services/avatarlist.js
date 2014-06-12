@@ -33,6 +33,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "service/uti
                                 else if (_avatars.get($ids[i])){
                                         _store.alter("push", {id:$ids[i], img:_avatars.get($ids[i])});
                                         _avatars.watchValue($ids[i], function(value){
+                                                console.log(value, _store.toJSON());
                                                 _store.loop(function(v,idx){
                                                         if (v.id === $ids[i]) _store.update(idx, {id:$ids[i], img:value});
                                                 });

@@ -40,7 +40,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         types[arr[i].username] = arr[i].type;      
                                 }
                                 usernames.sort().forEach(function(value){
-                                        _contactList.alter("push", {username: value, type: types[value]});
+                                        _contactList.alter("push", {username: value, type: types[value], selected: false});
                                 });
                                 
                                 // get current list

@@ -941,7 +941,7 @@ ul.notify-list{
     padding-left: 60px;
     height: 36px;
     line-height: 36px;
-    color: #808080;
+    color: rgba(6,183,242, 0.45);
     text-decoration: none;
     background-repeat: no-repeat;
     background-position: 10px;
@@ -949,7 +949,7 @@ ul.notify-list{
 }
 
 .menu-item.selected a{
-    color: white;
+    color: #06b7fc;
 }
 
 .menu-list .menu-item:nth-child(n+2) {
@@ -7003,7 +7003,7 @@ li.my2q{
 
 #leaderboard{
     padding-left: 20px;
-    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
     overflow-y: scroll;
 }
 

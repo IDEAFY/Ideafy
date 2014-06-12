@@ -170,7 +170,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 event.preventDefault();       
                         };
 
-			_widget.mosaic = function(){
+			_widget.mosaic = function mosaic(){
 				var domDetail = document.getElementById("public-detail");
                                 _widget.dom.classList.toggle("mosaic");
                                 if (domDetail.classList.contains("invisible")) {

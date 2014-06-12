@@ -118,6 +118,10 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         }       
                 };
                 
+                this.setMosaic = function(mosaic){
+                        (mosaic) ? _mosaic.set("mosaic", true) : _mosaic.set("mosaic", false);
+                };
+                
                 this.setStart = function(event, node){
                         var dom = document.getElementById("public");
                         if (currentBar){

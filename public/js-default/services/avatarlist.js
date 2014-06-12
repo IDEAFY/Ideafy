@@ -46,9 +46,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "service/uti
                         $ids.forEach(function(id){
                                 _avatars.watchValue(id, function(img){
                                         if (img){
-                                                _store.loop(function(v,i){
-                                                        if (v.id === id){
-                                                                _store.update(i, {id:id, img:img});
+                                                _store.loop(function(val,idx){
+                                                        if (val.id === id){
+                                                                _store.update(idx, {id:id, img:img});
                                                         }
                                                 });
                                         }        

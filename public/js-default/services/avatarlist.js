@@ -35,6 +35,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "service/uti
                                         _avatars.watchValue($ids[i], function(value){
                                                 console.log(value, _store.toJSON());
                                                 _store.loop(function(v,idx){
+                                                        console.log(v, idx);
                                                         if (v.id === $ids[i]) _store.update(idx, {id:$ids[i], img:value});
                                                 });
                                         });

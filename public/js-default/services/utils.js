@@ -387,7 +387,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       else {
 		      avatars.set(id, "in progress");
 		      transport.request("GetAvatar", {id: id}, function(result){
-		              console.log(avatars.getNbItems(), id, result);
 		              if (result.error){
 		                      promise.reject();
 		              }

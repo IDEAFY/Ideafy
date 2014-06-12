@@ -218,7 +218,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                             opt = node.childNodes[id],
                             name = opt.getAttribute("name");
                         
-                        contactList.reset(user.get("connections"));
+                        contactList.reset(user.get("connections").concat());
                         invited.reset([]);
                         session.set("mode", name);
                 };
@@ -297,7 +297,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 widget.selectAll = function(event, node){
                         node.classList.remove("pressed");
                         invited.reset([]); // to avoid duplicates
-                        contactList.reset(user.get("connections"));
+                        contactList.reset(user.get("connections").concat());
                         contactList.loop(function(v, i){
                                 contactList.update(i, "selected", true);
                                 if (v.type === "user") {invited.alter("push", v);}        

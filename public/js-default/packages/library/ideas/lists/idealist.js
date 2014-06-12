@@ -108,10 +108,13 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
 
                 widget.setStart = function(event, node){
+                        var dom = document.getElementById("ideas");
                         if (currentBar){
                                  currentBar.hide();
                                  currentBar = null;        
-                        } // hide previous action bar  
+                        }  // hide previous action bar
+                        if (dom.classList.contains("mosaic")) dom.classList.remove("mosaic");
+                        node.scrollIntoView();
                 };
                 
                 widget.setLang = function(lang){

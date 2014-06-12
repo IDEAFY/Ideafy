@@ -107,10 +107,13 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 };
                 
                 this.setStart = function(event, node){
+                        var dom = document.getElementById("public");
                         if (currentBar){
                                  currentBar.hide();
                                  currentBar = null;        
-                        }  // hide previous action bar 
+                        }  // hide previous action bar
+                        if (dom.classList.contains("mosaic")) dom.classList.remove("mosaic");
+                        node.scrollIntoView();
                 };
                 
                 this.showActionBar = function(event, node){

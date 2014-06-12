@@ -121,11 +121,13 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
                 
                 widget.setStart = function(event, node){
-                        touchStart = [event.pageX, event.pageY];
+                       var dom = document.getElementById("public");
                         if (currentBar){
-                                currentBar.hide();
-                                currentBar = null;
-                        } 
+                                 currentBar.hide();
+                                 currentBar = null;        
+                        }  // hide previous action bar
+                        if (dom.classList.contains("mosaic")) dom.classList.remove("mosaic");
+                        node.scrollIntoView(); 
                 };
                 
                 widget.showActionBar = function(event, node){

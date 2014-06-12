@@ -2951,6 +2951,7 @@ textarea.solution {
     text-align: right;
     width: 186px;
     max-height: 61px;
+    overflow-y: hidden;
 }
 
 .avatarlist li{

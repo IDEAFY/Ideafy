@@ -133,7 +133,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers, duration, visibility, replay, promise = new Promise();
+                                var now = new Date(), id, _timers, duration, visibility, replay, promise = new Promise();
                                 
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
@@ -171,8 +171,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 // add idea to session data
                                                 $data.set("idea", JSON.parse(_idea.toJSON()));
                                         
+                                                // create _id for idea doc
+                                                id = "I:"+now.getTime();
+                                                
                                                 // create separate idea document in couchdb
-                                                return _widget.createIdeaDoc();
+                                                return _widget.createIdeaDoc(id);
                                         })
                                         .then(function(){
                                                 // unsync session document, resync, add new data
@@ -507,13 +510,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         };
                         
                         // create separate idea doc in couchDB
-                        _widget.createIdeaDoc = function createIdeaDoc(){
+                        _widget.createIdeaDoc = function createIdeaDoc(_id){
                                 var cdb = new CouchDBDocument(Config.get("ideaTemplate")),
-                                    now = new Date(),
-                                    _id = "I:"+now.getTime(),
-                                    auth = [],
-                                    names = [],
-                                    promise = new Promise();
+                                      now = new Date(parseInt(_id.slice(2,_id))),  // match now with idea _id
+                                      names = [],
+                                      promise = new Promise();
                                     
                                 auth.push($session.get("initiator").id);
                                 names.push($session.get("initiator").username);

@@ -222,20 +222,14 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               _widget.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
                           _height = node.offsetHeight,
-                          _sid = _sessions.get(_id);
+                          _sid = _sessions.get(_id),
+                          ab = node.querySelector(".actionbar");
                       
-                      node.querySelector(".actionbar").setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
-                      
-                      /*
-                      // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
-                        if (_sid.participants.length>1 || _sid.initiator._id != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
-                                node.querySelector(".deletesession").setAttribute("style", "display: none;");        
-                        }
-                        else node.querySelector(".deletesession").setAttribute("style", "display: inline-block; background-size: 40px 40px;");
-                        */
-                       
-                        // Automatically hide bar after 2s
-                        setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                      if (ab.hasChildNode()){
+                              ab.setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
+                              // Automatically hide bar after 2s
+                              setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                      }
               };
               
               _widget.hideActionBar = function(event, node){

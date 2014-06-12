@@ -228,12 +228,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               _widget.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
                           _height = node.offsetHeight,
-                          _sid = _sessions.get(_id);
+                          _sid = _sessions.get(_id),
+                          ab = node.querySelector(".actionbar");
                       
                       touchPoint = [event.pageX, event.pageY];
                       
-                      if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                              node.querySelector(".actionbar").setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
+                      if (ab.hasChildNodes() && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                              ab.setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
                       
                                 // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
                                 if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){

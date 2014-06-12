@@ -199,7 +199,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                         node.classList.remove("pressed");
                                         (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");
                                         Confirm.hide();
-                                });
+                                }, "musession-confirm");
                                 Confirm.show();       
                         };
                         

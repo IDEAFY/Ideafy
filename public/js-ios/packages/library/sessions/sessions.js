@@ -142,7 +142,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 else{
                                                         if (_sessions.get(idx).status === "deleted") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
                                                         else{
-                                                                if ((_sessions.get(idx).status !== "scheduled") && _sessions.get(idx).participants.length>1){
+                                                                if ((_sessions.get(idx).status !== "scheduled") && (_sessions.get(idx).participants.length>1)){
                                                                         this.setAttribute("style", "display: none;");        
                                                                 }
                                                                 else this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");

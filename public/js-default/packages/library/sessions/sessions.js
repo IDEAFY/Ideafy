@@ -136,12 +136,11 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         var idx = this.getAttribute("data-sessions_id");
                                         if (leader !== _user.get("_id")) this.setAttribute("style", "display: none;");
                                         else{
-                                                console.log (_sessions.get(idx));
                                                 if (_sessions.get(idx).id === _user.get("sessionInProgress").id) this.setAttribute("style", "display: none;");
                                                 else{
                                                         if (_sessions.get(idx).status === "deleted") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
                                                         else{
-                                                                if (_sessions.get(idx).status !== "scheduled" && _sessions.get(idx).participants.length>1){
+                                                                if ((_sessions.get(idx).status !== "scheduled") && (_sessions.get(idx).participants.length>1)){
                                                                         this.setAttribute("style", "display: none;");        
                                                                 }
                                                                 else this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");

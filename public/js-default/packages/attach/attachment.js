@@ -532,5 +532,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                                
                                 return promise;
                         };
+                        
+                        return ui;
                 };
         });

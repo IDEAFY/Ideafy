@@ -11,7 +11,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 function AttachmentConstructor($type){
                        
                         // declaration
-                        var ui = this,
+                        var ui = new Widget(),
                              _attachmentTwocentListUI = new TwocentList("attach"),
                              _twocentWriteUI = new WriteTwocent("attach"),
                              cdb = new CouchDBDocument(),
@@ -535,8 +535,5 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
 
                 };
                 
-                return function AttachmentFactory($type){
-                        AttachmentConstructor.prototype = new Widget();
-                        return new AttachmentConstructor($type);
-                };
+                return ui;
         });

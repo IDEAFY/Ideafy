@@ -8714,7 +8714,7 @@ textarea.a-desc::-webkit-input-placeholder{
     -webkit-box-shadow: inset 0px 0px 15px #657b99;
 }
 
-#attachment-popup-popup.appear{
+#attachment-popup.appear{
     top: 50%;
     margin-top: -330px;
 }

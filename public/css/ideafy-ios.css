@@ -615,7 +615,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .dock-item[href="#public"]{
-  background-image:url('../img/disablePublicWall.png');
+  background-image:url('../img/public.icon.1.png');
 }
 
 .dock-item[href="#library"]{
@@ -635,7 +635,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .dock-item[href="#public"].selected{
-  background-image:url('../img/activePublicWall.png');
+  background-image:url('../img/public.icon.2.png');
 }
 
 .dock-item[href="#library"].selected{
@@ -670,7 +670,7 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
 }
 
 .deedee.orange{
-    background:url('../img/littleOrangeDeeDee.png') no-repeat center center;
+    background:url('../img/ideafy.logo.1.png') no-repeat center center;
     background-size:40%;
 }
 

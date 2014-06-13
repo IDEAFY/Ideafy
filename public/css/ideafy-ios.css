@@ -8628,7 +8628,7 @@ textarea.a-desc::-webkit-input-placeholder{
     padding-top: 10px;
     font-size: 14px;
     overflow: hidden;
-    line-height: 14px;
+    line-height: 16px;
     max-height: 28px;
 }
 

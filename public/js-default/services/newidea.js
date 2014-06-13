@@ -241,7 +241,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         _widget.closePopup = function closePopup(){
                                 // hide window
-                                document.getElementById("newidea-popup").classList.remove("appear");
+                                _widget.dom.classList.remove("appear");
                                 document.getElementById("cache").classList.remove("appear");
                                 
                                 // reset attachment UI and delete file from server if applicable

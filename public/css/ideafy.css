@@ -8698,23 +8698,28 @@ textarea.a-desc::-webkit-input-placeholder{
     background-image: url('../img/public/show.png');
 }
 
-.attachment-screen{
+#attachment-popup{
     width: 660px;
     height: 660px;
     background: white;
     margin: 40px auto;
     opacity: 1;
     z-index: 2000;
-    position: fixed;
-    top: 50%;
+    position: absolute;
+    top: 0%;
     left: 50%;
-    margin-top: -330px;
+    margin-top: -680px;
     margin-left: -330px;
     border-radius: 5px;
     -webkit-box-shadow: inset 0px 0px 15px #657b99;
 }
 
-.attachment-screen .close-popup{
+#attachment-popup-popup.appear{
+    top: 50%;
+    margin-top: -330px;
+}
+
+#attachment-popup .close-popup{
     top: -20px;
     right: 0px;
     width: 40px;
@@ -8724,16 +8729,16 @@ textarea.a-desc::-webkit-input-placeholder{
     background-image: url('../img/brainstorm/deleteBlue28.png');
 }
 
-.attachment-screen .twocentList{
+#attachment-popup .twocentList{
     margin-left: 15px;
     margin-right: 15px;
 }
 
-.attachment-screen .twocentText{
+#attachment-popup .twocentText{
     height: 100px;
 }
 
-.attachment-screen .twocentMessage{
+#attachment-popup .twocentMessage{
     padding-bottom: 5px;
     margin-left: 10px;
     margin-top: 5px;
@@ -8742,7 +8747,7 @@ textarea.a-desc::-webkit-input-placeholder{
     font-size: 12px;
 }
 
-.attachment-screen .writeTwocent .writeFooter{
+#attachment-popup .writeTwocent .writeFooter{
     padding-bottom: 5px;
     margin-top: 5px;
 }
@@ -8753,26 +8758,26 @@ textarea.a-desc::-webkit-input-placeholder{
     border-radius: 15px;
 }
 
-.attachment-screen .twocentDate{
+#attachment-popup .twocentDate{
     margin-left: 40px;
 }
 
-.attachment-screen .writeTwocent .twocentCancel, .attachment-screen .writeTwocent .twocentPublish{
+#attachment-popup .writeTwocent .twocentCancel, #attachment-popup .writeTwocent .twocentPublish{
     height: 20px;
     width: 70px;
     font-size: 11px;
     line-height: 20px;
 }
 
-.attachment-screen .twocentAuthor, .attachment-screen .twocent .commentLabel {
+#attachment-popup .twocentAuthor, #attachment-popup .twocent .commentLabel {
     font-size: 13px;
 }
 
-.attachment-screen .twocent .twocentDate{
+#attachment-popup .twocent .twocentDate{
     font-size: 11px;
 }
 
-.attachment-screen .attach-header{
+#attachment-popup .attach-header{
     width: 100%;
     height: 36px;
     background: #657b99;
@@ -8782,23 +8787,23 @@ textarea.a-desc::-webkit-input-placeholder{
     text-align: center;
 }
 
-.attachment-screen .attach-details{
+#attachment-popup .attach-details{
     overflow-y: auto;
     height: 604px;
 }
 
-.attachment-screen .attach-body{
+#attachment-popup .attach-body{
     margin: 0px 10px;
     height: 60px;
     -webkit-box-shadow: 0px 1px 0px 0px #e5e5e5;
     padding: 10px 0px;
 }
 
-.attachment-screen.edit-a .attach-body{
+#attachment-popup.edit-a .attach-body{
     padding-bottom: 20px;
 }
 
-.attachment-screen .a-type, .attachment-screen .a-type-edit{
+#attachment-popup .a-type, #attachment-popup .a-type-edit{
     width: 40px;
     height: 40px;
     border-radius: 20px;
@@ -8807,38 +8812,38 @@ textarea.a-desc::-webkit-input-placeholder{
     margin: 10px;
 }
 
-.attachment-screen .a-type{
+#attachment-popup .a-type{
     display: block;
     background-image: url('../img/connect/graygroup.png');
 }
 
-.attachment-screen .a-type-edit{
+#attachment-popup .a-type-edit{
     display: none;
     background-image: url('../img/brainstorm/importDisable100.png');  
 }
 
-.attachment-screen.edit-a .a-type{
+#attachment-popup.edit-a .a-type{
     display: none;
 }
 
-.attachment-screen.edit-a .a-type-edit{
+#attachment-popup.edit-a .a-type-edit{
     display: block;  
 }
 
-.attachment-screen .a-type-edit input{
+#attachment-popup .a-type-edit input{
     -webkit-appearance : none;
     width: 40px;
     height: 40px;
     opacity: 0;
 }
 
-.attachment-screen .a-left{
+#attachment-popup .a-left{
     float: left;
     width: 270px;
     padding-right: 10px;
 }
 
-.attachment-screen .a-name{
+#attachment-popup .a-name{
     padding-top: 10px;
     font-size: 14px;
     overflow: hidden;
@@ -8846,7 +8851,7 @@ textarea.a-desc::-webkit-input-placeholder{
     max-height: 28px;
 }
 
-.attachment-screen.edit-a .a-name{
+#attachment-popup.edit-a .a-name{
     -webkit-box-sizing: border-box;
     width: 90%;
     padding: 0 0 0 10px;
@@ -8860,7 +8865,7 @@ textarea.a-desc::-webkit-input-placeholder{
     font-size: 12px;
 }
 
-.a-contrib .a-span, .attachment-screen .a-date, .attachment-screen .a-vote legend{
+.a-contrib .a-span, #attachment-popup .a-date, #attachment-popup .a-vote legend{
     font-style: italic;
     font-size: 11px;
     color: #808080;
@@ -8871,27 +8876,27 @@ textarea.a-desc::-webkit-input-placeholder{
     font-size: 12px;
 }
 
-.attachment-screen .a-cat{
+#attachment-popup .a-cat{
     width: 140px;
     height: 60px;
     float: left;
 }
 
-.attachment-screen .a-cat span{
+#attachment-popup .a-cat span{
     display: block;
     line-height: 60px;
     font-size: 14px;
 }
 
-.attachment-screen.edit-a .a-cat{
+#attachment-popup.edit-a .a-cat{
     margin-right: 10px;
 }
 
-.attachment-screen.edit-a .a-cat span{
+#attachment-popup.edit-a .a-cat span{
     display: none;
 }
 
-.attachment-screen.edit-a .a-cat select{
+#attachment-popup.edit-a .a-cat select{
     display: block;
     -webkit-appearance: none;
     width: 140px;
@@ -8908,33 +8913,33 @@ textarea.a-desc::-webkit-input-placeholder{
     font-size: 12px;
 }
 
-.attachment-screen.edit-a .a-cat input{
+#attachment-popup.edit-a .a-cat input{
     display: block;
     height: 20px;
     line-height: 20px;
     margin-top: 5px;
 }
 
-.attachment-screen .a-rating{
+#attachment-popup .a-rating{
     width: 140px;
     float: left;
     height: 60px;
     overflow-x: visible;
 }
 
-.attachment-screen .a-vote{
+#attachment-popup .a-vote{
     float: right;
     margin-right: 10px;
     margin-top: 5px;
 }
 
-#ideas-detail .attachment-screen .a-rating .item-acorn, #public-detail .attachment-screen .a-rating .item-acorn{
+#attachment-popup .a-rating .item-acorn, #attachment-popup .a-rating .item-acorn{
     height: 60px;
     background-size: 15px 18px;
     background-position: left center;
 }
 
-.attachment-screen .a-rating span{
+#attachment-popup .a-rating span{
     height: 60px;
     line-height: 60px;
     margin-left: 5px;
@@ -8944,7 +8949,7 @@ textarea.a-desc::-webkit-input-placeholder{
     float: left;
 }
 
-.attachment-screen .a-rating span.votes{
+#attachment-popup .a-rating span.votes{
     width: 75px;
     height: 60px;
     line-height: 60px;
@@ -8952,13 +8957,13 @@ textarea.a-desc::-webkit-input-placeholder{
     font-size: 10px;
 }
 
-.attachment-screen .attach-preview{
+#attachment-popup .attach-preview{
     width: 100%;
     height: 360px;
     -webkit-box-shadow: 0px 0px 3px #cccccc;
 }
 
-.attachment-screen .actionbtn{
+#attachment-popup .actionbtn{
     float: left;
     height: 40px;
     margin-top: -15px;
@@ -8966,11 +8971,11 @@ textarea.a-desc::-webkit-input-placeholder{
     text-align: center;
 }
 
-.attachment-screen .actionbtn li{
+#attachment-popup .actionbtn li{
     display: inline-block;
 }
 
-.attachment-screen .attach-download, .attachment-screen .a-2cent, .attachment-screen .a-edit, .attachment-screen .a-delete{
+#attachment-popup .attach-download, #attachment-popup .a-2cent, #attachment-popup .a-edit, #attachment-popup .a-delete{
     width: 30px;
     height: 30px;
     float: left;
@@ -8985,30 +8990,30 @@ textarea.a-desc::-webkit-input-placeholder{
     display: block;
 }
 
-.attachment-screen .attach-download{
+#attachment-popup .attach-download{
     background-image: url('../img/r2/download.png');
 }
 
-.attachment-screen.edit-a .attach-download, .attachment-screen.edit-a .a-2cent, .attachment-screen.edit-a .a-edit, .attachment-screen.edit-a .a-delete{
+#attachment-popup.edit-a .attach-download, #attachment-popup.edit-a .a-2cent, #attachment-popup.edit-a .a-edit, #attachment-popup.edit-a .a-delete{
     display: none;   
 }
 
-.attachment-screen .a-2cent{
+#attachment-popup .a-2cent{
     background-image: url('../img/connect/twocent.png');
     background-size: cover;
 }
 
-.attachment-screen .a-edit{
+#attachment-popup .a-edit{
     background-image: url('../img/wall/lastModified14-01.png');
     background-position-y: 3px;
 }
 
-.attachment-screen .a-delete, .idea-edit .a-delete{
+#attachment-popup .a-delete, .idea-edit .a-delete{
     background-image: url('../img/library/25delete.png');
     background-size: cover;
 }
 
-.attachment-screen .attach-download.a-pressed, .attachment-screen .a-2cent.a-pressed, .attachment-screen .a-edit.a-pressed, .attachment-screen .a-delete.a-pressed, .attachment-screen .a-type.a-pressed, .attachment-screen .cancelmail.a-pressed, .attachment-screen .sendmail.a-pressed{
+#attachment-popup .attach-download.a-pressed, #attachment-popup .a-2cent.a-pressed, #attachment-popup .a-edit.a-pressed, #attachment-popup .a-delete.a-pressed, #attachment-popup .a-type.a-pressed, #attachment-popup .cancelmail.a-pressed, #attachment-popup .sendmail.a-pressed{
     background-color: #666666;
     -webkit-box-shadow: inset 0px 0px 5px 1px (0,0,0,0.6);
 }
@@ -9037,27 +9042,27 @@ textarea.a-desc::-webkit-input-placeholder{
     margin-bottom: 10px;
 }
 
-.attachment-screen .a-publish .sendmail{
+#attachment-popup .a-publish .sendmail{
     float: none;
     display: none;    
 }
 
-.attachment-screen .a-cancel .cancelmail{
+#attachment-popup .a-cancel .cancelmail{
     float: none;
     display: none;
 }
 
-.attachment-screen.edit-a .a-publish .sendmail{
+#attachment-popup.edit-a .a-publish .sendmail{
     float: none;
     display: block;    
 }
 
-.attachment-screen.edit-a .a-cancel .cancelmail{
+#attachment-popup.edit-a .a-cancel .cancelmail{
     float: none;
     display: block;
 }
 
-.attachment-screen.edit-a .a-preview{
+#attachment-popup.edit-a .a-preview{
     float: right;
     width: 130px;
     margin-right: 15px;
@@ -9065,18 +9070,18 @@ textarea.a-desc::-webkit-input-placeholder{
     text-align: center;
 }
 
-.attachment-screen.edit-a .a-content{
+#attachment-popup.edit-a .a-content{
     font-size: 11px;
     line-height: 25px;
 }
 
-.attachment-screen.edit-a  .uploadbar{
+#attachment-popup.edit-a  .uploadbar{
     -webkit-appearance : none;
     height: 20px;
     width: 90%;
 }
 
-.attachment-screen.edit-a .uploadval{
+#attachment-popup.edit-a .uploadval{
     margin-top: -20px;
     width: 100%;
     line-height: 20px;
@@ -9084,14 +9089,14 @@ textarea.a-desc::-webkit-input-placeholder{
     color: black;   
 }
 
-.attachment-screen.edit-a  .uploadbar::-webkit-progress-bar{
+#attachment-popup.edit-a  .uploadbar::-webkit-progress-bar{
     background-color: white;
     padding: 1px;
     border: 1px solid #657b99;
     border-radius: 3px;
 }
 
-.attachment-screen.edit-a  .uploadbar::-webkit-progress-value{
+#attachment-popup.edit-a  .uploadbar::-webkit-progress-value{
     background-color: #657b99;
     border-radius: 3px;
 }

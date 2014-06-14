@@ -294,7 +294,7 @@ function CouchDBBase(Store, Tools, Promise) {
  * The MIT License (MIT)
  * Copyright (c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  */
-define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMachine", "Follow"],
+define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMachine", "lib/follow_browser"],
 
 /**
  * @class

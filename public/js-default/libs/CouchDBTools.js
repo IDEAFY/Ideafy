@@ -294,15 +294,16 @@ function CouchDBBase(Store, Tools, Promise) {
  * The MIT License (MIT)
  * Copyright (c) 2012-2013 Olivier Scherrer <pode.fr@gmail.com>
  */
-define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMachine"],
+define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMachine", "Follow"],
 
 /**
  * @class
  * CouchDBDocument synchronizes a Store with a CouchDB document
  */
- function CouchDBDocument(Store, CouchDBBase, Tools, Promise, StateMachine) {
+ function CouchDBDocument(Store, CouchDBBase, Tools, Promise, StateMachine, Follow) {
 
 	function CouchDBDocumentConstructor() {
+	        console.log(Follow.Feed);
 
 		/**
 		 * Set the synchronization data if valid data is supplied

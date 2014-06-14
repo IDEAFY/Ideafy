@@ -8,7 +8,7 @@
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise", "lib/spin.min"],
         function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm, Promise, Spinner){
                 
-                function AttachmentConstructor($type){
+                return new function AttachmentConstructor($type){
                        
                         // declaration
                         var ui = new Widget(),
@@ -532,8 +532,8 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                                                
                                 return promise;
                         };
-
-                };
                 
                 return ui;
+
+                };
         });

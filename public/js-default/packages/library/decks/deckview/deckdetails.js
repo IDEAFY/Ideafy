@@ -334,6 +334,9 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.reset = function reset(deck){
                                 var slider = deckDetails.dom.querySelector(".deckslider");
                                 
+                                // hide slider
+                                slider.classList.add("invisible");
+                                
                                 deckDetails.dom.querySelector(".cancelmail").classList.add("invisible");
                                 deckDetails.dom.querySelector(".sendmail").classList.add("invisible");
                                 _currentDataURL = null;

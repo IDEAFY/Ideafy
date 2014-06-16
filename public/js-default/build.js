@@ -19,7 +19,7 @@ require.config({
                 twocents : "twocents",
                 attachments : "attach"
         },
-        deps: ["lib/socket.io.min", "lib/follow_browser", "lib/Emily.min",  "lib/Olives.min", "lib/CouchDBTools", "lib/amy2", "lib/spin.min"]
+        deps: ["lib/socket.io.min", "lib/Emily.min",  "lib/Olives.min", "lib/CouchDBTools", "lib/amy2", "lib/spin.min"]
         
 });
 

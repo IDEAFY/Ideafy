@@ -74,6 +74,12 @@ function CouchDBBase(Store, Tools, Promise) {
 		 */
 		_handlerName = "CouchDB",
 
+	    /**
+	     * The default change handler name
+	     * @private
+	     */
+	    _changeHandlerName = "CouchDBChange",
+
 		/**
 		 * The transport to use to issue the requests
 		 * @private
@@ -156,6 +162,30 @@ function CouchDBBase(Store, Tools, Promise) {
 				return false;
 			}
 		};
+
+	    /**
+	     * Get the current CouchDB handler name
+	     * @returns {String} the current handler name
+	     */
+	    this.getHandlerName = function getHandlerName() {
+	        return _handlerName;
+	    };
+
+	    /**
+	     * Set the current CouchDB handler name
+	     * @param {String} handlerName the name of the handler
+	     * The name must be a string that matches with the handler
+	     * as it's been added in Emily/Olives handlers
+	     * @returns {Boolean} true if it's a string
+	     */
+	    this.setHandlerName = function setHandlerName(handlerName) {
+	        if (typeof handlerName == "string") {
+	            _handlerName = handlerName;
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    };
 
 		/**
 		 * Get the current CouchDB handler name
@@ -381,9 +411,9 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 					}
 
 					var json;
-                                        
+
                                         try{
-                                                json = JSON.parse(changes);        
+                                                json = JSON.parse(changes);
                                         }
                                         catch (e){
                                                 json = null;
@@ -680,17 +710,17 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 					}
 
 					var json, action;
-                                        
+
                                         try{
-                                                json = JSON.parse(changes);        
+                                                json = JSON.parse(changes);
                                         }
                                         catch (e){
                                                 json = null;
                                                 console.error(e, "ERROR IN VIEW DOC LISTEN data : ", changes);
                                         }
-                                        
+
                                         if (!json) return false;
-                                        
+
                                         // reducedView is known on the first get view
 					if (_syncInfo.reducedView) {
 						action = "updateReduced";
@@ -980,9 +1010,9 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 					}
 
 					var json, action;
-					
+
 					try{
-					        json = JSON.parse(changes);        
+					        json = JSON.parse(changes);
 					}
 					catch (e){
 					        json = null;

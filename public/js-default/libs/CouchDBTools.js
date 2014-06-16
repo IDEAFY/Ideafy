@@ -385,56 +385,42 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 		 };
 
 		/**
-		 * Subscribe to changes when synchronized with a document
-		 * @private
-		 */
-		 this.onListen = function onListen() {
+	     * Subscribe to changes when synchronized with a document
+	     * @private
+	     */
+	    this.onListen = function onListen() {
 
-			var _syncInfo = this.getSyncInfo();
+	        var _syncInfo = this.getSyncInfo();
 
-			this.stopListening = this.getTransport().listen(
-				this.getHandlerName(),
-				{
-					path: "/" + _syncInfo.database + "/_changes",
-					query: {
-						feed: "continuous",
-						heartbeat: 20000,
-						descending: true
-					}
-				},
-				function (changes) {
-					var json;
-					// Should I test for this very special case (heartbeat?)
-					// Or do I have to try catch for any invalid json?
-					if (changes == "\n") {
-						return false;
-					}
+	        this.stopListening = this.getTransport().listen(
+	            this.getChangeHandlerName(),
+	            {
+	                path: "/" + _syncInfo.database,
+	                query: {
+	                    feed: "continuous",
+	                    heartbeat: 20000,
+	                    descending: true
+	                }
+	            },
+	            function (err, changes) {
+	                if (err) {
+	                    throw new Error(err);
+	                }
 
-					var json;
+	                // The document is the modified document is the current one
+	                if (changes.id == _syncInfo.document &&
+	                    // And if it has a new revision
+	                    changes.changes.pop().rev != this.get("_rev")) {
 
-                                        try{
-                                                json = JSON.parse(changes);
-                                        }
-                                        catch (e){
-                                                json = null;
-                                                console.error(e, "ERROR IN COUCHDBDOC LISTEN data : ", changes);
-                                        }
-                                        if (!json) return false;
-
-					// The document is the modified document is the current one
-					if (json.id == _syncInfo.document &&
-						// And if it has a new revision
-						json.changes.pop().rev != this.get("_rev")) {
-
-						if (json.deleted) {
-							this.getStateMachine().event("remove");
-						} else {
-							this.getStateMachine().event("change");
-						}
-					}
-				}, this
-				);
-		 };
+	                    if (changes.deleted) {
+	                        this.getStateMachine().event("remove");
+	                    } else {
+	                        this.getStateMachine().event("change");
+	                    }
+	                }
+	            }, this
+	            );
+	    };
 
 		/**
 		 * Update the document when synchronized with a document.

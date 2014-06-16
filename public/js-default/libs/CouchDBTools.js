@@ -693,8 +693,7 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 	                var action;
                         if (changes){
                                 changes = JSON.parse(changes);
-                                console.log(changes);
-	                       // reducedView is known on the first get view
+                                // reducedView is known on the first get view
 	                       if (_syncInfo.reducedView) {
 	                           action = "updateReduced";
 	                       } else {
@@ -980,8 +979,7 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 	                var action;
 	                if (changes){
 	                        changes = JSON.parse(changes);
-	                        console.log(changes);
-	                       if (changes.changes[0].rev.search("1-") === 0) {
+	                        if (changes.changes[0].rev.search("1-") === 0) {
 	                               action = "add";
 	                       } else if (changes.deleted) {
 	                               action = "remove";

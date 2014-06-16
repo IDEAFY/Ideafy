@@ -399,7 +399,8 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 	                query: {
 	                    feed: "continuous",
 	                    heartbeat: 20000,
-	                    descending: true
+	                    descending: true,
+						since: "now"
 	                }
 	            },
 	            function (err, changes) {
@@ -967,6 +968,7 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 	        Tools.mixin({
 	            feed: "continuous",
 	            heartbeat: 20000,
+				since: "now",
 	            descending: true,
 	            include_docs: true
 	        }, _syncInfo.query);

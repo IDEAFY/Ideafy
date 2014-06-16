@@ -198,7 +198,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
-                                carouselSpinner.stop();
+                               // carouselSpinner.stop();
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -352,7 +352,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 //reset card range
                                 range.set("max", 0);
                                 // launch carousel spinner
-                                carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
+                                // carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
                                 // get all cards.
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){

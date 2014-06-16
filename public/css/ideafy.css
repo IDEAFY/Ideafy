@@ -3318,8 +3318,8 @@ textarea.solution {
     border-radius: 5px;
     /* z-index: 10; */
     margin-top: 270px;
-    position: absolute;
-    margin-left: -420px;
+    position: fixed;
+    margin-left: -240px;
 }
 
 #deckview .deckcarousel input::-webkit-slider-thumb{

@@ -5464,7 +5464,8 @@ li.color-item{
 }
 
 .msg .actionbar, .contact .actionbar{
-    margin-left: -10px;
+    margin-left: -20px;
+    padding-top: 10px;
     position: relative;
     border: 1px solid rgba(0,0,0,0.8);
 }

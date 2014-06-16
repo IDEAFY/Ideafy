@@ -404,12 +404,13 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 	                }
 	            },
 	            function (changes) {
+	                    console.log(changes);
 	                // The document is the modified document is the current one
-	                if (changes.id == _syncInfo.document &&
+	                if (changes && changes.id == _syncInfo.document &&
 	                    // And if it has a new revision
 	                    changes.changes.pop().rev != this.get("_rev")) {
 
-	                    if (changes.deleted) {
+	                    if (changes && changes.deleted) {
 	                        this.getStateMachine().event("remove");
 	                    } else {
 	                        this.getStateMachine().event("change");
@@ -688,23 +689,25 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 	            },
 	            function (changes) {
 	                var action;
+                        
+                        if (changes){
+	                       // reducedView is known on the first get view
+	                       if (_syncInfo.reducedView) {
+	                           action = "updateReduced";
+	                       } else {
+	                               if (changes.deleted) {
+	                                       action = "remove";
+	                               } else if (changes.changes && changes.changes[0].rev.search("1-") === 0) {
+	                                       action = "add";
+	                               } else {
+	                                       action = "change";
+	                               }
+	                       }
 
-	                // reducedView is known on the first get view
-	                if (_syncInfo.reducedView) {
-	                    action = "updateReduced";
-	                } else {
-	                    if (changes.deleted) {
-	                        action = "remove";
-	                    } else if (changes.changes && changes.changes[0].rev.search("1-") === 0) {
-	                        action = "add";
-	                    } else {
-	                        action = "change";
-	                    }
-	                }
-
-	            //    console.log("hey ", changes, action)
-	                this.getStateMachine().event(action, changes.id);
-	            }, this);
+	                       //    console.log("hey ", changes, action)
+	                       this.getStateMachine().event(action, changes.id);
+	               }
+	       }, this);
 	    };
 
 		/**
@@ -973,18 +976,18 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 	            },
 	            function (changes) {
 	                var action;
+                        if (changes){
+	                       if (changes.changes[0].rev.search("1-") === 0) {
+	                               action = "add";
+	                       } else if (changes.deleted) {
+	                               action = "remove";
+	                       } else {
+	                               action = "change";
+	                       }
 
-	                if (changes.changes[0].rev.search("1-") === 0) {
-	                    action = "add";
-	                } else if (changes.deleted) {
-	                    action = "remove";
-	                } else {
-	                    action = "change";
-	                }
-
-	                this.getStateMachine().event(action, changes.id, changes.doc);
-
-	            }, this);
+	                       this.getStateMachine().event(action, changes.id, changes.doc);
+	               }
+                  }, this);
 	    };
 
 		/**

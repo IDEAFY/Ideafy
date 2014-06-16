@@ -140,7 +140,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         "sharedwith": [],
                                         "modification_date": [],
                                         "inspired_by": "",
-                                        "visibility": "private",
+                                        "visibility": "",
                                         "votes": [],
                                         "rating": "",
                                         "authornames": "",
@@ -154,6 +154,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _widget.resetAttachment();
                                 
                                 //reset visibility slider
+                                _store.set("visibility", "private");
                                 _widget.dom.querySelector(".visibility-slider").value = 1;
                                 
                                 // hide flag list

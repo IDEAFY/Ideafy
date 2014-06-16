@@ -193,7 +193,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                         deckDetails.displayCards = function displayCards(id){
                                 var i, arr = [];
-                                deckCards.reset([]);
                                 for(i=0;i<5;i++){
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
@@ -346,13 +345,16 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 deckModel.reset(deck);
                                 _resetLang();
                                 
+                                // reset carousel
+                                deckCards.reset([]);
+                                
                                 // keep a 'local' copy of the deck
                                 _currentDeck = JSON.parse(deckModel.toJSON());
                                 
                                 //reset card range
                                 range.set("max", 0);
                                 // launch carousel spinner
-                                // carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
+                                carouselSpinner.spin(deckDetails.dom.querySelector(".deckcarousel"));
                                 // get all cards.
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
@@ -371,7 +373,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         deckDetails.displayCards(0);   
                                 });
                         };
-                        
+                        CAROUSPIN = carouselSpinner;
                         return deckDetails;
                 };
         });

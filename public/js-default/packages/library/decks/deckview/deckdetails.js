@@ -192,11 +192,12 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         deckDetails.template = '<div class="deckdetails"><div class="deckinfo"><div class="deckheader"><div class="idealang invisible"><div class="currentlang" data-deckdetails="bind: displayLang, default_lang" data-editevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-editevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><div class="decklogo" data-deckdetails="bind: setPic, picture_file" data-editevent="listen: mousedown, editPic"><input class="invisible" type="file" enctype="multipart/form-data" accept = "image/gif, image/jpeg, image/png" data-editevent="listen: change, changePic"></div><p><h2 data-deckdetails="bind:innerHTML, title; bind: edit, created_by" data-editevent="listen:input, displayButtons"></h2><span data-labels="bind:innerHTML, designedby"></span><span data-deckdetails="bind: innerHTML, author"></span></p><span class="date" data-deckdetails="bind:formatDate,date"></span></div><div class="deckbody"><p class="deckdescription" data-deckdetails="bind: innerHTML, description; bind: edit, created_by" data-editevent="listen:input, displayButtons"></p><div class="cancelmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, cancel" data-labels="bind:innerHTML, cancellbl"></div><div class="sendmail invisible" data-editevent="listen:mousedown, press; listen:mouseup, upload" data-labels="bind:innerHTML, savelbl">Save</div></div></div><div class="deckcarousel"><div class="innercarousel"><ul data-cards="foreach"><li data-cards="bind: setStyle,style"><div class="card"><div class="cardpicture" data-cards="bind:setPic,picture_file"></div><div class="cardtitle" data-cards="bind: formatTitle, title"></div></div></li></ul><input class="deckslider invisible" type="range" value=0 min=0 data-range="bind: max, max; bind: setCursorWidth, max" data-carouselevent="listen: input, updateCards"></div></div></div>';
                         
                         deckDetails.displayCards = function displayCards(id){
-                                var i, arr = [];
+                                var i, arr = [], slider = deckDetails.dom.querySelector(".deckslider");
                                 for(i=0;i<5;i++){
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
+                                (deckCards.getNbItems()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -361,7 +362,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
                                         carouselSpinner.stop();
-                                        (allCards.getNbItems()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
                                         if (allCards.getNbItems()) range.set("max", allCards.getNbItems()-1);
                                         // try to sort by title...
                                         allCards.unsync();

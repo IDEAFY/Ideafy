@@ -3166,8 +3166,10 @@ textarea.solution {
     border: 1px solid #999999;
     background: transparent;
     border-radius: 5px;
-    /* z-index: 10; */
+    z-index: 10;
     margin-top: 60px;
+    margin-left: 70px;
+    float: left;
 }
 
 #deckview .deckcarousel input::-webkit-slider-thumb{

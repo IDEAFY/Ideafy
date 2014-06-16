@@ -74,6 +74,12 @@ function CouchDBBase(Store, Tools, Promise) {
 		 */
 		_handlerName = "CouchDB",
 
+	    /**
+	     * The default change handler name
+	     * @private
+	     */
+	    _changeHandlerName = "CouchDBChange",
+
 		/**
 		 * The transport to use to issue the requests
 		 * @private
@@ -156,6 +162,30 @@ function CouchDBBase(Store, Tools, Promise) {
 				return false;
 			}
 		};
+
+	    /**
+	     * Get the current CouchDB handler name
+	     * @returns {String} the current handler name
+	     */
+	    this.getHandlerName = function getHandlerName() {
+	        return _handlerName;
+	    };
+
+	    /**
+	     * Set the current CouchDB handler name
+	     * @param {String} handlerName the name of the handler
+	     * The name must be a string that matches with the handler
+	     * as it's been added in Emily/Olives handlers
+	     * @returns {Boolean} true if it's a string
+	     */
+	    this.setHandlerName = function setHandlerName(handlerName) {
+	        if (typeof handlerName == "string") {
+	            _handlerName = handlerName;
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    };
 
 		/**
 		 * Get the current CouchDB handler name
@@ -355,56 +385,42 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 		 };
 
 		/**
-		 * Subscribe to changes when synchronized with a document
-		 * @private
-		 */
-		 this.onListen = function onListen() {
+	     * Subscribe to changes when synchronized with a document
+	     * @private
+	     */
+	    this.onListen = function onListen() {
 
-			var _syncInfo = this.getSyncInfo();
+	        var _syncInfo = this.getSyncInfo();
 
-			this.stopListening = this.getTransport().listen(
-				this.getHandlerName(),
-				{
-					path: "/" + _syncInfo.database + "/_changes",
-					query: {
-						feed: "continuous",
-						heartbeat: 20000,
-						descending: true
-					}
-				},
-				function (changes) {
-					var json;
-					// Should I test for this very special case (heartbeat?)
-					// Or do I have to try catch for any invalid json?
-					if (changes == "\n") {
-						return false;
-					}
+	        this.stopListening = this.getTransport().listen(
+	            this.getChangeHandlerName(),
+	            {
+	                path: "/" + _syncInfo.database,
+	                query: {
+	                    feed: "continuous",
+	                    heartbeat: 20000,
+	                    descending: true
+	                }
+	            },
+	            function (err, changes) {
+	                if (err) {
+	                    throw new Error(err);
+	                }
 
-					var json;
-                                        
-                                        try{
-                                                json = JSON.parse(changes);        
-                                        }
-                                        catch (e){
-                                                json = null;
-                                                console.error(e, "ERROR IN COUCHDBDOC LISTEN data : ", changes);
-                                        }
-                                        if (!json) return false;
+	                // The document is the modified document is the current one
+	                if (changes.id == _syncInfo.document &&
+	                    // And if it has a new revision
+	                    changes.changes.pop().rev != this.get("_rev")) {
 
-					// The document is the modified document is the current one
-					if (json.id == _syncInfo.document &&
-						// And if it has a new revision
-						json.changes.pop().rev != this.get("_rev")) {
-
-						if (json.deleted) {
-							this.getStateMachine().event("remove");
-						} else {
-							this.getStateMachine().event("change");
-						}
-					}
-				}, this
-				);
-		 };
+	                    if (changes.deleted) {
+	                        this.getStateMachine().event("remove");
+	                    } else {
+	                        this.getStateMachine().event("change");
+	                    }
+	                }
+	            }, this
+	            );
+	    };
 
 		/**
 		 * Update the document when synchronized with a document.
@@ -653,60 +669,50 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 			}, this);
 		};
 
-		/**
-		 * Subscribe to changes when synchronized with a view
-		 * @private
-		 */
-		this.onListen = function onListen() {
+	    /**
+	     * Subscribe to changes when synchronized with a view
+	     * @private
+	     */
+	    this.onListen = function onListen() {
 
-			var _syncInfo = this.getSyncInfo();
+	        var _syncInfo = this.getSyncInfo();
 
-			Tools.mixin({
-				feed: "continuous",
-				heartbeat: 20000,
-				descending: true
-			}, _syncInfo.query);
+	        Tools.mixin({
+	            feed: "continuous",
+	            heartbeat: 20000,
+	            descending: true,
+	            since: "now"
+	        }, _syncInfo.query);
 
-			this.stopListening = this.getTransport().listen(
-				this.getHandlerName(), {
-					path: "/" + _syncInfo.database + "/_changes",
-					query: _syncInfo.query
-				},
-				function (changes) {
-					// Should I test for this very special case (heartbeat?)
-					// Or do I have to try catch for any invalid json?
-					if (changes == "\n") {
-						return false;
-					}
+	        this.stopListening = this.getTransport().listen(
+	            this.getChangeHandlerName(), {
+	                path: "/" + _syncInfo.database,
+	                query: _syncInfo.query
+	            },
+	            function (err, changes) {
+	                if (err) {
+	                    throw new Error(err);
+	                }
 
-					var json, action;
-                                        
-                                        try{
-                                                json = JSON.parse(changes);        
-                                        }
-                                        catch (e){
-                                                json = null;
-                                                console.error(e, "ERROR IN VIEW DOC LISTEN data : ", changes);
-                                        }
-                                        
-                                        if (!json) return false;
-                                        
-                                        // reducedView is known on the first get view
-					if (_syncInfo.reducedView) {
-						action = "updateReduced";
-					} else {
-						if (json.deleted) {
-							action = "remove";
-						} else if (json.changes && json.changes[0].rev.search("1-") == 0) {
-							action = "add";
-						} else {
-							action = "change";
-						}
-					}
+	                var action;
 
-					this.getStateMachine().event(action, json.id);
-				}, this);
-		};
+	                // reducedView is known on the first get view
+	                if (_syncInfo.reducedView) {
+	                    action = "updateReduced";
+	                } else {
+	                    if (changes.deleted) {
+	                        action = "remove";
+	                    } else if (changes.changes && changes.changes[0].rev.search("1-") === 0) {
+	                        action = "add";
+	                    } else {
+	                        action = "change";
+	                    }
+	                }
+
+	            //    console.log("hey ", changes, action)
+	                this.getStateMachine().event(action, changes.id);
+	            }, this);
+	    };
 
 		/**
 		 * Update in the Store a document that was updated in CouchDB
@@ -950,57 +956,46 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 			}, this);
 		};
 
-		/**
-		 * Subscribe to changes when synchronized with a bulk of documents
-		 * @private
-		 */
-		 this.onListen = function onListen() {
+	    /**
+	     * Subscribe to changes when synchronized with a bulk of documents
+	     * @private
+	     */
+	    this.onListen = function onListen() {
 
-			var _syncInfo = this.getSyncInfo();
+	        var _syncInfo = this.getSyncInfo();
 
-			Tools.mixin({
-				feed: "continuous",
-				heartbeat: 20000,
-				descending: true,
-				include_docs: true
-			}, _syncInfo.query);
+	        Tools.mixin({
+	            feed: "continuous",
+	            heartbeat: 20000,
+	            descending: true,
+	            include_docs: true
+	        }, _syncInfo.query);
 
-			this.stopListening = this.getTransport().listen(
-				this.getHandlerName(),
-				{
-					path: "/" + _syncInfo.database + "/_changes",
-					query: _syncInfo.query
-				},
-				function (changes) {
-					var json;
-					// Should I test for this very special case (heartbeat?)
-					// Or do I have to try catch for any invalid json?
-					if (changes == "\n") {
-						return false;
-					}
+	        this.stopListening = this.getTransport().listen(
+	            this.getChangeHandlerName(),
+	            {
+	                path: "/" + _syncInfo.database,
+	                query: _syncInfo.query
+	            },
+	            function (err, changes) {
+	                var action;
 
-					var json, action;
-					
-					try{
-					        json = JSON.parse(changes);        
-					}
-					catch (e){
-					        json = null;
-					        console.error(e, "ERROR IN BULK DOC LISTEN data : ", changes);
-					}
-                                        if (!json) return false;
-					else if (json.changes[0].rev.search("1-") == 0) {
-						action = "add";
-					} else if (json.deleted) {
-						action = "remove";
-					} else {
-						action = "change";
-					}
+	                if (err) {
+	                    throw new Error(err);
+	                }
 
-					this.getStateMachine().event(action, json.id, json.doc);
+	                if (changes.changes[0].rev.search("1-") === 0) {
+	                    action = "add";
+	                } else if (changes.deleted) {
+	                    action = "remove";
+	                } else {
+	                    action = "change";
+	                }
 
-				}, this);
-		 };
+	                this.getStateMachine().event(action, changes.id, changes.doc);
+
+	            }, this);
+	    };
 
 		/**
 		 * Add in the Store a document that was added in CouchDB

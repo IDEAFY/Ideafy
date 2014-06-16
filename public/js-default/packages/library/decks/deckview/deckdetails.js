@@ -197,7 +197,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
-                               carouselSpinner.stop();
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -358,6 +357,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 // get all cards.
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
+                                        carouselSpinner.stop();
                                         (allCards.getNbItems()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
                                         if (allCards.getNbItems()) range.set("max", allCards.getNbItems()-1);
                                         // try to sort by title...

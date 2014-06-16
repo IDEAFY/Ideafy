@@ -3317,7 +3317,9 @@ textarea.solution {
     background: transparent;
     border-radius: 5px;
     /* z-index: 10; */
-    margin-top: 60px;
+    margin-top: 270px;
+    position: absolute;
+    margin-left: -420px;
 }
 
 #deckview .deckcarousel input::-webkit-slider-thumb{

@@ -403,11 +403,7 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 						since: "now"
 	                }
 	            },
-	            function (err, changes) {
-	                if (err) {
-	                    throw new Error(err);
-	                }
-
+	            function (changes) {
 	                // The document is the modified document is the current one
 	                if (changes.id == _syncInfo.document &&
 	                    // And if it has a new revision
@@ -690,11 +686,7 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 	                path: "/" + _syncInfo.database,
 	                query: _syncInfo.query
 	            },
-	            function (err, changes) {
-	                if (err) {
-	                    throw new Error(err);
-	                }
-
+	            function (changes) {
 	                var action;
 
 	                // reducedView is known on the first get view
@@ -979,12 +971,8 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 	                path: "/" + _syncInfo.database,
 	                query: _syncInfo.query
 	            },
-	            function (err, changes) {
+	            function (changes) {
 	                var action;
-
-	                if (err) {
-	                    throw new Error(err);
-	                }
 
 	                if (changes.changes[0].rev.search("1-") === 0) {
 	                    action = "add";

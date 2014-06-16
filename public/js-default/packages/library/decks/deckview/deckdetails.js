@@ -197,7 +197,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
-                               // carouselSpinner.stop();
+                               carouselSpinner.stop();
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -373,7 +373,6 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         deckDetails.displayCards(0);   
                                 });
                         };
-                        CAROUSPIN = carouselSpinner;
                         return deckDetails;
                 };
         });

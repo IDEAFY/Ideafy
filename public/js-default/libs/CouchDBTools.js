@@ -404,18 +404,20 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
 	                }
 	            },
 	            function (changes) {
-	                    console.log(JSON.stringify(changes));
-	                // The document is the modified document is the current one
-	                if (changes && changes.id == _syncInfo.document &&
-	                    // And if it has a new revision
-	                    changes.changes.pop().rev != this.get("_rev")) {
+	                 // The document is the modified document is the current one
+	                if (changes){
+	                       changes = JSON.parse(changes);      
+	                       if( changes.id == _syncInfo.document &&
+	                               // And if it has a new revision
+	                               changes.changes.pop().rev != this.get("_rev")) {
 
-	                    if (changes && changes.deleted) {
-	                        this.getStateMachine().event("remove");
-	                    } else {
-	                        this.getStateMachine().event("change");
-	                    }
-	                }
+	                               if (changes && changes.deleted) {
+	                                       this.getStateMachine().event("remove");
+	                               } else {
+	                                       this.getStateMachine().event("change");
+	                               }
+	                       }
+	                  }
 	            }, this
 	            );
 	    };
@@ -689,8 +691,9 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 	            },
 	            function (changes) {
 	                var action;
-                        console.log(JSON.stringify(changes));
                         if (changes){
+                                changes = JSON.parse(changes);
+                                console.log(changes);
 	                       // reducedView is known on the first get view
 	                       if (_syncInfo.reducedView) {
 	                           action = "updateReduced";
@@ -704,7 +707,6 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
 	                               }
 	                       }
 
-	                       //    console.log("hey ", changes, action)
 	                       this.getStateMachine().event(action, changes.id);
 	               }
 	       }, this);
@@ -976,8 +978,9 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 	            },
 	            function (changes) {
 	                var action;
-	                console.log(JSON.stringify(changes));
-                        if (changes){
+	                if (changes){
+	                        changes = JSON.parse(changes);
+	                        console.log(changes);
 	                       if (changes.changes[0].rev.search("1-") === 0) {
 	                               action = "add";
 	                       } else if (changes.deleted) {

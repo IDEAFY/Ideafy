@@ -956,57 +956,46 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
 			}, this);
 		};
 
-		/**
-		 * Subscribe to changes when synchronized with a bulk of documents
-		 * @private
-		 */
-		 this.onListen = function onListen() {
+	    /**
+	     * Subscribe to changes when synchronized with a bulk of documents
+	     * @private
+	     */
+	    this.onListen = function onListen() {
 
-			var _syncInfo = this.getSyncInfo();
+	        var _syncInfo = this.getSyncInfo();
 
-			Tools.mixin({
-				feed: "continuous",
-				heartbeat: 20000,
-				descending: true,
-				include_docs: true
-			}, _syncInfo.query);
+	        Tools.mixin({
+	            feed: "continuous",
+	            heartbeat: 20000,
+	            descending: true,
+	            include_docs: true
+	        }, _syncInfo.query);
 
-			this.stopListening = this.getTransport().listen(
-				this.getHandlerName(),
-				{
-					path: "/" + _syncInfo.database + "/_changes",
-					query: _syncInfo.query
-				},
-				function (changes) {
-					var json;
-					// Should I test for this very special case (heartbeat?)
-					// Or do I have to try catch for any invalid json?
-					if (changes == "\n") {
-						return false;
-					}
+	        this.stopListening = this.getTransport().listen(
+	            this.getChangeHandlerName(),
+	            {
+	                path: "/" + _syncInfo.database,
+	                query: _syncInfo.query
+	            },
+	            function (err, changes) {
+	                var action;
 
-					var json, action;
+	                if (err) {
+	                    throw new Error(err);
+	                }
 
-					try{
-					        json = JSON.parse(changes);
-					}
-					catch (e){
-					        json = null;
-					        console.error(e, "ERROR IN BULK DOC LISTEN data : ", changes);
-					}
-                                        if (!json) return false;
-					else if (json.changes[0].rev.search("1-") == 0) {
-						action = "add";
-					} else if (json.deleted) {
-						action = "remove";
-					} else {
-						action = "change";
-					}
+	                if (changes.changes[0].rev.search("1-") === 0) {
+	                    action = "add";
+	                } else if (changes.deleted) {
+	                    action = "remove";
+	                } else {
+	                    action = "change";
+	                }
 
-					this.getStateMachine().event(action, json.id, json.doc);
+	                this.getStateMachine().event(action, changes.id, changes.doc);
 
-				}, this);
-		 };
+	            }, this);
+	    };
 
 		/**
 		 * Add in the Store a document that was added in CouchDB

@@ -187,29 +187,29 @@ function CouchDBBase(Store, Tools, Promise) {
 	        }
 	    };
 
-		/**
-		 * Get the current CouchDB handler name
-		 * @returns {String} the current handler name
-		 */
-		this.getHandlerName = function getHandlerName() {
-			return _handlerName;
-		};
+	    /**
+	     * Set the current CouchDB handler name
+	     * @param {String} handlerName the name of the handler
+	     * The name must be a string that matches with the handler
+	     * as it's been added in Emily/Olives handlers
+	     * @returns {Boolean} true if it's a string
+	     */
+	    this.setHandlerName = function setHandlerName(handlerName) {
+	        if (typeof handlerName == "string") {
+	            _handlerName = handlerName;
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    };
 
-		/**
-		 * Set the current CouchDB handler name
-		 * @param {String} handlerName the name of the handler
-		 * The name must be a string that matches with the handler
-		 * as it's been added in Emily/Olives handlers
-		 * @returns {Boolean} true if it's a string
-		 */
-		this.setHandlerName = function setHandlerName(handlerName) {
-			if (typeof handlerName == "string") {
-				_handlerName = handlerName;
-				return true;
-			} else {
-				return false;
-			}
-		};
+	    /**
+	     * Get the current CouchDBChange handler name
+	     * @returns {String} the current changeHandler name
+	     */
+	    this.getChangeHandlerName = function getChangeHandlerName() {
+	        return _changeHandlerName;
+	    };
 
 		/**
 		 * Synchronize the store with CouchDB

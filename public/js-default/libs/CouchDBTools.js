@@ -387,7 +387,6 @@ define('CouchDBDocument',["Store", "CouchDBBase", "Tools", "Promise", "StateMach
                                         }
                                         catch (e){
                                                 json = null;
-                                                console.error(e, "ERROR IN COUCHDBDOC LISTEN data : ", changes);
                                         }
                                         if (!json) return false;
 
@@ -686,7 +685,6 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
                                         }
                                         catch (e){
                                                 json = null;
-                                                console.error(e, "ERROR IN VIEW DOC LISTEN data : ", changes);
                                         }
                                         
                                         if (!json) return false;
@@ -986,7 +984,6 @@ define('CouchDBBulkDocuments',["Store", "CouchDBBase", "Tools", "Promise", "Stat
                                         }
                                         catch (e){
                                                 json = null;
-                                                console.error(e, "ERROR IN BULK DOC LISTEN data : ", changes);
                                         }
                                         if (!json) return false;
                                         else if (json.changes[0].rev.search("1-") == 0) {

@@ -27,6 +27,29 @@ html, body {
   overflow-x: hidden;
 }
 
+body {
+  overflow: auto;
+  background: #f6f6f6;
+  height: 1024px;
+  width: 768px;
+  background-image: url('../img/ideafy59.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -15;
+}
+
+#banner{
+    background-image: url('../img/ideafy.png');
+    height: 280px;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    float: left;
+    -webkit-box-shadow: inset 0px 0px 10px 15px #f6f6f6;
+    /* border-radius: 25px; */
+    z-index: -15;
+}
+
 body{
     /*top: 20px;*/
     height:748px;
@@ -73,28 +96,205 @@ textarea::-webkit-input-placeholder, input::-webkit-input-placeholder{
     font-weight: normal;
     font-style: normal;
     }
-
-    .spinner{
-        -webkit-animation: myRotate 1s linear infinite;
+    
+    .main{
+        background: rgba(128,128,128,0);
+        width: 100%;
+        height: 100%;
+        display: block;
+        position: fixed;
     }
     
-    .waiting:before{
+    #apploading{
+        /*background: url('../img/appicon.png') no-repeat center center;*/
+       width: 60px;
+        height: 60px;
+        position: absolute;
+        top: 50%;
+        margin-top: -30px;
+        -webkit-animation-name: slideout;
+        -webkit-animation-duration: 5s;
+         -webkit-animation-iteration-count: infinite;
+    }
+    
+    #apploading:before{
         content: "\e000";
         display: inline-block;
-        font-size:4em;
-        height: 1em;
+        font-size: 2em;
+        line-height: 60px;
         font-family: Ideafy;
-        color: whitesmoke;
+        color: #06b7fc;
     }
-
-    @-webkit-keyframes myRotate {
+    
+    @-webkit-keyframes slideout {
         from {
-            -webkit-transform:rotate(0);
+            left: 20%;
         }
         to {
-            -webkit-transform:rotate(360deg);
+            left: 80%;
         }
     }
+
+/* LOGIN */
+#login{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    text-align:center;
+    overflow: auto;
+/*    background-image: url('../img/logoLogInPage-beta.png');
+    background-position: bottom right;
+    background-size: 150px;
+    background-repeat: no-repeat;*/
+}
+
+.squirrel{
+    width: 200px;
+    height: 200px;
+    float: right;
+    background-image: url('../img/ideafy59-squirrel.png');
+    background-size: contain;
+    left: 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    margin-left: -100px;
+}
+
+#login-stack    {
+    margin-top: -110px;
+    width: 410px;
+    height: 440px;
+    margin-left: -205px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+
+.login-fields{
+    width:410px;
+    border-radius: 5px;
+    background: white;
+    -webkit-box-shadow: 0 0 3px 3px #06b7fc;
+    margin-bottom:30px;
+}
+
+#login-form input {
+    height:60px;
+}
+
+#signup-form input {
+    height:45px;
+}
+
+.login-fields input {
+    background:none;
+    width:375px;
+    outline:0;
+    margin:0;
+    border:0;
+    padding-left:30px;
+    font-size:16px;
+    color:#07789b;
+    opacity: 0.8;
+}
+
+.login-fields input::-webkit-input-placeholder{
+    color: #06b7fc;
+}
+
+.login-fields input:nth-child(n+2) {
+    border-top:1px solid #07789b;
+}
+
+.login-button, .signup-button {
+    display:inline-block;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.login-button {
+    margin-bottom:20px;
+    font-size: 14px;
+    line-height: 40px;
+    color: #06b7fc;
+    width: 400px;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #e5e5e5), color-stop(100%, #e6e6e6));
+    -webkit-box-shadow: 0 0 3px #06b7fc;
+}
+
+.pressed {
+    -webkit-box-shadow:inset 0 0 5px 1px rgba(0,0,0,0.6);
+    background:#0B173B;
+}
+
+.login-button.pressed{
+    color: white;
+    border: 1px inset #CCCCCC;
+    height: 38px;
+    line-height: 38px;
+    text-shadow: 2px 2px 2px black;
+}
+
+#login-form p.login-error{
+    height:154px;
+    line-height:77px;
+}
+
+#signup-form .login-error {
+    margin-bottom:10px;
+    height:40px;
+}
+
+.login-error {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: #657b99;
+    line-height: 1.3em;
+    height: 77px;
+}
+
+.signup-button {
+    width: 270px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #E6E6E6;
+    -webkit-box-shadow: 0 0 1px 1px rgba(37,64,102, 0.6);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8c9aa8), color-stop(100%, #707e8e));
+}
+
+.signup-button.pressed{    
+    color: #07789b;
+    border: 1px inset #CCCCCC;
+    text-shadow: 2px 2px 2px white;    
+}
+
+.pressed-btn{
+    opacity: 0.7;
+    -webkit-transition: opacity 3s linear;
+}
+
+.btn-ready{
+    opacity: 1;
+    color: black;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(85%, #e5e5e5), color-stop(100%, #e6e6e6))
+}
+
+.loginvisible{
+    display: none;
+}
+
+.forgotpwd{
+    font-size: 12px;
+    color: #404040;
+}
+
+.forgotpwd.pressed{
+    color: white;
+    background: transparent;
+    -webkit-box-shadow: none;
+}
 
 /* utils */
 .blue-light {

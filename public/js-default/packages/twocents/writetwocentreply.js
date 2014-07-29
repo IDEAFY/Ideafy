@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -65,6 +65,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
                                 // hide twocent writing interface
                                 (cancel) ? cancel():$parent.classList.add("invisible");
+                                // reset reply message
                                 reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                         };
                 

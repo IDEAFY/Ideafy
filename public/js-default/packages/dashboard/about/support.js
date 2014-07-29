@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -104,7 +104,21 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                                 support.setMaintenanceMSG(user.get("lang"));
                         };
                         
-                       return support;      
+                        // update support and maintenance messages in case of language change
+                        user.watchValue("lang", function(){
+                                support.setSupportMSG(user.get("lang"), "SUPPORTMSG");
+                                support.setMaintenanceMSG(user.get("lang"), "MAINTENANCE");
+                        });
                         
-                }; 
+                        // watch for new support or maintenance messages
+                        supportCDB.watchValue("active", function(){
+                                support.setSupportMSG(user.get("lang"));  
+                        });
+                        
+                        maintenanceCDB.watchValue("active", function(){
+                                support.setMaintenanceMSG(user.get("lang"));  
+                        });
+                        
+                        return support;
+                 }; 
         });

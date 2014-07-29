@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min", "attach/attachment"], 
@@ -329,14 +329,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
-                                _attachmentUI.reset(_alist.get(idx).docId);
-                                Map.get("attachment-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");        
+                                _attachmentUI.reset(_alist.get(idx).docId, "idea");      
                         };
                         
                         _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
+                                        document.getElementById("cache").classList.add("appear1");
                                         document.getElementById("ratingPopup").classList.add("appear");
                                 }
                                 node.classList.remove("pressed");
@@ -371,6 +370,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
                                                         document.getElementById("ratingPopup").classList.remove("appear");
+                                                        document.getElementById("cache").classList.remove("appear1");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }
                                         });

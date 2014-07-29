@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBView", "CouchDBDocument", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min", "Promise"],
@@ -28,7 +28,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                   _currentSearch = "", // the current search, if empty _sessionData is used
                   _sessionsCDB = new CouchDBView(),
                   spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10, top: 330}).spin(),
-                  confirmUI, confirmCallback;
+                  confirmCallback;
                   
               
               // setup
@@ -99,7 +99,22 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                 },
                                 setStatus : function(status){
-                                        (status === "completed") ? this.innerHTML = _labels.get("completed") : this.innerHTML = _labels.get("inprogress");
+                                        if (status){
+                                                switch(status){
+                                                        case "completed":
+                                                                this.innerHTML = _labels.get("completed");
+                                                                break;
+                                                        case "scheduled":
+                                                                this.innerHTML = _labels.get("scheduled");
+                                                                break;
+                                                        case "deleted": 
+                                                                this.innerHTML = _labels.get("deleted");
+                                                                break;
+                                                        default:
+                                                                this.innerHTML = _labels.get("inprogress");
+                                                                break;
+                                                }
+                                        }
                                 },
                                 setScore : function(score){
                                         if (score>=0){
@@ -114,13 +129,33 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 this.innerHTML = _labels.get("noscore");
                                         }
                                         else this.innerHTML = "ip";
+                                },
+                                showReplay : function(status){
+                                        if (status === "completed") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
+                                        else this.setAttribute("style", "display: none;");    
+                                },
+                                showDelete : function(leader){
+                                        var idx = this.getAttribute("data-sessions_id");
+                                        if (leader !== _user.get("_id")) this.setAttribute("style", "display: none;");
+                                        else{
+                                                if (_sessions.get(idx).id === _user.get("sessionInProgress").id) this.setAttribute("style", "display: none;");
+                                                else{
+                                                        if (_sessions.get(idx).status === "deleted") this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
+                                                        else{
+                                                                if ((_sessions.get(idx).status !== "scheduled") && (_sessions.get(idx).participants.length>1)){
+                                                                        this.setAttribute("style", "display: none;");        
+                                                                }
+                                                                else this.setAttribute("style", "display: inline-block; background-size: 40px 40px;");
+                                                        }
+                                                }
+                                        }
                                 }
                         }),
                   "sortevent": new Event(_widget),
                   "sessionevent": new Event(_widget)      
               });
               
-              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div id="sessionlistspinner"></div><div class="header blue-light" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen:touchstart, setStart; listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type" data-sessions="bind: setMode, mode"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div></div></li></ul></div></div></div>';
+              _widget.template = '<div id="sessions"><div id="session-list" class="list"><div id="sessionlistspinner"></div><div class="header blue-dark" data-label="bind: innerHTML, library-sessions"></div><div class="session-tools"><div class="session-sorting"><div id="sbytitle" class="sort-button" data-sort="bind: setSelected, sbytitle.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbytitle"></span><div class="sort-caret" data-sort="bind: setOrder, sbytitle.descending"></div></div><div id="sbydate" class="sort-button" data-sort="bind: setSelected, sbydate.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbydate"></span><div class="sort-caret" data-sort="bind: setOrder, sbydate.descending"></div></div><div id="sbyidea" class="sort-button" data-sort="bind: setSelected, sbyidea.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyidea"></span><div class="sort-caret" data-sort="bind: setOrder, sbyidea.descending"></div></div><div id="sbyscore" class="sort-button" data-sort="bind: setSelected, sbyscore.selected" data-sortevent="listen: touchstart, sort"><span data-label="bind: innerHTML, sbyscore"></span><div class="sort-caret" data-sort="bind: setOrder, sbyscore.descending"></div></div></div><input class="search" type="text" data-label="bind:placeholder, searchsessions" data-sortevent="listen: keypress, search"><div id="sessionsearchresult"></div></div><div class="session-details"><ul data-sessions="foreach"><li class="session-item" data-sessionevent="listen:touchstart, setStart; listen: touchmove, displayActionBar"><table class="session-boxscore"><tr><td class="session-type" data-sessions="bind: setMode, mode"></td><td class="session-info"><p class="session-title" data-sessions="bind: innerHTML, title">Titre de la session</p><p class="session-date" data-sessions="bind: formatDate, date">jj/mm/aaaa</p></td><td class="session-idea" data-sessions="bind:formatIdeas, idea">Idea(s) generated from session</td><td class="avatarlist" data-sessions="bind: setAvatars, participants"></td><td class="session-status" data-sessions="bind:setStatus, status">completed</td><td class="session-score"><span class="points" data-sessions="bind:setScore, score"></span><span data-sessions="bind: setSuffix, score">ip</span></td></tr></table><div class="actionbar" data-sessionevent="listen: touchend, hideActionBar"><div class="replaysession" name="replay" data-sessions="bind:showReplay, status" data-sessionevent="listen: touchstart, press; listen:touchend, replay"></div><div class="deletesession" name="delete" data-sessions="bind:showDelete, leader" data-sessionevent="listen: touchstart, press; listen:touchend, deleteSession"></div></div></li></ul></div></div></div>';
               
               _widget.sort = function sort(event, node){
                         var mode = node.getAttribute("id");
@@ -193,12 +228,13 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               _widget.displayActionBar = function(event, node){
                       var _id = node.getAttribute("data-sessions_id"),
                           _height = node.offsetHeight,
-                          _sid = _sessions.get(_id);
+                          _sid = _sessions.get(_id),
+                          ab = node.querySelector(".actionbar");
                       
                       touchPoint = [event.pageX, event.pageY];
                       
-                      if ((touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
-                              node.querySelector(".actionbar").setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
+                      if (ab.hasChildNodes() && (touchStart[0]-touchPoint[0]) > 40 && (touchPoint[1]-touchStart[1])<20 && (touchPoint[1]-touchStart[1])>-20){
+                              ab.setAttribute("style", "display: block;margin-top:-"+_height+"px;height: "+_height+"px;");
                       
                                 // session cannot be deleted if initiated by another user or if has multiple users or if it is the current session in progress
                                 if (_sid.participants.length>1 || _sid.participants[0] != _user.get("_id") || _sid.id === _user.get("sessionInProgress").id){
@@ -207,7 +243,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 else node.querySelector(".deletesession").setAttribute("style", "display: inline-block;"); 
                       
                                 // Automatically hide bar after 2s
-                                setTimeout(function(){node.querySelector(".actionbar").setAttribute("style", "display: none;");}, 2000);
+                                setTimeout(function(){ab.setAttribute("style", "display: none;");}, 2000);
                         }
               };
               
@@ -272,26 +308,32 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         // remove session attachments (if any) from the server 
                                         _transport.request("cleanUpSession", _sid, function(res){
                                                 if (res.err) {console.log(res.err);}
-                                                cdb.remove().then(function(){
-                                                        cdb.unsync();
+                                                
+                                                // finally set the session status to deleted
+                                                cdb.set("status", "deleted");
+                                                cdb.upload()
+                                                .then(function(){
+                                                        return cdb.remove();
+                                                })
+                                                .then(function(){
                                                         promise.fulfill();       
-                                                });      
+                                                });       
                                         });       
                                 });
                                 return promise;
                              },
-                             // confirmation window invoked with question and callback
-                            confirmUI, question = _labels.get("deletereplay"), confirmCallback = function(decision){
+                            // confirmation window invoked with question and callback
+                            question, confirmCallback = function(decision){
                                         if (decision){
                                                 spinner.spin(document.getElementById("sessionlistspinner"));
                                                 // remove session from database
                                                 removeFromDB(_sid).then(function(){
                                                         spinner.stop();
-                                                        confirmUI.close();
+                                                        Confirm.hide();
                                                 });   
                                         }
                                         else{
-                                                confirmUI.close();        
+                                                Confirm.hide();        
                                         }
                                 };
                         
@@ -300,10 +342,17 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         node.parentNode.setAttribute("style", "display: none;");
                         
                         // if sessionReplay is enabled display confirmation UI
-                        if (_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length ){
+                        if ((_sessions.get(_id).replayIdeas && _sessions.get(_id).replayIdeas.length)){
                                 spinner.stop();
-                                confirmUI = new Confirm(document.getElementById("session-list"), question, confirmCallback);
-                                confirmUI.show();        
+                                question = _labels.get("deletereplay");
+                                Confirm.reset(question, confirmCallback, "musession-confirm");
+                                Confirm.show();       
+                        }
+                        else if (_sessions.get(_id).scheduled){
+                                spinner.stop();
+                                question = _labels.get("deletescheduled");
+                                Confirm.reset(question, confirmCallback, "musession-confirm");
+                                Confirm.show();       
                         }
                         else {
                                 removeFromDB(_sid).then(function(){
@@ -321,6 +370,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                                 title:v.value.title,
                                                 date:v.value.date,
                                                 idea:v.value.idea,
+                                                leader: v.value.initiator.id,
                                                 participants:[],
                                                 usernames:[],
                                                 status:v.value.status,

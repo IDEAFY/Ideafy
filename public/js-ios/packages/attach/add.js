@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2012-2013 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/utils", "Promise", "lib/spin.min"],
@@ -44,9 +44,6 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         show : function(bool){
                                                 (bool) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
                                         },
-                                        hide : function(uploaded){
-                                                if (uploaded) this.setAttribute("style", "display:none;");        
-                                        },
                                         setContent : function(type){
                                                 var node = this;
                                                 switch(type){
@@ -74,19 +71,31 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         setAttachmentCat : function(uploaded){
                                                 if (!uploaded){
                                                         var custom = [], arr, i, l, key,
-                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
-                                                        if (user.get("categories")) custom = user.get("categories");
+                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>",
+                                                                node = this;
+                                                        
                                                         for (i=0, l=cats.length; i<l;i++){
                                                                 key = cats[i];
                                                                 res+="<option>"+_labels.get(key)+"</option>";
                                                         }
-                                                        if (custom.length){
-                                                                for (i=0, l=custom.length; i<l;i++){
-                                                                        res+="<option>"+custom[i]+"</option>";
+                                                        
+                                                        node.innerHTML = res;
+                                                        
+                                                        user.watchValue("categories", function(){
+                                                                res = "<option selected disabled style='display:none;'>"+_labels.get("choosecat")+"</option>";
+                                                                if (user.get("categories")) custom = user.get("categories");
+                                                                for (i=0, l=cats.length; i<l;i++){
+                                                                        key = cats[i];
+                                                                        res+="<option>"+_labels.get(key)+"</option>";
                                                                 }
-                                                        }
-                                                        res+="<option>"+_labels.get("other")+"</option>";
-                                                        this.innerHTML = res;
+                                                                if (custom.length){
+                                                                        for (i=0, l=custom.length; i<l;i++){
+                                                                                res+="<option>"+custom[i]+"</option>";
+                                                                        }
+                                                                }
+                                                                res+="<option>"+_labels.get("other")+"</option>";
+                                                                node.innerHTML = res;        
+                                                        });
                                                 }
                                         }   
                                 }),
@@ -101,7 +110,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                 "addevent" : new Event(ui)        
                         });
                         
-                        ui.template = '<div class="add-attachments"><select class="acolor" data-attach="bind:setAttachmentCat, uploaded; bind:resetCat, category" data-addevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-addevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-addevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category; bind:hide, uploaded"><li class="toolbox-button"><div class="upload-button" name="upload" data-addevent="listen:touchstart, press; listen:touchend, release"><input type="file" class="a-input" data-addevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-addevent="listen:touchstart, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="drawingtool-button" name="drawing" data-addevent="listen:touchstart, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-addevent="listen:touchstart, press; listen: touchstart, aconfirm; listen:touchend, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-addevent="listen:touchstart, press; listen:touchstart, acancel">&#10007</div><textarea class="a-desc input" data-labels="bind:placeholder, attachdescplaceholder" data-attach="bind: value, description" data-attachevent="listen: input, updateDesc"></textarea></div>';
+                        ui.template = '<div class="add-attachments"><select class="acolor" data-attach="bind:setAttachmentCat, uploaded; bind:resetCat, category" data-addevent="listen: change, selectCat"></select><input maxlength=18 type="text" placeholder="Enter category" class="input custom-cat" data-attach="bind:show, custom" data-addevent="listen:input, setCat"><input maxlength=36 type="text" placeholder="Enter name" class="input a-name" data-attach="bind:setName, name" data-addevent="listen: input, setName"><ul class="a-tools" data-attach="bind:show, category"><li class="toolbox-button"><div class="upload-button" name="upload" data-addevent="listen:touchstart, press; listen:touchend, release"><input type="file" class="a-input" data-addevent="listen:change, uploadFile"></div><legend data-labels="bind:innerHTML, filelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="importpic-button" name="import" data-addevent="listen:touchstart, press"></div><legend data-labels="bind:innerHTML, imagelbl"></legend></li><li class="toolbox-button" style="display:none"><div class="drawingtool-button" name="drawing" data-addevent="listen:touchstart, press"></div><legend data-labels="bind:innerHTML, drawinglbl">Drawing</legend></li></ul><div class="a-preview invisible"><div class="a-content" data-attach="bind:setContent, type"></div><progress class="uploadbar" data-progress="bind:showStatus, status" max=100></progress><div class="uploadval" data-progress="bind:showVal, status"></div></div><div class="a-button a-confirm" data-attach="bind:show, uploaded" data-addevent="listen:touchstart, press; listen: touchstart, aconfirm; listen:touchend, release">&#10003</div><div class="a-button a-cancel" data-attach="bind:show, uploaded" data-addevent="listen:touchstart, press; listen:touchstart, acancel">&#10007</div><textarea class="a-desc input" data-labels="bind:placeholder, attachdescplaceholder" data-attach="bind: value, description" data-attachevent="listen: input, updateDesc"></textarea></div>';
                         
                         ui.reset = function reset($parentDoc, $parentType, $aList){
                                 

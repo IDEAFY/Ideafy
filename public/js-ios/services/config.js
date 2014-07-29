@@ -1,21 +1,19 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
- * Copyright (c) 2014 IDEAFY
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
    function(Store, Transport, CouchDBDocument, Observable) {
-        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "";
+        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
         
         this.reset = function(){
                  
-               //_location = "http://8.19.34.68:1664";
-                _location = "http://mobile.ideafy.com:1664"; // uncomment for app deployment
-                //_location = location.origin;
-                _version = "1.2.3";
-                _socket = io.connect(_location);
+               _location = "http://mobile.ideafy.com:1664"; // uncomment for app deployment
+                _version = "1.3.0";
+                _socket = io.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
                 _observer = new Observable();
@@ -127,7 +125,8 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                                 "votes": [],
                                 "rating": "",
                                 "authornames": "",
-                                "twocents": []
+                                "twocents": [],
+                                "attachments":[]
                         },
                         TQTemplate:{
                                 "author": [],

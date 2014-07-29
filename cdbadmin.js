@@ -199,6 +199,110 @@ function CDBAdmin(){
                 return promise;
         };
         
+        /**
+        * Subscribe to changes when synchronized with a view
+        */
+        listenToViewChange = function (design, view, query, cdbStore) {
+
+                var options = {
+                      path:"/"+_db,
+                      auth: _cdbAdminCredentials,
+                      feed: "continuous",
+                      descending: true,
+                      since: "now"
+                };
+
+                _transport().listen(
+                        "CouchDBChange", {
+                                path: "/" + _syncInfo.database,
+                                query: options
+                        },
+                        function (err, changes) {
+                                if (err) {
+                                        throw new Error(err);
+                                }
+
+                                if (changes.deleted) {
+                                        cdbStore.loop(function (value, idx) {
+                                                if (value.id == changes.id) {
+                                                        cdbStore.del(idx);
+                                                }
+                                        });
+                                }
+                                else if (changes.changes && changes.changes[0].rev.search("1-") === 0) {
+                                        _transport.request(
+                                                "CouchDB",
+                                                {
+                                                        method: "GET",
+                                                        path:"/"+_db+"/_design/"+design+"/_view/"+view,
+                                                        auth: _cdbAdminCredentials,
+                                                        headers: {
+                                                                "Content-Type": "application/json",
+                                                                "Connection": "close"
+                                                        }
+                                                },
+                                                function (view) {
+                                                        var json = JSON.parse(view);
+
+                                                        json.rows.some(function (value, idx) {
+                                                                if (value.id == changes.id) {
+                                                                        cdbStore.alter("splice", idx, 0, value);
+                                                                }
+                                                        });
+                                                },
+                                                this
+                                        );
+                                }
+                                else {
+                                        _transport.request(
+                                                "CouchDB",
+                                                {
+                                                        method: "GET",
+                                                        path:"/"+_db+"/_design/"+design+"/_view/"+view,
+                                                        auth: _cdbAdminCredentials,
+                                                        headers: {
+                                                                "Content-Type": "application/json",
+                                                                "Connection": "close"
+                                                        }
+                                                },
+                                                function (view) {
+                                                        var json = JSON.parse(view), nbItems = cdbStore.count();
+
+                                                        if (json.rows.length == nbItems) {
+                                                                json.rows.some(function (value, idx) {
+                                                                        if (value.id == changes.id) {
+                                                                                cdbStore.set(idx, value);
+                                                                        }
+                                                                }, this);
+                                                        }
+                                                        else {
+                                                                // If a document was removed from the view
+                                                                if (view.length < nbItems) {
+                                                                        // Look for it in the store to remove it
+                                                                        cdbStore.loop(function (value, idx) {
+                                                                                if (value.id == id) {
+                                                                                        cdbStore.del(idx);
+                                                                                }
+                                                                        );
+                                                        }
+                                                        // If a document was added to the view
+                                                        else if (view.length > nbItems) {
+                                                                // Look for it in the view and add it to the store at the same place
+                                                                view.some(function (value, idx) {
+                                                                        if (value.id == changes.id) {
+                                                                                return cdbStore.alter("splice", idx, 0, value);
+                                                                        }
+                                                                });
+                                                        }
+                                                },
+                                                this
+                                        );
+                                }
+                        },
+                        this
+                );
+        };
+        
         /*
          * getBulkView retrieves a set of docs from a view in the database
          * @param {String} design : the name of the design document
@@ -288,6 +392,7 @@ function CDBAdmin(){
         this.updateUserIP = updateUserIP;
         this.getDoc = getDoc;
         this.getView = getView;
+        this.listenView = listenToViewChange;
         this.getBulkView = getBulkView;
         this.updateDoc = updateDoc;
         this.removeDoc = removeDoc;

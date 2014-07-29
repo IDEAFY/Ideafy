@@ -1,12 +1,12 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
- */ 
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
+ */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm"],
-        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm){
+define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm", "service/utils"],
+        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm, Utils){
                 function ActionBarConstructor($type, $parent, $data){
                 
                         var buttons = new Store([]),
@@ -54,6 +54,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                         
                         this.press = function(event, node){
                                 event.stopPropagation();
+                                event.preventDefault();
                                 node.classList.add("pressed");
                                 spinner.el = document.getElementById("abspinner");
                         };
@@ -62,6 +63,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 var id = node.getAttribute("data-buttons_id"),
                                     action = buttons.get(id).name;
                                 
+                                event.preventDefault();
                                 event.stopPropagation();
                                 node.classList.remove("pressed");
                                 
@@ -222,6 +224,13 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                 if ($data.authors.length === 1 && $data.authors[0] === user.get("_id")){
                                                         cdb.sync(Config.get("db"), $data._id)
                                                         .then(function(){
+                                                                // check if there are attachments to this idea and if yes remove them
+                                                                var att = cdb.get("attachments") || [];
+                                                                if (att.length){
+                                                                        att.forEach(function(val){
+                                                                                Utils.deleteAttachmentDoc(val.docId);        
+                                                                        });
+                                                                }
                                                                 return cdb.remove();
                                                         })
                                                         .then(function(){
@@ -240,15 +249,15 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                         scope.hide();
                                                 }
                                                 else{
-							document.getElementById("cache").classList.add("appear");
-                                                        confirmUI = new Confirm(document.body, labels.get("deldeckwarning"), function(decision){
+							Confirm.reset(labels.get("deldeckwarning"), function(decision){
                                                                 var spinner = new Spinner({lines:10, length: 20, width: 8, radius:10}).spin();
                                                                 if (!decision) {
+                                                                        Confirm.hide();
                                                                         scope.hide();
                                                                 }
                                                                 else{
+                                                                        Confirm.hide();
                                                                         spinner.spin(document.getElementById("deckview"));
-                                                                        document.getElementById("cache").classList.add("appear");
                                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                                 var arr = user.get("taiaut_decks");
@@ -257,7 +266,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 user.upload()
                                                                                 .then(function(){
                                                                                         spinner.stop();
-                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
                                                                                 });
                                                                         }
@@ -279,7 +287,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                 })
                                                                                                 .then(function(){
                                                                                                         spinner.stop();
-                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
                                                                                                 });
                                                                                         }
@@ -293,7 +300,6 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                                                 user.upload()
                                                                                                                 .then(function(){
                                                                                                                         spinner.stop();
-                                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                                         promise.fulfill();
                                                                                                                 });        
                                                                                                         }
@@ -305,12 +311,12 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                                                                 });
                                                                         }
                                                                 }
-                                                                document.body.removeChild(document.querySelector(".confirm"));
                                                         }, "importcard-confirm");
+                                                        Confirm.show();
                                                 }
                                                 break;
                                         case "message":
-                                                 var arr = user.get("notifications"), i,
+                                                 var arr = user.get("notifications").concat(), i,
                                                      index;
                         
                                                 for (i=0, l=arr.length; i<l; i++){

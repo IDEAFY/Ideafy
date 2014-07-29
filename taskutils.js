@@ -11,7 +11,7 @@
 
 function TaskUtils(){
        var _CouchDBDocument, _CouchDBView, Promise,
-            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin, _getBulkView,
+            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin, _getBulkView, _listenToViewChange,
             _sendMail, _notify,
             _io;
         
@@ -29,6 +29,7 @@ function TaskUtils(){
                 _getViewAsAdmin = cdbAdmin.getView;
                 _getBulkView = cdbAdmin.getBulkView;
                 _removeDocAsAdmin = cdbAdmin.removeDoc;
+                _listenToViewChange = cdbAdmin.listenView;
                 _sendMail = comUtils.sendMail;
                 _notify = comUtils.notify;     
         };
@@ -52,7 +53,7 @@ function TaskUtils(){
                               list = Object.keys(_io.connected);
                         _getViewAsAdmin("users", "sockets", null, cdbSocks)
                         .then(function(){
-                                if (cdbSocks.getNbItems()) cdbSocks.loop(function(v,i){
+                                if (cdbSocks.count()) cdbSocks.loop(function(v,i){
                                         var cdb = new _CouchDBDocument();
                                         if (list.indexOf(v.key) <0){
                                                 _getDocAsAdmin(v.id, cdb)
@@ -97,7 +98,7 @@ function TaskUtils(){
                                         // for each session -- set status to deleted
                                         // upload then remove chat document
                                         // remove session document
-                                        if (sessions.getNbItems()){
+                                        if (sessions.count()){
                                                 sessions.loop(function(v,i){
                                                         var session = new _CouchDBDocument(),
                                                                 chatId,
@@ -212,22 +213,7 @@ function TaskUtils(){
                                                 });   
                                         });
                                 });  
-                      },
-                      
-                      manageSessions = function(){
-                                
-                                // fetch scheduled sessions from database (status waiting and scheduled not null)
-                                _getViewAsAdmin("scheduler", "sessions", null, sessions)
-                                .then(function(){
-                        
-                                        // notify initiator and participants of sessions about to start (<5min)
-                                        
-                                        // notify initiator and participants of sessions starting in one hour
-                                        
-                                        // notify initiator and participants of sessions starting the next day
-                                        
-                                });
-                       };
+                      };
                       
                 setInterval(deleteExpiredSessions, 900000);
                 setInterval(notifySessions, 60000);

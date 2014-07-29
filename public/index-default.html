@@ -3,7 +3,7 @@
  * IDEAFY
  * ======
  * 
- * https://github.com/TAIAUT/Ideafy
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
  * Copyright (c) 2014 IDEAFY
@@ -17,8 +17,7 @@
 	<meta charset="utf-8">
 	<title>Ideafy</title>
 	<link rel="shortcut icon" href="http://ideafy.taiaut.net/favicon.ico?v=2"/>
-	<link rel="stylesheet" href="css/login-default-min.css">
-  	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/concat-min.css">
+	<link id="defaultstyle" class="currentStyle" rel="stylesheet" href="css/ideafy-min.css">
   	<script type="text/javascript" charset="utf-8">
         function onLoad(){
         	var app = document.createElement('script');
@@ -27,13 +26,8 @@
         };
 	</script>
 </head>
-<body onload="onLoad()" data-stack="destination" data-event="selector:.pressed-btn, mousedown, press; selector:.pressed-btn, mouseup, release">
+<body onload="onLoad()">
 	<iframe src="http://8.19.34.68:1664/blank.html" style="display:none" frameborder="0"></iframe>
-	<div id="login">
-		<img src="img/logoLogInPage-beta.png">
-		<div class = "spinner waiting"></div>
-		<div id="login-stack" data-loginstack="destination"></div>
-  	</div>
-	<div id="cache"></div>
+	<div id = "apploading"></div>
 </body>
 </html>

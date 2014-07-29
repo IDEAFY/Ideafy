@@ -1,11 +1,11 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument", "CouchDBView"], function(Config, Observable, Promise, LocalStore, Transport, Store, CouchDBView){
+define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument"], function(Config, Observable, Promise, LocalStore, Transport, Store){
         var _utils = {},
               user = Config.get("user"),
               transport = Config.get("transport"),
@@ -26,11 +26,11 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	};
                 
         _utils.formatDateStamp = function(stamp){
-                        var date=new Date(stamp),
-                              array = [date.getFullYear(), date.getMonth()+1, date.getDate()];
+                var date=new Date(stamp),
+                      array = [date.getFullYear(), date.getMonth()+1, date.getDate()];
                         
-                        return _utils.formatDate(array);
-                },
+                return _utils.formatDate(array);
+        },
 
         /*
         * A function used to format a duration in days, hours, min and secs from a number of milliseconds
@@ -322,7 +322,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                      obs = Config.get("observer");
                 // reconnect socket if not connected
                 if (!sock.socket.connected){
-                        sock.socket.reconnect();
+                        sock.socket.connect(Config.get("location"));
                         obs.notify("reconnect", "all");
                 }
                 // if socket is ok but user is offline reconnect user
@@ -334,7 +334,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
         */
         _utils.disconnectSocket = function(){
                 Config.get("socket").socket.disconnect();
-                Config.get("observer").notify("disconnect");      
+                Config.get("observer").notify("disconnect");
         };
                 
         /**
@@ -380,7 +380,6 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 	       else if (avatars.get(id) === "in progress"){
 		      avatars.watchValue(id, function(val){
 		              if (val && val !== "in progress"){
-		                      avatars.unwatch(id);
 		                      promise.fulfill(val);
 		              }        
 		      });

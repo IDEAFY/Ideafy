@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./profile/profile", "./settings/settings", "./about/about", "service/config"], 
@@ -48,7 +48,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                        _stack.getStack().add("#about", _about);
                        
                // set current view
-                       if (_user.get("resetPWD")){
+                        if (_user.get("resetPWD")){
                                 _stack.getStack().show("#settings");
                                 //_widget.dom.querySelector(".input[type='password]").scrollIntoView();      
                         }

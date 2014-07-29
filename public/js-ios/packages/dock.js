@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Authors: Vincent Weyl <vincent.weyl@taiaut.com> - Olivier Wietrich <Olivier.Wietrich@taiaut.com
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
@@ -13,45 +13,50 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//declaration
 			var _widget = new Widget(),
-			    _newIdea, _new2q, _tips, _notify = new Notify(), _attachment,
-			    _public, _library, _brainstorm, _connect, _dashboard,
-			    _control = new Control(this),
-			    _observer = Config.get("observer"),
-			    _user = Config.get("user"),
-			    _stack = new Stack();
+			      _notify = new Notify(),
+			      _public,
+			      _library,
+			      _brainstorm,
+			      _connect,
+			      _dashboard,
+			      _control = new Control(this),
+			      _observer = Config.get("observer"),
+			      _user = Config.get("user"),
+			      _stack = new Stack();
 
 		//setup
 			//labels have to configurable
 			_widget.plugins.addAll({
 				"dockstack" : _stack,
 				"dockcontrol" : _control,
-				"place" : new Place({"notify":_notify})
+				"place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": New2Q, "new2c": New2C, "help": Help, "tips": Tips, "attach": Attachment})
 			});
 			
-			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div id="notify" data-place="place:notify"></div></div>';
+			_widget.template = '<div id="wrapper"><nav id="dock" data-dockcontrol="radio:a,selected,touchstart,setCurrentWidget"><a class="dock-item selected" href="#public" data-dockcontrol="init"></a><a class="dock-item" href="#library"></a><a class="dock-item" href="#brainstorm"></a><a class="dock-item" href="#connect"></a><a class="dock-item" href="#dashboard"></a></nav><div class="stack" data-dockstack="destination"></div><div data-place="place:notify"></div><div data-place="place:newidea"></div><div data-place="place:new2q"></div><div data-place="place:new2c"></div><div data-place="place:help"></div><div data-place="place:tips"></div><div data-place="place:attach"></div><div id="cache"></div></div>';
 			
 			_widget.place(Map.get("dock"));
 
 		//logic
 			_widget.init = function init(){
 			        _public = new Public();
+			        console.log("public ok");
 			        _library = new Library();
+                                console.log("library ok");
 			        _brainstorm = new Brainstorm();
+                                console.log("brainstorm ok");
 			        _connect = new Connect();
+                                console.log("connect ok");
 			        _dashboard = new Dashboard();
+                                console.log("dashboard ok");
 			        
 			        _stack.getStack().add("#public", _public);
 				_stack.getStack().add("#library", _library);
 				_stack.getStack().add("#brainstorm", _brainstorm);
 				_stack.getStack().add("#connect", _connect);
 				_stack.getStack().add("#dashboard", _dashboard);
+				
 				// init notification engine
 				_notify.init();
-				
-				// initialize popups
-				_newIdea = new NewIdea();
-                                _new2q = new New2Q();
-                                _tips = new Tips();
 			};
 			
 			/*
@@ -60,9 +65,9 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			 */
 			_widget.start = function start(firstStart){
 			        var pub = _widget.dom.querySelector('a[href="#public"]'),
-                                      dash = _widget.dom.querySelector('a[href="#dashboard"]'),
-			              current = _widget.dom.querySelector('a.selected'),
-			              startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
+			             dash = _widget.dom.querySelector('a[href="#dashboard"]'),
+			             current = _widget.dom.querySelector('a.selected'),
+			             startScreen = _widget.dom.querySelector('a[href="'+_user.get("settings").startupScreen+'"]');
 			         //set current stack view
                                 if (!_user.get("settings").startupScreen && !_user.get("resetPWD")){
                                         if (current !== pub) {
@@ -84,12 +89,8 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                                 
                                 // show tips if applicable
                                 if (firstStart || _user.get("settings").showTips !== false){
-                                        _tips.init(firstStart);
-                                }
-                                
-                                // set user connection status
-                                _user.set("online", true);
-                                _user.upload();       
+                                        Tips.init(firstStart);
+                                }       
 			};
 			
 			_widget.reset = function reset(){
@@ -103,6 +104,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 			this.setCurrentWidget = function(event){
 				var href = event.target.getAttribute("href"), timeout= 1500;
+				event.preventDefault();
 				if(href !== _stack.getStack().getCurrentName()){
 				        //hide current submenu if present
                                         _stack.getStack().getCurrentScreen().hideMenu();
@@ -167,6 +169,19 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
                         
                         // display session waiting room (join)
                         _observer.watch("join-musession", function(sid){
+                                var prev = document.querySelector(".dock-item.selected"),
+                                    bs = document.querySelector(".dock-item[href='#brainstorm']");
+                                
+                                // this event can be called from and outside of the brainstorm UI -- we only need to change views if it's called from outside
+                                if (_stack.getStack().getCurrentName() !== "#brainstorm") {
+                                        _stack.getStack().show("#brainstorm");
+                                        _control.radioClass(bs, prev, "selected");
+                                        _control.init(bs);
+                                }        
+                        });
+                        
+                        // display session preview (prior to join)
+                        _observer.watch("show-mupreview", function(sid){
                                 var prev = document.querySelector(".dock-item.selected"),
                                     bs = document.querySelector(".dock-item[href='#brainstorm']");
                                 

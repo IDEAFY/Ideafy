@@ -1,12 +1,12 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise"],
-        function(Widget, Map, Config, Model, Event, Utils, Store, Promise){
+define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "lib/spin.min"],
+        function(Widget, Map, Config, Model, Event, Utils, Store, Promise, Spinner){
                 
            return function ImportConstructor($store, $exit){
              
@@ -15,7 +15,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                     _reader = new FileReader(),
                     _progress = new Store({"status": null}),
                     _pos = null, // the position of the postit
-                    _postit = new Store({"type": "import", "content":""}),
+                    _postit = new Store({"type": "import", "content":"", "author": Config.get("user").get("_id")}),
                     _sid, // the current session id
                     MAX_WIDTH = 400,
                     MAX_HEIGHT = 300,
@@ -80,9 +80,10 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                         (content) ? this.classList.remove("invisible") : this.classList.add("invisible");        
                                 },
                                 "showPreview" : function(content){
-                                        var json, node=this, _transport=Config.get("transport");
+                                        var json, node=this, _transport=Config.get("transport"), spinner;
                                         if (!content) this.innerHTML = "";
                                         else {
+                                                spinner = new Spinner().spin(node);
                                                 json = {"dir":"sessions/"+_sid, "filename":content};
                                                 _transport.request("GetFile", json, function(data){
                                                         var _img = new Image(),
@@ -91,6 +92,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                                         node.width=_img.width;
                                                         node.height=_img.height;
                                                         _ctx.drawImage(_img,0,0);
+                                                        spinner.stop();
                                                         _widget.dom.querySelector("#postpic").scrollIntoView(false);  
                                                 });
                                         }       
@@ -168,7 +170,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 _widget.reset = function reset($pos){
                         _pos = $pos;
                         
-                        _postit.reset({"type": "import", "content":""});
+                        _postit.reset({"type": "import", "content":"", "author": Config.get("user").get("_id")});
                         
                         if (_pos || _pos === 0){
                                 _postit.reset($store.get($pos));
@@ -189,7 +191,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                         node.parentNode.classList.add("invisible");
                         _widget.reset();
                         _clearCanvas();
-                        document.getElementById("importbuttons").classList.remove("invisible");
+                        _widget.dom.querySelector(".importbuttons").classList.remove("invisible");
                         $exit("import");        
                 };
 

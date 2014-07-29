@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -16,39 +16,28 @@ var olives = require("../libs/olives"),
 
 var AvatarListConstructor = function($ids){
 
-        var _store = new Store([]),
-              i,
-             _avatars = Config.get("avatars"); 
+        var _store = new Store([]); 
+        
+        $ids.forEach(function(id){
+                _store.alter("push", {id:id});
+        });
         
         // setup
         this.plugins.addAll({
                 "avatar" : new Model(_store, {
-                        setAvatar : function(img){
-                                this.setAttribute("style", "background-image: url('"+img+"');");
+                        setAvatar : function(id){
+                                if (id){
+                                        var _frag = document.createDocumentFragment(),
+                                              _ui = new Avatar([id]);
+                                        _ui.place(_frag);
+                                        (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);
+                                }
                         }
-                }),
-                "event" : new Event(this)
+                })
         });
                         
         // set template
-        this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, img; bind: name, id"></li></ul>';
-                        
-        // init
-        for (i=0; i<$ids.length; i++){
-                if ($ids[i] === Config.get("user").get("_id")){
-                        _store.alter("push", {id:$ids[i], img: Config.get("avatar")});
-                }
-                else if (_avatars.get($ids[i])){
-                        _store.alter("push", {id:$ids[i], img:_avatars.get($ids[i])});       
-                }
-                else {
-                        Config.get("transport").request("GetAvatar", {id: $ids[i]}, function(result){
-                                if (!result.error){
-                                        _store.alter("push", {id: $ids[i], img: result});
-                                }
-                        });
-                }
-        }
+        this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, id"></li></ul>';
 };
                 
 module.exports = function AvatarListFactory($ids){

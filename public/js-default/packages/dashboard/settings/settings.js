@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -30,7 +30,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                        options = new Store({"screens": screens, "timers": timers, "pwd":"", "pwdbis":"", "lang":[], "pwdchange": "", "contentLang": user.get("lang").substring(0,2)}),
                        _languages = new Store([{name:"*"}]),
                        _usrLg = Config.get("userLanguages"),
-                       settings = new Store();                  
+                       settings = new Store();
                    
                    // build languages & flags
                    _usrLg.forEach(function(val){
@@ -127,7 +127,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                                                 {"name": labels.get("dashboard"), "dest": "#dahsboard"}
                                         ]);
                                         // reset active filter language
-                                        (settings.get("contentLang")) ? options.set("contentLang", settings.get("contentLang")) : options.set("contentLang", user.get("lang").substring(0,2));     
+                                        (settings.get("contentLang")) ? options.set("contentLang", settings.get("contentLang")) : options.set("contentLang", user.get("lang").substring(0,2));
                                 });
                         }        
                    };
@@ -234,7 +234,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    };
                    
                    settingsUI.clearOK = function(event, node){
-                        options.set("pwdchange", "");        
+                        options.set("pwdchange", "");
                    };
                    
                    settingsUI.updatepwd = function(event, node){
@@ -293,7 +293,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    
                    // init
                    settingsUI.reset = function reset(){
-                           // get user settings and watch for changes
+                        // get user settings and watch for changes
                         settings.reset(user.get("settings"));
                         user.watchValue("settings", function(change){
                                 settings.reset(user.get("settings"));
@@ -328,7 +328,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         // reset pwd fields
                         options.set("pwd", "");
                         options.set("pwdbis", "");
-                        options.set("pwdchange", ""); 
+                        options.set("pwdchange", "");
                    };
                    
                    settingsUI.reset();

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -125,7 +125,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            (end) ? _progress.exit() : _progress.dom.classList.toggle("invisible");      
                    };
                    
-                // initiator or a participant decides to leave the waiting room
+                // initiator or a participant decides to leave the session
                 
                 // manage exit event : init confirm callback
                 confirmCallBack = function confirmCallback(decision){
@@ -168,7 +168,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 // reset sessionInProgress in user doc
                                 _user.set("sessionInProgress", "");
                                 _user.upload().then(function(){
-                                        $exit();        
+                                        _widget.goToScreen();        
                                 }); 
                         } 
                 };
@@ -362,7 +362,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // retrieve session and start brainstorming   
                 _widget.retrieveSession = function retrieveSession(sid, replay){
-                        
                         var promise = new Promise();
                         spinner.spin(document.getElementById("brainstorm"));
                            
@@ -405,7 +404,6 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                            });
                            return promise;
                    };
-                   
                    
                 _widget.leave = function leave(){
                         var lbl = "";
@@ -616,6 +614,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 })
                                 .then(function(){
                                         $exit();
+                                        document.removeEventListener("mousedown", exitListener.listener, true);
                                 });
                         }                
                 });

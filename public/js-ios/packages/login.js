@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject" ,"Amy/Stack-plugin", 
@@ -38,6 +38,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginstack" : _stack
                         });
                         
+                        _login.template = '<div id="login"><div id="login-stack" data-loginstack="destination"><div class="squirrel"></div></div></div>';
                         
                         // loading UI
                         _loading.plugins.add("label", new Model(_labels));
@@ -50,7 +51,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         // no connection UI
                         _internetdown.plugins.add("label", new Model(_labels));
-                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
+                        _internetdown.template = '<div id="nointernet"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
                         
                         // signup form
                         _signupForm.plugins.addAll({
@@ -59,7 +60,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "signupevent" : new Event(_signupForm)
                         });
                         
-                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password"data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm" type="password" data-loginmodel="bind:value,confirm-password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" type="text" data-loginmodel="bind:value,firstname" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" type="text" data-loginmodel="bind:value,lastname" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: touchstart, press; listen: touchend, release; listen:touchend, signup"></label></p><p><label class="login-button pressed-btn btn-ready" name="#login-screen" data-signupevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
+                        _signupForm.template = '<form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password"data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm" type="password" data-loginmodel="bind:value,confirm-password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" type="text" data-loginmodel="bind:value,firstname" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" type="text" data-loginmodel="bind:value,lastname" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: touchstart, press; listen: touchend, release; listen:touchend, signup"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label class="signup-button pressed-btn" name="#login-screen" data-signupevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form>';
                         
                         _signupForm.press = function(event, node){
                                 node.focus();
@@ -151,7 +152,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         // add welcome notification
                                                                         var now = new Date();
                                                                         
-                                                                        user.set("regdate", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                                                        user.set("regdate", [now.getTime()]);
                                                                         user.set("notifications", [{
                                                                                 "type" : "MSG",
                                                                                 "toList": fn + " " + ln,
@@ -214,7 +215,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginevent" : new Event(_loginForm)
                         });
                         
-                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" autofocus="autofocus" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:touchstart, press; listen: touchend, release; listen:touchend, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:touchstart, press; listen:touchend, release; listen:touchend, resetPassword"></label></p><p><label id="signup-button" class="pressed-btn btn-ready" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showSignup"></label></p></form>';
+                        _loginForm.template = '<form id="login-form"><p class="login-fields"><input name="email" autofocus="autofocus" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-loginevent="listen:input, resetError"><input name="password" type="password" data-loginmodel="bind:value,password" data-label="bind:placeholder, passwordplaceholder" data-loginevent="listen: input, resetError; listen:keypress, enterlogin"></p><p><label class="login-button pressed-btn" data-label="bind: innerHTML, loginbutton" data-loginevent="listen:touchstart, press; listen: touchend, release; listen:touchend, login"></label></p><p class="login-error"><label data-loginmodel="bind:innerHTML,error" class="login-error"></label><label class="forgotpwd" data-loginmodel="bind:forgotpwd,reset" data-label="bind:innerHTML, forgotpwd"  data-loginevent="listen:touchstart, press; listen:touchend, release; listen:touchend, resetPassword"></label></p><p><label class="signup-button pressed-btn" name="#signup-screen" data-label="bind: innerHTML, newuserbutton" data-loginevent="listen: touchstart, press; listen:touchend, release; listen: touchend, showSignup"></label></p></form>';
                         
                         _loginForm.press = function(event, node){
                                 node.classList.add("pressed");        
@@ -305,13 +306,13 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _stack.getStack().add("#maintenance-screen", _serverdown);
                         _stack.getStack().add("#nointernet", _internetdown);
                         
-                        _login.alive(Map.get("login"));
+                        _login.place(Map.get("login"));
                         
                         // Initialization
                         _login.init = function init(){
                                 // display loading screen and initialize spinner
                                _stack.getStack().show("#loading-screen");
-                               spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
+                               spinner = new Spinner({color:"#cccccc", lines:10, length: 10, width: 4, radius:8}).spin(document.getElementById("loadingspin"));
                         };
                         
                         _login.setScreen = function setScreen(target){

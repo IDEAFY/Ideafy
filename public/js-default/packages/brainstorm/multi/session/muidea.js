@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -122,7 +122,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 "muideaevent" : new Event(_widget)
                         });
                         
-                        _widget.template = '<div id = "muidea"><div class="previousbutton" data-muideaevent="listen: mousedown, press; listen: mousedown, prev"></div><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, muidea" data-muideaevent="listen:mousedown, toggleProgress"></div><div class="timer" data-muideatimer="bind:setTime, timer; bind: displayTimer, display" data-muideaevent="listen:mousedown,toggleTimer"></div><div id="muidea-left"><div class="idea-cards leftarea folded" data-muideaevent="listen:mousedown, fold"><div class="card defaultscenario" name="scenario" data-muideaevent="listen: mousedown, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-muideaevent="listen: mousedown, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul><div class="caret"></div></div><div id="muidea-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muideaevent="listen: mousedown, push; listen:mouseup, post"></div><legend data-labels="bind:innerHTML, post">Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muideaevent="listen: mousedown, push; listen:mouseup, importpic"></div><legend data-labels="bind:innerHTML, import">Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muideaevent="listen: mousedown, push; listen:mouseup, draw"></div><legend data-labels="bind:innerHTML, draw">Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: mousedown, press; listen:mouseup, finish"></div></div></div><div id="muidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret descending invisible" data-muideaevent="listen:mousedown, toggleCaret"></div></div><div id = "muidea-writeup" class="writeup invisible" data-wbtools="bind: showIdea,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly" data-muideaevent="listen:input, updateField"></textarea><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly" data-muideaevent="listen:input, updateField"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly" data-muideaevent="listen:input, updateField"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muideaevent="listen: mousedown, press; listen:mouseup, next"></div></div><div class="sessionvote" data-place="place:vote"></div><div class="sessionchat" data-place="place:chat"></div></div>';
+                        _widget.template = '<div id = "muidea"><div class="previousbutton" data-muideaevent="listen: mousedown, press; listen: mousedown, prev"></div><div class="brainstorm-header header blue-dark" data-labels="bind: innerHTML, muidea" data-muideaevent="listen:mousedown, toggleProgress"></div><div class="timer" data-muideatimer="bind:setTime, timer; bind: displayTimer, display" data-muideaevent="listen:mousedown,toggleTimer"></div><div id="muidea-left"><div class="idea-cards leftarea folded" data-muideaevent="listen:mousedown, fold"><div class="card defaultscenario" name="scenario" data-muideaevent="listen: mousedown, zoom" data-wbtools="bind: popup,cardpopup.scenario"><div class="cardpicture"></div><div class="cardtitle" data-scenario="bind:innerHTML, title"></div></div><ul class="cardlist" data-techs="foreach"><li><div class="card tech" data-muideaevent="listen: mousedown, zoom" data-wbtools="bind: popup,cardpopup.techs"><div class="cardpicture" data-techs="bind:setPic, pic"></div><div class="cardtitle" data-techs="bind:innerHTML,title"></div></div></li></ul><div class="caret"></div></div><div id="muidea-popup"></div><div class ="toolbox" data-wbtools="bind:toggleToolbox, showidea"><div class="toolbox-button"><div class="postit-button" name="postit" data-wbtools="bind:setActive, postit" data-muideaevent="listen: mousedown, push; listen:mouseup, post"></div><legend data-labels="bind:innerHTML, post">Post-it</legend></div><div class="toolbox-button"><div class="importpic-button" name="import" data-wbtools="bind:setActive, import" data-muideaevent="listen: mousedown, push; listen:mouseup, importpic"></div><legend data-labels="bind:innerHTML, import">Import pictures</legend></div><div class="toolbox-button"><div class="drawingtool-button" name="drawing" data-wbtools="bind:setActive, drawing" data-muideaevent="listen: mousedown, push; listen:mouseup, draw"></div><legend data-labels="bind:innerHTML, draw">Drawing tool</legend></div><div class="finish-button invisible" data-wbtools="bind:setReady, ready" data-labels="bind:innerHTML, finishbutton" data-muideaevent="listen: mousedown, press; listen:mouseup, finish"></div></div></div><div id="muidea-right" class="workarea"><div id="idea-whiteboard" class="whiteboard"><div class="stack" data-wbstack="destination"></div><div class="caret descending invisible" data-muideaevent="listen:mousedown, toggleCaret"></div></div><div id = "muidea-writeup" class="writeup invisible" data-wbtools="bind: showIdea,showidea"><textarea class = "enterTitle" maxlength="30" data-labels="bind:setPlaceholder, ideatitleplaceholder" data-idea="bind:value, title" data-wbtools="bind:setReadonly, readonly" data-muideaevent="listen:input, updateField"></textarea><textarea class = "enterDesc" data-labels="bind:setPlaceholder, ideadescplaceholder" data-idea="bind:value, description" data-wbtools="bind:setReadonly, readonly" data-muideaevent="listen:input, updateField"></textarea><textarea class = "enterSol" data-labels="bind:setPlaceholder, ideasolplaceholder" data-idea="bind:value, solution" data-wbtools="bind:setReadonly, readonly" data-muideaevent="listen:input, updateField"></textarea></div><div class="next-button invisible" data-wbtools="bind:setReady, shownext" data-labels="bind:innerHTML, nextbutton" data-muideaevent="listen: mousedown, press; listen:mouseup, next"></div></div><div class="sessionvote" data-place="place:vote"></div><div class="sessionchat" data-place="place:chat"></div></div>';
                         
                         _widget.place(Map.get("muidea"));
                         
@@ -133,7 +133,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // move to next screen
                         _widget.next = function(event, node){
-                                var now = new Date(), _timers, duration, visibility, replay, promise = new Promise();
+                                var now = new Date(), id, _timers, duration, visibility, replay, promise = new Promise();
                                 
                                 node.classList.add("invisible");
                                 node.classList.remove("pressed");
@@ -170,9 +170,12 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 spinner.spin(node.parentNode);
                                                 // add idea to session data
                                                 $data.set("idea", JSON.parse(_idea.toJSON()));
-                                        
+                                                
+                                                // create _id for idea doc
+                                                id = "I:"+now.getTime();
+                                                
                                                 // create separate idea document in couchdb
-                                                return _widget.createIdeaDoc();
+                                                return _widget.createIdeaDoc(id);
                                         })
                                         .then(function(){
                                                 // unsync session document, resync, add new data
@@ -187,7 +190,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 timers.muidea = _timer.get("timer");
                                                 // update session document
                                                 $session.set("idea", [JSON.parse(_idea.toJSON())]);
-                                                if (replay) {$session.set("replayIdeas", []);}
+                                                if (replay) $session.set("replayIdeas", [id]);
                                                 $session.set("elapsedTimers", timers);
                                                 $session.set("duration", duration);
                                                 $session.set("status", "completed");
@@ -319,7 +322,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         // Method called when closing a popup -- passed as a parameter to the popup constructor
                         _widget.closePopup = function closePopup(){
                                 _tools.set("cardpopup", {"scenario":false, "techs":[false, false, false]});
-                                _currentPopup = "";    
+                                _currentPopup = "";
                         };
                         
                         // Creating the popup UI
@@ -507,19 +510,19 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         };
                         
                         // create separate idea doc in couchDB
-                        _widget.createIdeaDoc = function createIdeaDoc(){
+                        _widget.createIdeaDoc = function createIdeaDoc(_id){
                                 var cdb = new CouchDBDocument(Config.get("ideaTemplate")),
-                                    now = new Date(),
-                                    _id = "I:"+now.getTime(),
-                                    auth = [],
-                                    names = [],
-                                    promise = new Promise();
+                                      now = new Date(parseInt(_id.slice(2,_id))),  // match now with idea _id
+                                      names = [],
+                                      promise = new Promise();
                                     
                                 auth.push($session.get("initiator").id);
                                 names.push($session.get("initiator").username);
                                 $session.get("participants").forEach(function(part){
-                                        auth.push(part.id);
-                                        names.push(part.username);        
+                                        if (part.present){
+                                                auth.push(part.id);
+                                                names.push(part.username);
+                                        }
                                 });
                                 cdb.setTransport(_transport);
                                 cdb.set("title", _idea.get("title"));

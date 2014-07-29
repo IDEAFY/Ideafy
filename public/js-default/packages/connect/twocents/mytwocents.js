@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -88,7 +88,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         
                         // ask a twoquestion
                         myTwocentUI.plus = function(){
-                                New2Q.reset();      
+                                New2Q.reset();
                         };
                         
                         // manage button events

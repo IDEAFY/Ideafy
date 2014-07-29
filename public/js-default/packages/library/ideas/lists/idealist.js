@@ -1,25 +1,27 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
+define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
         function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
-                    display = false,
-                    currentBar = null,
-                    _options = {
+                      _mosaic = new Store(),
+                      display = false,
+                      currentBar = null,
+                      _options = {
                                 db : $db,
                                 view : $view,
                                 design : $design,
                                 query : {
                                         descending : true
                                 }
-                     },
-                     user = Config.get("user"),
-                     widget = this;
+                      },
+                      user = Config.get("user"),
+                      labels = Config.get("labels"),
+                      widget = this;
 
                 //setup
                 _store.setTransport(Config.get("transport"));
@@ -29,15 +31,15 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
+                this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames" data-display="bind:setAuthornames, mosaic"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
                 
                 // change template for listSearch
                 if (_options.query.q){
-                        this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
+                        this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames" data-display="bind:setAuthornames, mosaic"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
                 }
 
                 widget.plugins.addAll({
-                        "labels": new Model(Config.get("labels")),
+                        "labels": new Model(labels),
                         "listideas": new Model(_store, {
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
@@ -69,6 +71,17 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 setVisibility : function(visibility){
                                         (visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
                                 }
+                        }),
+                        "display" : new Model(_mosaic, {
+                                setAuthornames : function(mosaic){
+                                        var _id = this.getAttribute("data-listideas_id"),
+                                              names = _store.get(_id).value.doc.authornames,
+                                              authors = _store.get(_id).value.doc.authors;
+                                        if (mosaic && authors.length > 1){
+                                                this.innerHTML = names.split(',')[0] + labels.get("andothers");
+                                        }
+                                        else this.innerHTML = names;
+                                } 
                         }),
                         "listevent" : new Event(this)
                         });
@@ -108,10 +121,15 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                 };
 
                 widget.setStart = function(event, node){
+                        var dom = document.getElementById("ideas");
                         if (currentBar){
                                  currentBar.hide();
                                  currentBar = null;        
-                        } // hide previous action bar  
+                        }  // hide previous action bar
+                        if (dom.classList.contains("mosaic")) {
+                                dom.classList.remove("mosaic");
+                                node.scrollIntoView();
+                        }
                 };
                 
                 widget.setLang = function(lang){
@@ -142,10 +160,15 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         return widget.resetQuery(query); 
                 };
                 
+                widget.setMosaic = function(mosaic){
+                        (mosaic) ? _mosaic.set("mosaic", true) : _mosaic.set("mosaic", false);
+                };
+                
                 widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
-                            display = false, frag,
-                            dom = document.getElementById("ideas");
+                              dom = document.getElementById("ideas"),
+                              frag,
+                              display = false;
                         
                         // check if actionbar exists for this element
                         if (currentBar && currentBar.getParent() === node){

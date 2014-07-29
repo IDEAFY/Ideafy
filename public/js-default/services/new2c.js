@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -53,7 +53,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.reset = function reset($contact){
                                 contact = $contact;
                                 _widget.dom.classList.add("appear");
-                                document.getElementById("cache").classList.add("appear");  
+                                document.getElementById("cache").classList.add("appear");
                                 _dest.set("userid", contact.userid);
                                 _dest.set("username", contact.username);
                                 _store.reset({

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -10,21 +10,21 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 		return function PublicEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
-                             _attachmentUI = new Attachment("idea"),
-                             _addAttachmentUI = new AddAttachment(),
-			    _store = new CouchDBDocument(),  // the idea
-                            _languages = new Store(Config.get("userLanguages")),
-                            _resetLang = function(){
-                                _languages.loop(function(v,i){
-                                        (_store.get("lang") && (v.name === _store.get("lang").substring(0,2))) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
-                                });        
-                            },
-			    _labels = Config.get("labels"),
-			    _error = new Store({"error": ""}),
-                            _alist = new Store([]),
-                            _addedAttachments = [],
-                            _removedAttachments = [],
-			    updateReplay; // flag, set to true if sessionReplay option is modified
+			      _attachmentUI = Attachment,
+			      _addAttachmentUI = new AddAttachment(),
+			      _store = new CouchDBDocument(),  // the idea
+			      _languages = new Store(Config.get("userLanguages")),
+			      _resetLang = function(){
+                                        _languages.loop(function(v,i){
+                                                (_store.get("lang") && (v.name === _store.get("lang").substring(0,2))) ? _languages.update(i, "selected", true) : _languages.update(i, "selected", false);       
+                                        });        
+                              },
+                              _labels = Config.get("labels"),
+                              _error = new Store({"error": ""}),
+                              _alist = new Store([]),
+                              _addedAttachments = [],
+                              _removedAttachments = [],
+                              updateReplay; // flag, set to true if sessionReplay option is modified
 		//setup
 	               
                         _store.setTransport(Config.get("transport"));
@@ -118,7 +118,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                                                 (selected) ? this.classList.add("selected") : this.classList.remove("selected");        
                                         } 
                                 }),
-                                "place" : new Place({"AttachmentUI" : _attachmentUI, "AddAttachmentUI" : _addAttachmentUI}),
+                                "place" : new Place({"AddAttachmentUI" : _addAttachmentUI}),
 			        "editevent" : new Event(_widget),
 			        "errormsg" : new Model(_error,{
 			                setError : function(error){
@@ -139,7 +139,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 			        })
 			});
 			
-			_widget.template = '<div class="idea-edit"><div class="header blue-dark"><span data-editlabel="bind:innerHTML, modifyidealbl">Modify your idea</span></div><form class="form"><div class="idealang"><div class="currentlang" data-editidea="bind: displayLang, lang" data-editevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-editevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><p><input type="text" class="input" data-editidea="bind: value, title"></p><p><textarea class="description input" data-editidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p><div class="options"><div class="current-visibility" data-editidea="bind:setVisibleIcon, visibility"><span class="label" data-editlabel="bind:innerHTML,ideavisiblelbl"></span><span data-editlabel="bind:innerHTML, privatelbl" data-editidea="bind:setVisibility, visibility"></span></div><div class="edit-visibility" data-editidea="bind:hideVisibility, visibility"><span class="label" data-editlabel="bind:innerHTML,setideavisiblelbl"></span><div class="visibility public" data-editlabel="bind:innerHTML, publiclbl" data-editevent="listen:mousedown, editVisibility"></div></div></div><div class="options invisible" data-editidea="bind:setReplay, sessionId"><div class="current-visibility replay"><span class="label" data-editlabel="bind:innerHTML,ideafyreplaylbl"></span><span data-editlabel="bind:innerHTML, disabledreplaylbl" data-editidea="bind:setIdeafyStatus, sessionReplay"></span></div><div class="edit-visibility replay"><span class="label" data-editlabel="bind:innerHTML, ideafysetreplaylbl"></span><div class="toggle-replay" data-editidea = "bind: setSessionReplay, sessionReplay" data-editevent="listen:mousedown, press; listen:mouseup, enableReplay" data-editlabel="bind:innerHTML, enablereplaylbl"></div></div></div><p class="submit"><label class="publish pressed-btn" data-editevent="listen: mousedown, press;listen:mouseup, upload">Publish</label><label class="cancel pressed-btn" data-editevent="listen: mousedown, press;listen:mouseup, cancel">Cancel</label><label class="editerror" data-errormsg="bind:setError, error"></label></p></form><div class="attachments"><legend class="idealegend" data-editlabel="bind:innerHTML, attachments"></legend><div class="toggleattach" data-editevent="listen: mousedown, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><a class="a-type" data-alist="bind:setType, type; bind: setRef, fileName" data-editevent="listen: mousedown, press; listen: mouseup, release"></a><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><label class="a-delete" data-editevent="listen:mousedown, press; listen:mouseup, removeAttachment"></label><label class="a-zoom" data-editevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, zoom"></label></li></ul><legend class="a-legend" data-editlabel="bind:innerHTML, alegend"></legend><div data-place="place: AddAttachmentUI"></div></div><div data-place="place: AttachmentUI"></div></div>';
+			_widget.template = '<div class="idea-edit"><div class="header blue-dark"><span data-editlabel="bind:innerHTML, modifyidealbl">Modify your idea</span></div><form class="form"><div class="idealang"><div class="currentlang" data-editidea="bind: displayLang, lang" data-editevent="listen: mouseup, showLang"></div><ul class="invisible" data-select="foreach"><li data-select="bind: setBg, name; bind: setSelected, selected" data-editevent="listen: mousedown, selectFlag; listen: mouseup, setLang"></li></ul></div><p><input type="text" class="input" data-editidea="bind: value, title"></p><p><textarea class="description input" data-editidea="bind: value, description"></textarea></p><p><textarea class="solution input" data-editidea="bind: value, solution"></textarea></p><div class="options"><div class="current-visibility" data-editidea="bind:setVisibleIcon, visibility"><span class="label" data-editlabel="bind:innerHTML,ideavisiblelbl"></span><span data-editlabel="bind:innerHTML, privatelbl" data-editidea="bind:setVisibility, visibility"></span></div><div class="edit-visibility" data-editidea="bind:hideVisibility, visibility"><span class="label" data-editlabel="bind:innerHTML,setideavisiblelbl"></span><div class="visibility public" data-editlabel="bind:innerHTML, publiclbl" data-editevent="listen:mousedown, editVisibility"></div></div></div><div class="options invisible" data-editidea="bind:setReplay, sessionId"><div class="current-visibility replay"><span class="label" data-editlabel="bind:innerHTML,ideafyreplaylbl"></span><span data-editlabel="bind:innerHTML, disabledreplaylbl" data-editidea="bind:setIdeafyStatus, sessionReplay"></span></div><div class="edit-visibility replay"><span class="label" data-editlabel="bind:innerHTML, ideafysetreplaylbl"></span><div class="toggle-replay" data-editidea = "bind: setSessionReplay, sessionReplay" data-editevent="listen:mousedown, press; listen:mouseup, enableReplay" data-editlabel="bind:innerHTML, enablereplaylbl"></div></div></div><p class="submit"><label class="publish pressed-btn" data-editevent="listen: mousedown, press;listen:mouseup, upload">Publish</label><label class="cancel pressed-btn" data-editevent="listen: mousedown, press;listen:mouseup, cancel">Cancel</label><label class="editerror" data-errormsg="bind:setError, error"></label></p></form><div class="attachments"><legend class="idealegend" data-editlabel="bind:innerHTML, attachments"></legend><div class="toggleattach" data-editevent="listen: mousedown, toggleAttachments"></div><ul class="a-list" data-alist="foreach"><li><a class="a-type" data-alist="bind:setType, type; bind: setRef, fileName" data-editevent="listen: mousedown, press; listen: mouseup, release"></a><label class="a-name" data-alist="bind:innerHTML, name">Name</label><label class="a-cat" data-alist="bind:setCat, category"></label><label class="a-delete" data-editevent="listen:mousedown, press; listen:mouseup, removeAttachment"></label><label class="a-zoom" data-editevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, zoom"></label></li></ul><legend class="a-legend" data-editlabel="bind:innerHTML, alegend"></legend><div data-place="place: AddAttachmentUI"></div></div></div>';
 			
 			_widget.place(Map.get("public-edit"));
 
@@ -190,11 +190,14 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         };
                         
                         _widget.editVisibility = function(event, node){
+                                node.classList.add("pressed");
                                 // confirmation
                                 Confirm.reset(_labels.get("setpublicquestion"), function(decision){
+                                        node.classList.remove("pressed");
                                         (decision) ? _store.set("visibility", "public") : _store.set("visibility", "private");
                                         Confirm.hide();
-                                        });       
+                                }, "musession-confirm");
+                                Confirm.show();     
                         };
                         
                         _widget.press = function(event, node){
@@ -264,8 +267,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
-                                _attachmentUI.reset(_alist.get(idx).docId);
-                                document.querySelector(".cache").classList.add("appear");      
+                                _attachmentUI.reset(_alist.get(idx).docId, "idea");     
                         };
                         
                         _widget.enableReplay = function(event, node){

@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.plugin", "service/config", "Store", "service/utils", "./ideafy-menu", "./quickb/quickb", "./multi/mub"], 
@@ -36,7 +36,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		                })
 		        });
 		        
-		        _widget.template = '<div id="brainstorm"><div id="brainstorm-menu"></div><div class="brainstorm-header header blue-light"><div class="date" data-header="bind: setDate, date"></div><span class="headerTitle" data-header="bind: innerHTML, headertitle"></span><div class="clock" data-header="bind: setTime, date">hh:mm</div></div><div class="stack" data-brainstormstack="destination"></div></div>';
+		        _widget.template = '<div id="brainstorm"><div id="brainstorm-menu"></div><div class="brainstorm-header header blue-dark"><div class="date" data-header="bind: setDate, date"></div><span class="headerTitle" data-header="bind: innerHTML, headertitle"></span><div class="clock" data-header="bind: setTime, date">hh:mm</div></div><div class="stack" data-brainstormstack="destination"></div></div>';
 		                
                         _widget.place(Map.get("brainstorm"));
                         
@@ -47,7 +47,8 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                              _submenu.toggleActive(false);
                         };
                         _widget.exitSession = function exitSession(){
-                                _stack.getStack().show("menu");        
+                                _stack.getStack().show("menu");
+                                Config.get("observer").notify("session-exited");
                         };
                         
                         _widget.reset = function reset(){
@@ -123,6 +124,11 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
                  */
                 Config.get("observer").watch("join-musession", function(sid){
                       var sip ={type: "musession", id: sid, mode:"join"};
+                      _widget.selectScreen(sip.type, sip);
+                });
+                
+                Config.get("observer").watch("show-mupreview", function(sid){
+                        var sip ={type: "musession", id: sid, mode:"preview"};
                       _widget.selectScreen(sip.type, sip);
                 });
 		

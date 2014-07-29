@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -33,7 +33,7 @@ define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin
                                         if (v.value.default_lang === lang || !v.value.translations[lang]) {faqlist.alter("push", v.value);}
                                         else {faqlist.alter("push", v.value.translations[lang]);}
                                 });
-                                cdb.unsync();    
+                                cdb.unsync();
                         });
                 };
                 

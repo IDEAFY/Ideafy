@@ -135,6 +135,7 @@ socketIOTransport(io, handlers);
 
 CouchDBTools.configuration.sessionStore = sessionStore;
 handlers.set("CouchDB", CouchDBTools.handler);
+handlers.set("CouchDBChange", CouchDBTools.changeHandler);
         
 /*
   *  Application utility functions

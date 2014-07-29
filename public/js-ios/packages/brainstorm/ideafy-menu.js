@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "service/config"],
@@ -30,7 +30,7 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                                                         this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bgselected+"');color:white;");
                                                 }
                                                 else{
-                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bg+"');color:#4D4D4D;");     
+                                                        this.setAttribute("style", "background-image:url('img/brainstorm/"+_menu.get(id).bg+"');color:#4D4D4D;");
                                                 }
                                         }
                                 }),
@@ -38,7 +38,7 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                                 "ideafyevent" : new Event(this)
                         });
                         
-                        _widget.template = '<div id="ideafy-menu"><div class="brainstorm-header header blue-light" data-labels="bind: innerHTML, brainstormchoosemode"></div><ul class="menu" data-ideafymenu = "foreach"><li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li></ul></div>';      
+                        _widget.template = '<div id="ideafy-menu"><div class="brainstorm-header header blue-dark" data-labels="bind: innerHTML, brainstormchoosemode"></div><ul class="menu" data-ideafymenu = "foreach"><li data-ideafymenu="bind:innerHTML, label; bind: setActive, active; bind:setBg, selected" data-ideafyevent="listen:touchstart, press; listen: touchend, start"></li></ul></div>';      
                         
                         _widget.place(Map.get("ideafy-menu"));
                         

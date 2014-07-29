@@ -1,9 +1,10 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
  * Copyright (c) 2014 IDEAFY LLC
  */
+
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
         function(Widget, Store, Model, Event, Config){
                 
@@ -20,7 +21,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                             ],
                     _colors = new Store(_initColors),
                    _pos = null, // the position of the postit
-                   _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}});
+                   _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}, "author": Config.get("user").get("_id")});
                    
                    _widget.plugins.addAll({
                            "labels": new Model(_labels),
@@ -61,6 +62,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 };
                 
                 _widget.press = function(event, node){
+                        _widget.dom.querySelector("textarea").blur();
                         node.classList.add("pressed");
                                 
                 };
@@ -82,7 +84,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 _widget.reset = function reset($pos){
                         _pos = $pos;
                         if (!_pos && _pos !== 0){
-                                _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}});
+                                _postit.reset({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png", "marker": "#4D4D4D"}, "author": Config.get("user").get("_id")});
                                 _colors.reset([
                                         {name: "blue", color: "#657B99",img: "postItBlue.png", selected: false},
                                         {name: "azur", color: "#9AC9CD",img: "postItAzur.png", selected: false},

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -39,8 +39,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "loginstack" : _stack
                         });
                         
-                        _login.template = '<div id="login"><div class="squirrel"></div><div id="login-stack" data-loginstack="destination"></div></div>';
-                        
+                        _login.template = '<div id="login"><div id="login-stack" data-loginstack="destination"><div class="squirrel"></div></div></div>';
                         
                         // loading UI
                         _loading.plugins.add("label", new Model(_labels));
@@ -53,7 +52,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         
                         // no connection UI
                         _internetdown.plugins.add("label", new Model(_labels));
-                        _internetdown.template = '<div id="nointernt"><p data-label="bind: innerHTML, nointernet"></p></div>';
+                        _internetdown.template = '<div id="nointernet"><p data-label="bind: innerHTML, nointernet"></p></div>';
                         
                         // signup form
                         _signupForm.plugins.addAll({
@@ -63,7 +62,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 "signupevent" : new Event(_signupForm)
                         });
                         
-                        _signupForm.template = '<div><form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label class="signup-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form><div id="EULA" class="invisible"><div class = "confirm EULA"><div class="help-doctor"></div><p class="confirm-question" data-eula="bind:innerHTML,eula"></p><div class="option left" data-signupevent="listen:mousedown, press; listen:mouseup, acceptEULA" data-label="bind: innerHTML, accept"></div><div class="option right" data-signupevent="listen:mousedown, press; listen:mouseup, rejectEULA" data-label="bind:innerHTML, reject"></div></div></div><div>';
+                        _signupForm.template = '<div><form id="signup-form"><p class="login-fields"><input name="email" data-loginmodel="bind:value,email" data-label="bind:placeholder, emailplaceholder" type="text" data-signupevent="listen: input, resetError"><input name="password" data-loginmodel="bind:value,password" type="password" data-label="bind:placeholder, passwordplaceholder" data-signupevent="listen: input, resetError"><input name="confirm-password" data-loginmodel="bind:value,confirm-password" type="password" data-label="bind:placeholder, repeatpasswordplaceholder" data-signupevent="listen: input, resetError"><input name="firstname" data-loginmodel="bind:value,firstname" type="text" data-label="bind:placeholder, firstnameplaceholder" data-signupevent="listen: input, resetError"><input name="lastname" data-loginmodel="bind:value,lastname" type="text" data-label="bind:placeholder, lastnameplaceholder" data-signupevent="listen:input, resetError; listen:keypress, entersignup"></p><p><label id="signup" class="login-button pressed-btn" data-label="bind:innerHTML, signupbutton" data-signupevent="listen: mousedown, press; listen: mouseup, release; listen:mouseup, signup"></label></p><p><label data-loginmodel="bind:innerHTML,error" class="login-error"></label></p><p><label class="signup-button pressed-btn" name="#login-screen" data-signupevent="listen: mousedown, press; listen:mouseup, release; listen: mouseup, showLogin" data-label="bind:innerHTML, loginbutton"></label></p></form><div id="EULA" class="invisible"><div class = "confirm EULA"><div class="help-doctor"></div><p class="confirm-question" data-eula="bind:innerHTML,eula"></p><div class="option left" data-signupevent="listen:mousedown, press; listen:mouseup, acceptEULA" data-label="bind: innerHTML, accept"></div><div class="option right" data-signupevent="listen:mousedown, press; listen:mouseup, rejectEULA" data-label="bind:innerHTML, reject"></div></div></div><div>';
                         
                         _signupForm.press = function(event, node){
                                 node.focus();
@@ -164,7 +163,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                                                                         // add welcome notification
                                                                         var now = new Date();
                                                                         
-                                                                        user.set("regdate", [now.getFullYear(), now.getMonth(), now.getDate()]);
+                                                                        user.set("regdate", [now.getTime()]);
                                                                         user.set("notifications", [{
                                                                                 "type" : "MSG",
                                                                                 "toList": fn + " " + ln,
@@ -371,7 +370,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         _login.init = function init(){
                                 // display loading screen and initialize spinner
                                _stack.getStack().show("#loading-screen");
-                               spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin(document.getElementById("loadingspin"));
+                               spinner = new Spinner({color:"#06b7fc", lines:10, length: 10, width: 4, radius:6}).spin(document.getElementById("loadingspin"));
                          };
                         
                         _login.setScreen = function setScreen(target){
@@ -399,6 +398,10 @@ define(["OObject" ,"Amy/Stack-plugin",
                                 loginSpinner && loginSpinner.stop(); 
                                 spinner && spinner.stop();       
                         };
+                
+                SPI = spinner;
+                LOSPI = loginSpinner;
+                LSTACK = _stack.getStack();
                 
                 //return
                 return _login;

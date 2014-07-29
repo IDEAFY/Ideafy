@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -43,7 +43,6 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                         
                         aboutUI.show(aboutMenu.get(id).name, id);       
                    };
-                   
                    
                    aboutUI.show = function show(name, id){
                          aboutMenu.loop(function(v,i){

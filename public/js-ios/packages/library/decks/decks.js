@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck"],
@@ -86,7 +86,6 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                       stack.getStack().show("ideafy");
                                       deckView.init();
                                       ideafyDecks.highlightDeck(deckControl.init,0);
-                                      DV = deckView;
                                       deckView.reset(ideafyDecks.getModel().get(0), "details");
                                       currentSelected = 0;
                               };
@@ -124,10 +123,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                                           break;
                               }
                               deckListUI.getDecks(currentDeckList, function(sync){
-                                   if (sync){
+                                   /*if (sync){
                                                   deckListUI.initSelected(deckControl.init,currentSelected);
                                                   deckView.reset(deckListUI.getModel().get(currentSelected));
-                                   }
+                                   }*/
                               });      
               });
               
@@ -154,10 +153,10 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                         
               user.watchValue("taiaut_decks", function(newValue, action, oldValue){
                          ideafyDecks.reset(function(sync){
-                                 if (sync){
+                                 /*if (sync){
                                          ideafyDecks.initSelected(deckControl.init,0);
                                          deckView.reset(ideafyDecks.getModel().get(0));
-                                 }
+                                 }*/
                          });
                         // taiautDecks.getDecks($type);       
               });

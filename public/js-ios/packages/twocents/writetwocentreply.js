@@ -1,3 +1,9 @@
+/*
+ * https://github.com/IDEAFY/Ideafy
+ * Proprietary License - All rights reserved
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
+ */
 
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils", "lib/spin.min"],
         function(Widget, Store, ModelPlugin, EventPlugin, Config, Utils, Spinner){
@@ -57,10 +63,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                 
                         this.cancel = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: none; background: #e69b73;");
-                                // reset reply message
-                                reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                                 // hide twocent writing interface
                                 (cancel) ? cancel():$parent.classList.add("invisible");
+                                // reset reply message
+                                reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                         };
                 
                         this.publish = function(event, node){
@@ -84,7 +90,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                                                 else{
                                                         // hide writing interface
                                                         $parent.classList.add("invisible");
-                                                        
+                                                        reply.reset({"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0});
                                                 }               
                                         });
                                 }

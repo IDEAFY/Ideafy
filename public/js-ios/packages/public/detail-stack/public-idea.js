@@ -1,8 +1,8 @@
-/**
- * https://github.com/TAIAUT/Ideafy
+/*
+ * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
- * Author: Vincent Weyl <vincent.weyl@taiaut.com>
- * Copyright (c) 2012-2013 TAIAUT
+ * Author: Vincent Weyl <vincent@ideafy.com>
+ * Copyright (c) 2014 IDEAFY LLC
  */
 
 define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min", "attach/attachment"], 
@@ -184,8 +184,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                 }),
                                 "vote" : new Model(vote,{
                                         setIcon : function(active){
-                                                var styleActive = "background: url('img/public/activeIdeaVote.png') no-repeat center center; background-size: contain;",
-                                                    styleInactive = "background: url('img/public/rateForList.png') no-repeat center center; background-size: contain;";
+                                                var styleActive = "background-image: url('img/public/activeIdeaVote.png'); background-repeat: no-repeat; background-position: center center; background-size: contain;",
+                                                    styleInactive = "background-image: url('img/public/rateForList.png'); background-repeat: no-repeat; background-position: center center; background-size: contain;";
                                                 (active) ? this.setAttribute("style", styleActive) : this.setAttribute("style", styleInactive);
                                         }
                                 }),
@@ -322,14 +322,13 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                         
                         _widget.zoom = function(event, node){
                                 var idx = node.getAttribute("data-alist_id");
-                                Map.get("attachment-popup").classList.add("appear");
-                                Map.get("cache").classList.add("appear");   
-                                _attachmentUI.reset(_alist.get(idx).docId);    
+                                _attachmentUI.reset(_alist.get(idx).docId, "idea");     
                         };
                         
                         _widget.vote = function(event, node){
                                 if (!_voted){
                                         //display voting popup
+                                        document.getElementById("cache").classList.add("appear1");
                                         document.getElementById("ratingPopup").classList.add("appear");
                                 }
                                 node.classList.remove("pressed");
@@ -364,6 +363,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
                                                         // update polling list
                                                         Config.get("observer").notify("update-polling");
                                                         //cleanup 1- remove popup 2- hide vote button 3- reset vote store
+                                                        document.getElementById("cache").classList.remove("appear1");
                                                         document.getElementById("ratingPopup").classList.remove("appear");
                                                         vote.reset([{active: false},{active: false}, {active: false}, {active: false}, {active: false}]);
                                                 }

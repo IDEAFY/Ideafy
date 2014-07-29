@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -208,10 +208,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                                 break;
                                 }
                                 
-                                console.log("before request : ", json);
-                                
                                 transport.request("Notify", json, function(result){
-                                        console.log(result);
+                                        return result;
                                 });
                         };
                         
@@ -358,10 +356,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         /*
-                         *  Confirmation callback
-                         */
-                                
-                        /*
                          *  Function called to cancel a scheduled session
                          */
                         muPreviewUI.cancelSession = function(event, node){
@@ -413,8 +407,6 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 Confirm.reset(labels.get("partcancel"), confirmCallback, "musession-confirm");
                                 Confirm.show();    
                         };
-                        
-                        MUCDB = muCDB;
                         return muPreviewUI;       
                 };
         });

@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -270,7 +270,6 @@ var ActionBarConstructor = function($type, $parent, $data){
                                                 else{
                                                         Confirm.hide();
                                                         spinner.spin(document.getElementById("deckview"));
-                                                        document.getElementById("cache").classList.add("appear");
                                                         // if deck is an ideafy deck simply remove from taiaut_decks field
                                                         if (user.get("taiaut_decks").indexOf($data) > -1){
                                                                 var arr = user.get("taiaut_decks");
@@ -279,7 +278,6 @@ var ActionBarConstructor = function($type, $parent, $data){
                                                                 user.upload()
                                                                 .then(function(){
                                                                         spinner.stop();
-                                                                        document.getElementById("cache").classList.remove("appear");
                                                                         promise.fulfill();
                                                                 });
                                                         }
@@ -301,7 +299,6 @@ var ActionBarConstructor = function($type, $parent, $data){
                                                                                 })
                                                                                 .then(function(){
                                                                                         spinner.stop();
-                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                         promise.fulfill();
                                                                                 });
                                                                         }
@@ -315,9 +312,7 @@ var ActionBarConstructor = function($type, $parent, $data){
                                                                                                 user.upload()
                                                                                                 .then(function(){
                                                                                                         spinner.stop();
-                                                                                                        document.getElementById("cache").classList.remove("appear");
                                                                                                         promise.fulfill();
-                                                                                                });        
                                                                                         }
                                                                                         else{
                                                                                                 console.log(result);
@@ -339,6 +334,7 @@ var ActionBarConstructor = function($type, $parent, $data){
                                         if (JSON.stringify(arr[i]) === JSON.stringify($data)){
                                                 index = i;
                                                 break;
+<<<<<<< HEAD
                                         }
                                 }
                                 arr.splice(index, 1);
@@ -346,7 +342,7 @@ var ActionBarConstructor = function($type, $parent, $data){
                                 user.upload();
                                 break;
                         case "contact":
-                                var arr = user.get("connections"), now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
+                                var arr = user.get("connections").concat(), now = new Date(), date=[now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()];
                                 // if deleted contact is of type user
                                 if ($data.type ==="user"){
                                         for (i=arr.length-1; i>=0; i--){

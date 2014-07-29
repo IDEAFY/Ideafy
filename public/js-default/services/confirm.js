@@ -1,4 +1,4 @@
-/**
+/*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent@ideafy.com>
@@ -18,6 +18,7 @@ var _labels = Config.get("labels"),
       _widget = new Widget(),
       _content = new Store({"question":""}),
       _callback, _class;
+
                         
 _widget.plugins.addAll({
         "label" : new Model(_labels),
@@ -56,10 +57,9 @@ _widget.show = function show($class){
                 _class = $class;
                 _widget.dom.classList.add($class);
         }
-                                
         document.getElementById("cache").classList.add("appear");
         _widget.dom.classList.remove("invisible");
-        setTimeout(function(){_widget.close;}, 15000);      
+        //setTimeout(function(){_widget.close;}, 15000);      
 };
                         
 _widget.reset = function reset($question, $callback, $class){
@@ -71,7 +71,6 @@ _widget.reset = function reset($question, $callback, $class){
         _content.set("question", $question);
         _callback = $callback;
         _class = $class;
-                                
         // applying new class if any
         _class && _widget.dom.classList.add(_class);      
 };

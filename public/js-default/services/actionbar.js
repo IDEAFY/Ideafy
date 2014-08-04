@@ -21,7 +21,7 @@ var olives = require("../libs/olives"),
       Confirm = require("./confirm"),
       Utils = require("./utils");
 
-var ActionBarConstructor = function($type, $parent, $data){
+function ActionBarConstructor($type, $parent, $data){
 
         var   buttons = new Store([]),
                 parentHeight = $parent.offsetHeight,

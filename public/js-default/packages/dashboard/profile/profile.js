@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "./leaderboard", "./editprofile", "./calendar", "Promise"],
-        function(Widget, Map, Model, Event, Config, Store, Utils, Leaderboard, EditProfile, Calendar, Promise){
-                
-           return function ProfileConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Utils = require("../../../services/utils"),
+      Leaderboard = require("./leaderboard"),
+      EditProfile = require("./editprofile"),
+      Calendar = require("./calendar"),
+      Promise = emily.Promise;
+
+moduie.exports = function ProfileConstructor(){
 
 /*
  * IMPORTANT NOTICE : file names for icons should not be changed -- if new icons are introduced for an existing reward they should use the same name
@@ -441,5 +452,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                    Calendar.init();
                    
                    return profileUI;
-           };    
-        });
+           };

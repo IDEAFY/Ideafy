@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "service/utils", "service/avatar", "lib/spin.min"],
-        function(Widget, Config, Model, Event, CouchDBView, Utils, Avatar, Spinner){
-                
-                return function LeaderboardConstructor(){
+var olives = require("../../../libs/olives"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+       Widget = olives.OObject,
+       Config = require("../../../services/config"),
+       Model = olives["Bind.plugin"],
+       Event = olives["Event.plugin"],
+       CouchDBView = CouchDBTools.CouchDBView,
+       Utils = require("../../../services/utils"),
+       Avatar = require("../../../services/avatar"),
+       Spinner = require ("../../../libs/spin.min");
+
+module.exports = function LeaderboardConstructor(){
                         
                         var leaderboard = new Widget(),
                               leaders = new CouchDBView([]),
@@ -80,4 +88,3 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         
                         return leaderboard;
                 };
-        });

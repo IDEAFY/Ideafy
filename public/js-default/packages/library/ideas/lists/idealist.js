@@ -5,8 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function IdeaListConstructor($db, $design, $view, $query) {
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../../services/utils"),
+      Avatar = require("../../../../services/avatar"),
+      ActionBar = require("../../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
                       _mosaic = new Store(),
                       display = false,
@@ -211,10 +224,9 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                         }
                         return promise;
                 };
-        }
+};
 
-        return function IdeaListFactory($db, $design, $view, $query) {
-                IdeaListConstructor.prototype = new Widget();
-                return new IdeaListConstructor($db, $design, $view, $query);
-        };
-}); 
+module.exports = function IdeaListFactory($db, $design, $view, $query) {
+        IdeaListConstructor.prototype = new Widget();
+        return new IdeaListConstructor($db, $design, $view, $query);
+};

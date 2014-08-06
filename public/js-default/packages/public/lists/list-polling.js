@@ -5,8 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function ListPollingConstructor($db, $design, $view, $query) {
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar"),
+      ActionBar = require("../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function ListPollingConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
                 _mosaic = new Store(),
                 _labels = Config.get("labels"),
@@ -201,10 +214,9 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         widget.resetQuery();                
                 });
 
-        }
+};
 
-        return function ListPollingFactory($db, $design, $view, $query) {
+module.exports = function ListPollingFactory($db, $design, $view, $query) {
                 ListPollingConstructor.prototype = new Widget();
                 return new ListPollingConstructor($db, $design, $view, $query);
-        };
-}); 
+};

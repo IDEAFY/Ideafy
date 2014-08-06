@@ -5,59 +5,65 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "service/config", "twocents/writetwocentreply", "service/avatar"],
-        function(Widget, Store, ModelPlugin, EventPlugin, Utils, Config, WriteTwocentReply, Avatar){
-                
-                function TwocentReplyListConstructor($data, $id, $tc, $view){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../services/utils"),
+      Config = require("../../services/config"),
+      WriteTwocentReply = require("./writetwocentreply"),
+      Avatar = require("../../services/avatar");
+
+function TwocentReplyListConstructor($data, $id, $tc, $view){
+        var store = new Store($data),
+              ui = this,
+              avatars,
+              user = Config.get("user"),labels = Config.get("labels"),
+              transport = Config.get("transport");
                         
-                        var store = new Store($data),
-                            ui = this,
-                            avatars,
-                            user = Config.get("user"),
-                            labels = Config.get("labels"),
-                            transport = Config.get("transport");
-                        
-                        ui.plugins.addAll({
-                                "reply": new ModelPlugin(store, {
-                                        date : function date(date){
+        ui.plugins.addAll({
+                "reply": new Model(store, {
+                        date : function date(date){
                                                if (date){
                                                        this.innerHTML = Utils.formatDate(date);
                                                }
                                         },
-                                        setFirstname : function(firstname){
+                        setFirstname : function(firstname){
                                                var id = this.getAttribute("data-reply_id");
                                                this.innerHTML = firstname;
                                                if (store.get(id).author === user.get("_id")){
                                                         this.innerHTML = labels.get("youlbl");
                                                 }
                                         },
-                                        setReplylbl : function(firstname){
+                        setReplylbl : function(firstname){
                                                var id = this.getAttribute("data-reply_id");
                                                this.innerHTML = labels.get("twocentreplycommentlbl");
                                                if (store.get(id).author === user.get("_id")){
                                                         this.innerHTML = labels.get("yourepliedlbl");
                                                 }
                                         },
-                                        setAvatar : function setAvatar(author){
+                        setAvatar : function setAvatar(author){
                                                 var _frag = document.createDocumentFragment(),
                                                     _ui = new Avatar([author]);
                                                 _ui.place(_frag);
                                                 (!this.hasChildNodes())?this.appendChild(_frag):this.replaceChild(_frag, this.firstChild);   
                                         },
-                                        setVisible : function(author){
+                        setVisible : function(author){
                                                 (author && author === user.get("_id")) ? this.setAttribute("style", "display: block;") : this.setAttribute("style", "display: none;");
                                         },
-                                        setInVisible : function(author){
+                        setInVisible : function(author){
                                                 (author && author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
                                         }
-                                  }),
-                                  "replyevent" : new EventPlugin(ui),
-                                  "labels": new ModelPlugin(labels)
-                        });
+                }),
+                "replyevent" : new Event(ui),
+                "labels": new Model(labels)
+        });
                         
-                   ui.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: setReplylbl, firstname"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: mousedown, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author" data-replyevent="listen: mousedown, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:mousedown, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
+        ui.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: setReplylbl, firstname"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: mousedown, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author" data-replyevent="listen: mousedown, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:mousedown, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
                    
-                   ui.edit = function(event, node){
+        ui.edit = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
                                     currentUI = ui.dom.children[id],
                                     writeUI = new WriteTwocentReply(),
@@ -74,7 +80,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                                 UI = ui.dom;      
                         };
                         
-                        ui.deleteTwocentReply = function(event, node){
+        ui.deleteTwocentReply = function(event, node){
                                var position = node.getAttribute("data-reply_id"),
                                     json = {docId: $id, type: "deltcreply", twocent: $tc, position: position};
                                 transport.request("WriteTwocent", json, function(result){
@@ -84,7 +90,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                                 });    
                         };
                         
-                        ui.reply = function(event, node){
+        ui.reply = function(event, node){
                                 var id = node.getAttribute("data-reply_id"),
                                     twocentParent = ui.dom.parentNode,
                                     parent = twocentParent.querySelector(".writePublicTwocentReply[data-reply_id='"+id+"']"),
@@ -100,11 +106,10 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                                 }
                                 parent.classList.remove("invisible");                     
                         };     
-              }
+};
                         
-              return function TwocentReplyListFactory($data, $id, $tc, $view){
-                   TwocentReplyListConstructor.prototype = new Widget;
-                   return new TwocentReplyListConstructor($data, $id, $tc, $view);       
-              };    
+module.exports = function TwocentReplyListFactory($data, $id, $tc, $view){
+        TwocentReplyListConstructor.prototype = new Widget;
+        return new TwocentReplyListConstructor($data, $id, $tc, $view);       
+};    
                 
-        });

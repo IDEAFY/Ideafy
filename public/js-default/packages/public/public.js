@@ -5,12 +5,27 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store", "lib/spin.min", "service/newidea"], 
-	function(Widget, Control, Model, Place, Delegate, Map, 
-		Config, Detail, Utils, List, Polling, Stack, Menu, Store, Spinner, NewIdea){
-		return function PublicConstructor(){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Control = amy.ControlPlugin,
+      Model = olives["Bind.plugin"],
+      Place = olives["Place.plugin"],
+      Delegate = amy.DelegatePlugin,
+      Map = require("../../services/map"),
+      Config = require("../../services/config"),
+      Detail = require("./public-stack"),
+      Utils = require("../../services/utils"),
+      List = require("./lists/list-public"),
+      Polling = require("./lists/list-polling"),
+      Stack = amy.StackPlugin,
+      Menu = require("../../services/submenu"),
+      Store = emily.Store,
+      Spinner = require("../../libs/spin.min"),
+      NewIdea = require("../../services/newidea");
+
+module.exports = function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
 			      _db = Config.get("db"),
@@ -395,4 +410,3 @@ define(["OObject", "Amy/Control-plugin" ,
 			//return
 			return _widget;
 		};
-	});

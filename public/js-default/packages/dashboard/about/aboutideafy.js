@@ -5,10 +5,14 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Store"],
-        function(Widget, Config, Model, Store){
-                
-                return function AboutIdeafyConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config  = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Store = emily.Store;
+
+module.exports = function AboutIdeafyConstructor(){
                         
                         var aboutIdeafy = new Widget(),
                             labels = Config.get("labels"),
@@ -28,4 +32,3 @@ define(["OObject", "service/config", "Bind.plugin", "Store"],
                         
                         return aboutIdeafy;
                 };
-        });

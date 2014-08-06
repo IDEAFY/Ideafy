@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-plugin", "Amy/Stack-plugin", "Store", "service/config", "service/avatar", "service/utils", "./message-detail", "./newmessage", "service/actionbar", "Promise"],
-        function(Widget, Map, Model, Event, Control, Stack, Store, Config, Avatar, Utils, MessageDetail, NewMessage, ActionBar, Promise){
-                
-                return function MessagesConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Control = amy.ControlPlugin,
+      Stack = amy.StackPlugin,
+      Store = emily.Store,
+      Config = require("../../../services/config"),
+      Avatar = require("../../../services/avatar"),
+      Utils = require("../../../services/utils"),
+      MessageDetail = require("./message-detail"),
+      NewMessage = require("./newmessage"),
+      ActionBar = require("../../../services/actionbar"),
+      Promise = emily.Promise;
+
+module.exports = function MessagesConstructor(){
                         
                         var messageUI = new Widget(),
                             msgControl = new Control(messageUI),
@@ -397,4 +412,4 @@ define (["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Control-p
                         
                         return messageUI;
                 };
-        });
+

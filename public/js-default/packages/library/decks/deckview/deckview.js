@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plugin", "Store", "service/map", "./deckdetails", "./cardlist", "service/config", "./cardeditor/newcard", "./deck-share"],
-        function(Widget, Model, Event, Place, Stack, Store, Map, DeckDetails, CardList, Config, NewCard, DeckShare){
-                
-                return function DeckViewConstructor($update){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      amy = require("../../../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../../../services/map"),
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Stack = amy.StackPlugin,
+      Store = emily.Store,
+      DeckDetails = require("./deckdetails"),
+      CardList = require("./cardlist"),
+      NewCard = require("./cardeditor/newcard"),
+      DeckShare = require("./deck-share");
+
+module.exports = function DeckViewConstructor($update){
                         
                         var deckView = new Widget(),
                             newCardUI = new NewCard($update),
@@ -98,4 +111,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                         return deckView;
                         
                 };
-        });
+

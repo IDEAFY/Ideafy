@@ -5,10 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "Amy/Control-plugin", "Store", "service/avatar", "service/actionbar", "./addcontact", "./addgroup", "./contact-detail", "./group-detail"],
-        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails, GroupDetails){
-                
-                return function ContactsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily").
+      amy = require("../../../libs/amy"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Control = amy.ControlPlugin,
+      Store = emily.Store,
+      Avatar = require("../../../services/avatar"),
+      ActionBar = require("../../../services/actionbar"),
+      AddContact = require("./addcontact"),
+      AddGroup = require("./addgroup"),
+      ContactDetails = require("./contact-detail"),
+      GroupDetails = require("./group-detail");
+module.exports = function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
@@ -269,6 +283,4 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 sortButtons.update(current, "selected", true);
                         });
                         
-                        return contactsUI;    
-                };
-        });
+};

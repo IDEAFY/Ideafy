@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar"],
-        function(Widget, Config, Model, Event, Store, Avatar){
-                
-           return function AddGroupConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily").
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Avatar = require("../../../services/avatar");
+
+module.exports = function AddGroupConstructor(){
                    
              var addGroupUI = new Widget(),
                  group = new Store({
@@ -260,4 +266,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
              return addGroupUI;
                    
            };   
-        });
+

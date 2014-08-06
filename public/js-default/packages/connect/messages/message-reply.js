@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils", "Promise", "service/autocontact"],
-        function(Widget, Store, Model, Event, Config, Utils, Promise, AutoContact){
-                
-           return function MessageReplyConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Config = require("../../../services/config"),
+      AutoContact = require("../../../services/autocontact"),
+      Utils = require("../../../services/utils");
+
+module.exports = function MessageReplyConstructor(){
            
                 var messageReplyUI = new Widget(),
                     msgReply = new Store(),
@@ -223,5 +231,5 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                 };
                 
                 return messageReplyUI;        
-           };
-        });
+};
+

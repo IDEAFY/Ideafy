@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Event.plugin", "Place.plugin", "service/config", "service/map", "./decklist/decklist", "./deckview/deckview", "./newdeck"],
-        function(Widget, Model, Stack, Control, Event, Place, Config, Map, List, DeckView, NewDeck){
-                
-           return function MyDecksContructor(){
+var olives = require("../../../libs/olives"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Stack = amy.StackPlugin,
+      Control = amy.ControlPlugin,
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Config = require("../../../services/config"),
+      Map = require("../../../services/map"),
+      List = require("./decklist/decklist"),
+      DeckView = require("./deckview/deckview"),
+      NewDeck = require("./newdeck");
+
+module.exports = function MyDecksContructor(){
               
               // declaration     
               var widget = new Widget(),
@@ -163,7 +174,4 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
               
               // return
               return widget;
-                   
-           };    
-                
-        });
+};

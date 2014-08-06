@@ -5,6 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("../../../services/config"),
+      Avatar = require("../../../services/avatar"),
+      Utils = require("../../../services/utils"),
+      Reply = require("./message-reply"),
+      Spinner = require("../../../libs/spin.min");
+
 define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
         function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply, Spinner){
                 

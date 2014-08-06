@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "service/avatar", "service/utils", "Place.plugin"],
-        function(Widget, Config, Store, Model, Event, WriteTwocent, TwocentList, Avatar, Utils, Place){
-                
-                return function MTQDetailsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      WriteTwocent = require("../../twocents/writetwocent"),
+      TwocentList = require("../../twocents/twocentlist"),
+      Avatar = require("../../../services/avatar"),
+      Utils = require("../../../services/utils"),
+      Place = olives["Place.plugin"];
+
+
+module.exports = function MTQDetailsConstructor(){
                         
                         var mtqDetailUI = new Widget(),
                             labels = Config.get("labels"),
@@ -103,4 +114,4 @@ define(["OObject", "service/config", "Store", "Bind.plugin", "Event.plugin", "tw
                        mtqDetailUI.place(document.createDocumentFragment()); // reply not displayed at first click                     
                         return mtqDetailUI;       
                 };
-        });
+

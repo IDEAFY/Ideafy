@@ -5,6 +5,8 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
+alert("Main start");
+
 var olives = require("./libs/olives"),
        emily = require("./lib/emily"),
        amy = require("./libs/amy2"),

@@ -36,7 +36,7 @@ var   _body = new Widget(),
         _currentVersion = Config.get("version");
 
 // SETUP
-        
+AMY = amy;
 // init logic
 _body.startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");
@@ -150,9 +150,11 @@ _body.reload = function reload(firstStart) {
                         _body.startDock(firstStart);        
                 });      
         };
-        
+
+console.log("before dock");        
 // uis declaration
 _dock = new Dock();
+console.log("before login");
 _login = new Login(_body.init, _body.reload, _local);
         
 // add login to the stack

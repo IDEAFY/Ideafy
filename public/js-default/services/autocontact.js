@@ -5,7 +5,7 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-var olives = reuiqre("../libs/olives"),
+var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
       Widget = olives.OObject,
       Model = olives["Bind.plugin"],

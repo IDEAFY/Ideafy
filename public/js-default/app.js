@@ -33057,7 +33057,7 @@ module.exports = function ActionBarFactory($type, $parent, $data){
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-var olives = reuiqre("../libs/olives"),
+var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
       Widget = olives.OObject,
       Model = olives["Bind.plugin"],
@@ -33241,7 +33241,7 @@ module.exports =  function AutoContactFactory($dom, $outputNode, $update){
         return new AutoContactConstructor($dom, $outputNode, $update);
 };
 
-},{"../libs/emily":96,"./config":244,"./map":248}],241:[function(require,module,exports){
+},{"../libs/emily":96,"../libs/olives":140,"./config":244,"./map":248}],241:[function(require,module,exports){
 /*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved

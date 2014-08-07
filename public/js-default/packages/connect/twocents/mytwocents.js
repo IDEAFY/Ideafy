@@ -175,12 +175,12 @@ module.exports = function MyTwocentsConstructor(){
                                                 mtcDetails.getStack().show("defaultPage");               
                                         }
                                         else{
-                                                if (contactList.getNbItems()){
+                                                if (contactList.count()){
                                                         mtcTools.set("contact", contactList.get(0).contact.username);
                                                         contacttwoq.resetQuery({key: '"'+contactList.get(0).contact.userid+'"', descending: true}).then(function(){
                                                                 var store = contacttwoq.getModel(),
                                                                     node;
-                                                                if (store.getNbItems()){
+                                                                if (store.count()){
                                                                         mtcStack.getStack().show("#contacttwoq");
                                                                         mtcDetails.reset("2Q", store.get(0));
                                                                         node = contacttwoq.dom.querySelector("li[data-twoqlist_id='0']");
@@ -222,7 +222,7 @@ module.exports = function MyTwocentsConstructor(){
                                 contacttwoq.resetQuery({key: '"'+contactList.get(idx).contact.userid+'"', descending: true}).then(function(){
                                         var store = contacttwoq.getModel(),
                                             node;
-                                        if (store.getNbItems()){
+                                        if (store.count()){
                                                 mtcStack.getStack().show("#contacttwoq");
                                                 mtcDetails.reset("2Q", store.get(0));
                                                 node = contacttwoq.dom.querySelector("li[data-twoqlist_id='0']");

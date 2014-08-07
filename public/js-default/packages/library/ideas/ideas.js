@@ -140,7 +140,7 @@ module.exports = function IdeasConstructor(){
                                      });
                                      if (name !== st.getCurrentName){
                                              st.show(name);
-                                             if (st.get(name).getModel().getNbItems()){
+                                             if (st.get(name).getModel().count()){
                                                      _widget.displayHighlightedIdea();
                                              }
                                              else{
@@ -173,7 +173,7 @@ module.exports = function IdeasConstructor(){
                                         st.get(name).setLang(lang)
                                         .then(function(){
                                                 _listSpinner.stop();
-                                                if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
+                                                if (st.getCurrentName() === name && st.get(name).getModel().count() === 0){
                                                         _detail.displayEmpty(name);
                                                 }
                                                 else _widget.displayHighlightedIdea();         
@@ -240,7 +240,7 @@ module.exports = function IdeasConstructor(){
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
                                         // display search list and fill search field with idea title if applicable
                                         _stack.getStack().show("#list-search");
-                                        if (listSearch.getModel().getNbItems() >0){
+                                        if (listSearch.getModel().count() >0){
                                                 _searchInput.set("search", listSearch.getModel().get(0).doc.title);
                                                 _widget.dom.querySelector(".noresult").classList.add("invisible");
                                                 _widget.displayHighlightedIdea();
@@ -300,17 +300,17 @@ module.exports = function IdeasConstructor(){
                         listDate.init(_currentLang)
                         .then(function(){
                                 _stack.getStack().show("#list-date");
-                                (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                                (listDate.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
                                 return listFav.setLang(_currentLang);     
                         })
                         .then(function(){
                                 // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("library-favorites", function(val){
-                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                        if (val.length !== listFav.getModel().count()) {
                                                 listFav.resetQuery(_currentLang)
                                                 .then(function(){
                                                         if (_stack.getStack().getCurrentName() === "#list-fav"){
-                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                                (listFav.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
                                                         }
                                                 });
                                         }       
@@ -354,7 +354,7 @@ module.exports = function IdeasConstructor(){
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
                                                 if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
-                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                                (_ideaList.count()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
                                         } 
                                  });
                                  */

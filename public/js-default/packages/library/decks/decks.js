@@ -150,7 +150,7 @@ module.exports = function MyDecksContructor(){
                                 }
                                 else if (sync && (newValue.length < oldValue.length)){
                                         list = ideafyDecks.getModel();
-                                        if (list.getNbItems()){
+                                        if (list.count()){
                                                 ideafyDecks.initSelected(deckControl.init,0);
                                                 deckView.reset(list.get(0));
                                                 currentSelected = 0;

@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBDocument", "Promise", "service/cardpopup", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Place, Model, Event, Config, Help, Store, CouchDBDocument, Promise, CardPopup, Utils, Spinner, Chat){
-                
-                return function MUTechConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Place = olives["Place.plugin"],
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../services/config"),
+      Help = require("../../../../services/help"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      CardPopup = require("../../../../services/cardpopup"),
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Chat = require("./mubchat");
+
+module.exports = function MUTechConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -541,5 +556,4 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

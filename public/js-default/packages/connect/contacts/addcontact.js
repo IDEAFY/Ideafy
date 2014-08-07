@@ -63,7 +63,7 @@ module.exports = function AddContactConstructor(){
                                 cdb.sync(Config.get("db"), "users", "_view/searchbyid", {key: '"'+value+'"', descending: true})
                                 .then(function(){
                                         displayContacts.reset(JSON.parse(cdb.toJSON()));
-                                        (displayContacts.getNbItems()) ? search.set("display", true) : search.set("invite", true);
+                                        (displayContacts.count()) ? search.set("display", true) : search.set("invite", true);
                                         cdb.unsync();
                                 });        
                          }
@@ -71,7 +71,7 @@ module.exports = function AddContactConstructor(){
                                 cdb.sync(Config.get("db"), "users", "_view/searchbyusername", {key: '"'+value+'"', descending: true})
                                 .then(function(){
                                         displayContacts.reset(JSON.parse(cdb.toJSON()));
-                                        (displayContacts.getNbItems()) ? search.set("display", true) : search.set("result", labels.get("noentryfound"));
+                                        (displayContacts.count()) ? search.set("display", true) : search.set("result", labels.get("noentryfound"));
                                         cdb.unsync();
                                 });        
                          }

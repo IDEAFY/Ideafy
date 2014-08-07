@@ -5,10 +5,29 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBDocument", "CouchDBView", "service/config", "Promise", "Store", "lib/spin.min"],
-        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBDocument, CouchDBView, Config, Promise, Store, Spinner){
-                
-           return function QuickBConstructor($sip, $exit){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Stack = amy.StackPlugin,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Spinner = require("../../../libs/spin.min"),
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBView = CouchDBTools.CouchDBView,
+      QuickStart = require("./quickstart"),
+      QuickSetup = require("./quicksetup"),
+      QuickScenario = require("./quickscenario"),
+      QuickTech = require("./quicktech"),
+      QuickIdea = require("./quickidea"),
+      QuickWrapup = require("./quickwrapup");
+
+module.exports = function QuickBConstructor($sip, $exit){
                    
                    // declaration
                    var _widget = new Widget(),
@@ -98,7 +117,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 return _session.sync(Config.get("db"), sip.id);
                            })
                            .then(function(){
-                                var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
+                                var step = _session.get("step"), current = 10000, length = _steps.count();
                                 
                                 // reset step UIs
                                 _stack.getStack().get("quickstart").reset(sip);
@@ -186,7 +205,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "library", "_view/sessioncount", {key: '"'+sid+'"'})
                         .then(function(){
-                                if (cdb.getNbItems()){
+                                if (cdb.count()){
                                         promise.fulfill();
                                 }
                                 else{
@@ -240,7 +259,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 }
                         });
                         
-                        if (_id < _steps.getNbItems()-1) {
+                        if (_id < _steps.count()-1) {
                                 
                                 // update progress bar
                                 _steps.update(_id, "currentStep", false);
@@ -302,5 +321,4 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    // return
                    return _widget;
-           };    
-        });
+};

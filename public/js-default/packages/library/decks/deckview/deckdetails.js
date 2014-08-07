@@ -207,7 +207,7 @@ module.exports = function DeckDetailsConstructor($update){
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
-                                (deckCards.getNbItems()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
+                                (deckCards.count()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -372,7 +372,7 @@ module.exports = function DeckDetailsConstructor($update){
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
                                         carouselSpinner.stop();
-                                        if (allCards.getNbItems()) range.set("max", allCards.getNbItems()-1);
+                                        if (allCards.count()) range.set("max", allCards.count()-1);
                                         // try to sort by title...
                                         allCards.unsync();
                                         allCards.alter("sort", function(x,y){

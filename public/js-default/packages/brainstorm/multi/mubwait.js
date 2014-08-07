@@ -5,10 +5,26 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/help", "service/utils", "service/confirm", "Promise", "service/avatar", "./session/mubchat", "lib/spin.min"],
-        function(Widget, Store, CouchDBDocument, Map, Model, Event, Place, Config, Help, Utils, Confirm, Promise, Avatar, Chat, Spinner){
-                
-                return function MultiBWaitConstructor($exit, $start){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../,,/libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../services/config"),
+      Map = require("../../../services/map"),
+      Help = require("../../../services/help"),
+      Utils = require("../../../services/utils"),
+      Confirm = require("../../../services/confirm"),
+      Avatar = require("../../../services/avatar"),
+      Chat = require("./session/mubchat"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function MultiBWaitConstructor($exit, $start){
                 
                         var widget = new Widget(),
                             session = new CouchDBDocument(),
@@ -379,5 +395,4 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         });
                         
                         return widget;
-                };
-});
+};

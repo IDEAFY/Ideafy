@@ -5,10 +5,26 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min", "./mubchat", "./muvote"],
-        function(Widget, Map, Model, Event, Place, Config, CardPopup, Whiteboard, Store, CouchDBDocument, Promise, Utils, Spinner, Chat, Vote){
-                
-                return function MUIdeaConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      CardPopup = require("../../../../services/cardpopup"),
+      Chat = require("./mubchat"),
+      Vote = require("./muvote"),
+      Whiteboard = require("../../whiteboard/whiteboard");
+
+module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -591,7 +607,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("ideaWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in muidea step
                                 clearInterval(_miTimer);
@@ -618,7 +634,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 else{
                                         // idea fields are not uploaded separately        
                                         _idea.reset({"title" : "", "description" : "", "solution" : "", "visibility":"private"});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
@@ -683,7 +699,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wbContent.watch(change, function(val){
                                         if (!_tools.get("showidea")){
                                                 // avoid upload if $session is already up-to-date (e.g. replay)
-                                                if ($session.get("ideaWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
+                                                if ($session.get("ideaWB").length !== _wbContent.count() || JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
                                                         $session.set("ideaWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
@@ -694,7 +710,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 }
                                         
                                                 // toggle ready button
-                                                (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                                (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         }     
                                 });
                         });
@@ -708,7 +724,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         if (!content.length) {
                                                 _wb.selectScreen("default");
                                         }
-                                        if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
+                                        if (content.length !== _wbContent.count() || JSON.stringify(content) !== _wbContent.toJSON()){
                                                 _wbContent.reset(content);       
                                         }
                                 }
@@ -747,5 +763,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Return
                         return _widget;
-                };    
-        });
+};

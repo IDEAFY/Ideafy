@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "Promise", "service/utils"],
-        function(Widget, Map, Config, Model, Event, Store, Promise, Utils){
-                
-           return function DrawingConstructor($store, $exit){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils");
+
+module.exports =  function DrawingConstructor($store, $exit){
              
                 var _widget = new Widget(),
                     _pos = null,
@@ -320,5 +328,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 
                 return _widget;      
                    
-           };
-        });
+};

@@ -735,7 +735,7 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
                         }, function (view) {
                                 var json = JSON.parse(view);
 
-                                if (json.rows.length == this.getNbItems()) {
+                                if (json.rows.length == this.count()) {
                                         json.rows.some(function (value, idx) {
                                                 if (value.id == id) {
                                                         this.set(idx, value);
@@ -756,7 +756,7 @@ function CouchDBView(Store, CouchDBBase, Tools, StateMachine) {
                  * @private
                  */
                 this.evenDocsInStore = function evenDocsInStore(view, id) {
-                        var nbItems = this.getNbItems();
+                        var nbItems = this.count();
 
                         // If a document was removed from the view
                         if (view.length < nbItems) {

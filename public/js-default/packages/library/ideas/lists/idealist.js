@@ -119,14 +119,14 @@ function IdeaListConstructor($db, $design, $view, $query) {
                                                         if (query === lang) _store.alter("push", arr[i]);
                                                 }        
                                         }
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();
                                 });
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         currentBar && currentBar.hide();
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }
@@ -218,7 +218,7 @@ function IdeaListConstructor($db, $design, $view, $query) {
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }

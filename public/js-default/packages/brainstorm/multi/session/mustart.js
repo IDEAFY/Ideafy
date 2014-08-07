@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "lib/spin.min", "service/avatar", "./mubchat", "Store", "Place.plugin"],
-        function(Widget, Map, Model, Event, Config, Help, Spinner, Avatar, Chat, Store, Place){
-                
-                return function MUStartConstructor($session, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Config = require("../../../../services/config"),
+      Store = emily.Store,
+      Spinner = require("../../../../libs/spin.min"),
+      Avatar = require("../../../../services/avatar"),
+      Chat = require("./mubchat"),
+      Help = require("../../../../services/help");
+
+module.exports = function MUStartConstructor($session, $prev, $next, $progress){
                         
                         // declaration
                         var _widget = new Widget(),
@@ -116,5 +127,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // return
                         return _widget;
-                };     
-        });
+};

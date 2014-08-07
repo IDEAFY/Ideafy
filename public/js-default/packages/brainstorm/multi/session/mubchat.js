@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils","lib/spin.min", "Promise"],
-        function(Widget, Config, CouchDBDocument, Store, Model, Event, Avatar, Utils, Spinner, Promise){
-                
-                function MUBChatConstructor(){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Avatar = require("../../../../services/avatar");
+
+function MUBChatConstructor(){
                 
                 var mubChat = this,
                     chat = new Store([]),
@@ -128,7 +139,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                 
                                 // display message immediately
                                 chat.alter("push", {"user": position, "time": now, "msg": node.innerHTML});
-                                id = chat.getNbItems()-1;
+                                id = chat.count()-1;
                                 mubChat.dom.querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                                 
                                 // push message to couchdb
@@ -182,7 +193,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                                         break;        
                         }
                         chat.alter("push", newMsg);
-                        id = chat.getNbItems()-1;
+                        id = chat.count()-1;
                         mubChat.dom.querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                         
                         msg.push(newMsg);
@@ -292,13 +303,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         chat.reset(arrCDB);
                         mubChat.dom.querySelector("li[data-chat_id='"+l+"']").scrollIntoView();    
                 });
-                
-        }
+};
         
-        return function MUBChatFactory(){
-                MUBChatConstructor.prototype = new Widget();
-                return new MUBChatConstructor();        
-        };
-        
-        
-});
+module.exports = function MUBChatFactory(){
+        MUBChatConstructor.prototype = new Widget();
+        return new MUBChatConstructor();        
+};

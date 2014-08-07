@@ -7,7 +7,7 @@
 
 var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
-      amy = require("../libs/amy"),
+      amy = require("../libs/amy2"),
       CouchDBTools = require("../libs/CouchDBTools"),
       Spinner = require("../libs/spin.min"),
       Widget = olives.OObject,

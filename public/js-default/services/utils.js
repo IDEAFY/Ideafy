@@ -6,7 +6,7 @@
  */
 
 var olives = require("../libs/olives"),
-      emily = require("./emily"),
+      emily = require("../libs/emily"),
       CouchDBTools = require("../libs/CouchDBTools"),
       Config =require("./config"),
       Observable =emily.Observable,

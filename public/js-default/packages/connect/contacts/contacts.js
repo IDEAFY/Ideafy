@@ -7,7 +7,7 @@
 
 var olives = require("../../../libs/olives"),
       emily = require("../../../libs/emily").
-      amy = require("../../../libs/amy"),
+      amy = require("../../../libs/amy2"),
       Widget = olives.OObject,
       Map = require("../../../services/map"),
       Config = require("../../../services/config"),

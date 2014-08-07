@@ -313,6 +313,7 @@ function ActionBarConstructor($type, $parent, $data){
                                                                                                 .then(function(){
                                                                                                         spinner.stop();
                                                                                                         promise.fulfill();
+                                                                                                });
                                                                                         }
                                                                                         else{
                                                                                                 console.log(result);
@@ -334,7 +335,6 @@ function ActionBarConstructor($type, $parent, $data){
                                         if (JSON.stringify(arr[i]) === JSON.stringify($data)){
                                                 index = i;
                                                 break;
-<<<<<<< HEAD
                                         }
                                 }
                                 arr.splice(index, 1);

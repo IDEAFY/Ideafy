@@ -6,25 +6,25 @@
  */
 var olives = require("./olives"),
       emily = require("./emily"),
-       Tools = emily.Tools,
-       Amy = {};
+      Tools = emily.Tools,
+      Amy = {};
        
-Amy.DomUtils = function(Tools){
-        return {
-                hasQuerySelector : function(parent, node, selector) {
-                        var getNodes = function getNodes(parent, selector) {
-                                if (parent instanceof HTMLElement || parent instanceof SVGElement) {
-                                        if (!parent.parentNode) {
-                                                document.createDocumentFragment().appendChild(parent);
-                                        }
-
-                                        return parent.parentNode.querySelectorAll(selector || "*");
-                                } else {
-                                        return false;
+Amy.DomUtils = function(){
+        var hasQuerySelector = function(parent, node, selector) {
+                var getNodes = function getNodes(parent, selector) {
+                         if (parent instanceof HTMLElement || parent instanceof SVGElement) {
+                                if (!parent.parentNode) {
+                                        document.createDocumentFragment().appendChild(parent);
                                 }
-                        };
-                        return Tools.toArray(getNodes(parent, selector)).indexOf(node) > -1;
+                                return parent.parentNode.querySelectorAll(selector || "*");
+                        }
+                        else {
+                                return false;
+                        }
                 };
+                return Tools.toArray(getNodes(parent, selector)).indexOf(node) > -1;
+        };
+        return { hasQuerySelector : hasQuerySelector};
 };
 
 Amy.TestUtils = function(){

@@ -7,7 +7,7 @@
 
 var olives = require("../../../../libs/olives"),
       emily = require("../../../../libs/emily"),
-      amy = require("../../../../libs/stack"),
+      amy = require("../../../../libs/amy2"),
       CouchDBTools = require("../../../../libs/CouchDBTools"),
       Widget= olives.OObject,
       Map = require("../../../../services/map"),

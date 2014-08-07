@@ -7,7 +7,7 @@
 
 var olives = require("../../../libs/olives"),
       emily = require("../../../libs/emily"),
-      CouchDBTools = require("../../,,/libs/CouchDBTools"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
       Widget = olives.OObject,
       Model = olives["Bind.plugin"],
       Event = olives["Event.plugin"],

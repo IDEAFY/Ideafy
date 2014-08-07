@@ -5,7 +5,7 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-var olives = require("../livs/olives"),
+var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
       Widget = olives.OObject,
       Store = emily.Store,

@@ -8,7 +8,7 @@
 var olives = require("../libs/olives"),
         emily = require("../libs/emily"),
         CouchDBTools = require("../libs/CouchDBTools"),
-        socketio = require("../libs/socketio.min"),
+        socketio = require("../libs/socket.io.min"),
         SocketIOTransport = olives.SocketIOTransport.Client,
         Store = emily.Store,
         Observable = emily.Observable,

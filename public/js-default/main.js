@@ -8,7 +8,7 @@
 alert("Main start");
 
 var olives = require("./libs/olives"),
-       emily = require("./lib/emily"),
+       emily = require("./libs/emily"),
        amy = require("./libs/amy2"),
        Widget = emily.OObject,
        LocalStore = olives.LocalStore,

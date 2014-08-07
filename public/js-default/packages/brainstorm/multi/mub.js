@@ -8,7 +8,7 @@
 var olives = require("../../../libs/olives"),
       amy = require("../../../libs/amy2"),
       emily = require("../../../libs/emily"),
-      CouchDBTools = require("../../,,/libs/CouchDBTools"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
       Widget = olives.OObject,
       Stack = amy.StackPlugin,
       Model = olives["Bind.plugin"],

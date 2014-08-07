@@ -6,15 +6,15 @@
  */
 
 var olives = require("../libs/olives"),
-      amy = require("../libs/amy"),
+      amy = require("../libs/amy2"),
       Widget = olives.OObject,
       Place = olives["Place.plugin"],
       Stack = amy.StackPlugin,
       Control = amy.ControlPlugin,
       Public = require("./public/public"),
       Library = require("./library/library"),
-      Brainstorm = require("../brainstorm/brainstorm"),
-      Connect = require("../connect/connect"),
+      Brainstorm = require("./brainstorm/brainstorm"),
+      Connect = require("./connect/connect"),
       Dashboard = require("./dashboard/dashboard"),
       Map = require("../services/map"),
       Config = require("../services/config"),

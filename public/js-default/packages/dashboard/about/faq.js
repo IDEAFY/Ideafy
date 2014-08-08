@@ -22,7 +22,7 @@ module.exports = function FAQConstructor(){
                     user = Config.get("user");
                     faqlist = new Store([]);
                     
-                FAQ.plugins.addAll({
+                FAQ.seam.addAll({
                         "faq" : new Model(faqlist),
                         "faqevent" : new Event(FAQ)
                 });

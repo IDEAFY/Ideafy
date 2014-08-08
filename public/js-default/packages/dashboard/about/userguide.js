@@ -23,7 +23,7 @@ module.exports = function UserGuideConstructor(){
                     labels = Config.get("labels"),
                     howTolist = new Store([]);
                     
-                userGuide.plugins.addAll({
+                userGuide.seam.addAll({
                         "label" : new Model(labels),
                         "howto" : new Model(howTolist),
                         "howtoevent" : new Event(userGuide)

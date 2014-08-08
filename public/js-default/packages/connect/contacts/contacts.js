@@ -80,7 +80,7 @@ module.exports = function ContactsConstructor(){
                                 return result;         
                             };
                         
-                        contactsUI.plugins.addAll({
+                        contactsUI.seam.addAll({
                                 "label": new Model(labels),
                                 "sort": new Model(sortButtons, {
                                         "setLabel" : function(name){

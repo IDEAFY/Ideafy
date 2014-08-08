@@ -57,7 +57,7 @@ module.exports = function MyDecksContructor(){
                   deckView = new DeckView(deckUpdate), newDeck = new NewDeck(deckUpdate);
               
               
-              widget.plugins.addAll({
+              widget.seam.addAll({
                                 "label" : new Model(Config.get("labels")),
                                 "deckliststack" : stack,
                                 "decksevent" : new Event(widget),

@@ -108,7 +108,7 @@ module.exports = function EditCharConstructor($update, $close){
 
                 model.setTransport(Config.get("transport"));
                 
-                editChar.plugins.addAll({
+                editChar.seam.addAll({
                         "label" : new Model(labels),
                         "model" : new Model(model, {
                                 setTitle : function(title){

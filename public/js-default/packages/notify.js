@@ -27,7 +27,7 @@ var notify = new Widget(),
       notif = new Store({"unread": 0, "newmsg":false}),
       messages = new Store([]); 
                 
-notify.plugins.addAll({
+notify.seam.addAll({
         "notif" : new Model(notif, {
                 flashNew : function(newmsg){
                         var flash, node = this;
@@ -92,7 +92,7 @@ notify.showAbout = function(event, node){
 };
                 
 // popup user interface
-notifyPopup.plugins.addAll({
+notifyPopup.seam.addAll({
         "labels" : new Model(labels),
         "notify" : new Model(messages,{
                 setObject : function(type){

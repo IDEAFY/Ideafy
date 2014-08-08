@@ -57,7 +57,7 @@ module.exports = function MUControllerConstructor($exit){
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                 // progress bar setup
-                _progress.plugins.addAll({
+                _progress.seam.addAll({
                         "labels" : new Model(_labels),
                         "step" : new Model(_steps, {
                                 setCurrent : function(currentStep){
@@ -131,7 +131,7 @@ module.exports = function MUControllerConstructor($exit){
                 // Main UI setup
                 _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></div><div class="stack" data-musessionstack="destination"></div></div>';
                    
-                _widget.plugins.addAll({
+                _widget.seam.addAll({
                         "musessionstack": _stack,
                         "place": new Place({"progress": _progress}),
                         "info": new Model(info)

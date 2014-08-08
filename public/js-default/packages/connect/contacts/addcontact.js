@@ -137,7 +137,7 @@ module.exports = function AddContactConstructor(){
                  };
              
              
-             addContactUI.plugins.addAll({
+             addContactUI.seam.addAll({
                      "label" : new Model(labels),
                      "count" : new Model(count),
                      "search" : new Model(search,{

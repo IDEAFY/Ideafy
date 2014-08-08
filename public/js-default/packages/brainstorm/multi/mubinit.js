@@ -26,7 +26,7 @@ module.exports = function MultiBInitConstructor($exit){
                     stack = new Stack(),
                     labels = Config.get("labels");
                     
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels": new Model(labels),
                         "muinitstack": stack,
                         "muinitevent": new Event(widget)

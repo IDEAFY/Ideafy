@@ -28,7 +28,7 @@ module.exports = function LibraryConstructor(){
 	     _menu;
 
         //setup
-		        _widget.plugins.add("librarystack", _stack);
+		        _widget.seam.add("librarystack", _stack);
 		        
 		        _widget.template = '<div id="library"><div class="cache"></div><div id="library-menu"></div><div class="stack" data-librarystack="destination"></div></div>';
 		      

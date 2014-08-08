@@ -43,7 +43,7 @@ module.exports = function MuListConstructor($exit){
                         _languages.alter("push", val);
                 });
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels" : new Model(labels),
                         "options" : new Model(muListOptions,{
                                 setBg : function(lang){

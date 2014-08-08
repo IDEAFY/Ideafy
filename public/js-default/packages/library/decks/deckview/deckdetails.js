@@ -92,7 +92,7 @@ module.exports = function DeckDetailsConstructor($update){
                         
                         allCards.setTransport(Config.get("transport"));
                         
-                        deckDetails.plugins.addAll({
+                        deckDetails.seam.addAll({
                                 "labels": new Model(labels),
                                 "range": new Model(range, {
                                         setCursorWidth : function(max){

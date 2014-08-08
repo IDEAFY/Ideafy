@@ -19,7 +19,7 @@ function DateWidgetConstructor(){
         var _labels = Config.get("labels"),
               date = new Store({"day":"", "month":"", "year":""});
                         
-        this.plugins.addAll({
+        this.seam.addAll({
                 "label" : new Model(_labels),
                 "model" : new Model(date,{
                         setYear : function(y){

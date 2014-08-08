@@ -27,7 +27,7 @@ var AvatarConstructor = function($array){
         // setup
         _cdb.setTransport(Config.get("transport"));
                         
-        this.plugins.addAll({
+        this.seam.addAll({
                 "avatar" : new Model(_store, {
                         setStyle : function(img){
                                                 if (img && img !== "in progress") {

@@ -25,7 +25,7 @@ module.exports = function MTCDetailsConstructor(){
                             user = Config.get("user"),
                             twocentList = new TwocentList("connect");
                         
-                        mtcDetailUI.plugins.addAll({
+                        mtcDetailUI.seam.addAll({
                                 "labels" : new Model(labels),
                                 "place" : new Place({"TwocentUI": twocentList})      
                         });

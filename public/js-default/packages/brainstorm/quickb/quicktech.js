@@ -57,7 +57,7 @@ module.exports = function QuickTechConstructor($session, $data, $prev, $next, $p
                             spinner  = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 373, left:373}).spin();
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "display": new Model(_techDisplay,{
                                         setReload : function(left){

@@ -29,7 +29,7 @@ module.exports = function MTQDetailsConstructor(){
                             twoqTwocentList = new TwocentList("connect"),
                             domWrite;
                         
-                        mtqDetailUI.plugins.addAll({
+                        mtqDetailUI.seam.addAll({
                                 "labels" : new Model(labels),
                                 "tqdetail" : new Model(model, {
                                         // set header title (user or user contact)

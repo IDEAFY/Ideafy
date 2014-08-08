@@ -31,7 +31,7 @@ module.exports = function MultiBConstructor($sip, $exit){
                     muWait, muInit, muController,
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
                 
-                widget.plugins.add("mustack", stack);
+                widget.seam.add("mustack", stack);
                 
                 widget.template = '<div id="ideafy-multi"><div class="stack" data-mustack="destination"></div></div>';
                 

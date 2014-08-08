@@ -35,14 +35,14 @@ module.exports = function IdeaStackConstructor(){
 		//setup
 		        
 			
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 			        "detailstack" : _stack
 			});
 			
 			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
 			
 			_emptyList.template = '<div class="msgsplash"><div class="header blue-dark"><span data-labels="bind:innerHTML, noideafound"></span></div><div class="innersplash"><span data-labels="bind: innerHTML, tryotherview"></span></div></div>';
-                        _emptyList.plugins.add("labels", new Model(_labels));
+                        _emptyList.seam.add("labels", new Model(_labels));
 
 		//detail
                         _widget.reset = function reset(viewStore, index){

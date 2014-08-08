@@ -28,7 +28,7 @@ module.exports = function ContactDetailsConstructor(){
                             transport = Config.get("transport");               
                         
                         
-                        contactDetails.plugins.addAll({
+                        contactDetails.seam.addAll({
                                 "label" : new Model(labels),
                                 "basicinfo": new Model(contact, {
                                         setAvatar : function(userid){

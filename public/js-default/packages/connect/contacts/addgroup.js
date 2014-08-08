@@ -41,7 +41,7 @@ module.exports = function AddGroupConstructor(){
                  labels = Config.get("labels");
              
              
-             addGroupUI.plugins.addAll({
+             addGroupUI.seam.addAll({
                      "label" : new Model(labels),
                      "error" : new Model(error),
                      "color" : new Model(colors, {

@@ -37,7 +37,7 @@ module.exports = function AboutConstructor(){
                                ],
                        aboutMenu = new Store(menu);
                    
-                   aboutUI.plugins.addAll({
+                   aboutUI.seam.addAll({
                            "label" : new Model(labels),
                            "aboutmenu" : new Model(aboutMenu, {
                                    setCurrent : function(currentStep){

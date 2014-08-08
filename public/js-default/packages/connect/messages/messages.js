@@ -91,7 +91,7 @@ module.exports = function MessagesConstructor(){
                                 return result;         
                             };
                         
-                        messageUI.plugins.addAll({
+                        messageUI.seam.addAll({
                                 "label": new Model(labels),
                                 "sort" : new Model(sortButtons, {
                                         "setLabel" : function(name){
@@ -332,7 +332,7 @@ module.exports = function MessagesConstructor(){
                 
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark"><span>'+Config.get("labels").get("messageview")+'</span></div><div class="innersplash" data-labels="bind: innerHTML, messagecenter"></div></div>';
                         
-                        defaultPage.plugins.add("labels", new Model(labels));
+                        defaultPage.seam.add("labels", new Model(labels));
                        
                         // initialize
                         // get message list from user document

@@ -48,7 +48,7 @@ function AddAttachmentConstructor(){
                         cdb.setTransport(transport);
                         
                         // define plugins and methods
-                        ui.plugins.addAll({
+                        ui.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "attach" : new Model(cdb,{
                                         show : function(bool){

@@ -57,7 +57,7 @@ module.exports = function QuickScenarioConstructor($session, $data, $prev, $next
                         
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels, {
                                         setPlaceholder : function(value){
                                                 this.setAttribute("placeholder", value);

@@ -29,7 +29,7 @@ module.exports = function ConnectConstructor(){
 			    contactsUI = new Contacts(),
 			    twocentsUI = new MyTwocents();
 			    
-			_widget.plugins.add("connectstack", _stack);
+			_widget.seam.add("connectstack", _stack);
 			
 			_widget.template = '<div id="connect"><div id="connect-menu"></div><div class="stack" data-connectstack="destination"></div></div>';
 

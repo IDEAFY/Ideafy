@@ -47,27 +47,27 @@ module.exports = function LoginConstructor($init, $reload, $local){
                 _EULA = new Store({"eula":""});
                 
         //setup && UI DEFINITIONS               
-        _login.plugins.addAll({
+        _login.seam.addAll({
                 "loginstack" : _stack
         });
                         
         _login.template = '<div id="login"><div id="login-stack" data-loginstack="destination"><div class="squirrel"></div></div></div>';
                         
         // loading UI
-        _loading.plugins.add("label", new Model(_labels));
+        _loading.seam.add("label", new Model(_labels));
         _loading.template = '<div id="loading"><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
         _loading.place(document.getElementById("loading"));
                         
         // maintenance UI
-        _serverdown.plugins.add("label", new Model(_labels));
+        _serverdown.seam.add("label", new Model(_labels));
         _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p></div>';
                         
         // no connection UI
-        _internetdown.plugins.add("label", new Model(_labels));
+        _internetdown.seam.add("label", new Model(_labels));
         _internetdown.template = '<div id="nointernet"><p data-label="bind: innerHTML, nointernet"></p></div>';
                         
         // signup form
-        _signupForm.plugins.addAll({
+        _signupForm.seam.addAll({
                 "label": new Model(_labels),
                 "loginmodel" : new Model(_store),
                 "eula" : new Model(_EULA),
@@ -274,7 +274,7 @@ module.exports = function LoginConstructor($init, $reload, $local){
         };
                         
         // login form
-        _loginForm.plugins.addAll({
+        _loginForm.seam.addAll({
                 "label": new Model(_labels),
                 "loginmodel" : new Model(_store,{
                         forgotpwd : function(reset){

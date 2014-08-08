@@ -52,7 +52,7 @@ module.exports = function QuickSetupConstructor($session, $data, $prev, $next, $
                             // deduct 20px from position shown in navigator
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "quicksetup" : new Model(_selection, {
                                         setReload : function(left){

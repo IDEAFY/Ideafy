@@ -24,7 +24,7 @@ module.exports = function QuickWrapupConstructor($session, $data, $prev, $next, 
                             _labels = Config.get("labels");
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "wrapup" : new Model(_wrapup, {
                                         formatTitle : function(title){

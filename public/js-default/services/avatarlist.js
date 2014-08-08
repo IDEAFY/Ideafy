@@ -23,7 +23,7 @@ var AvatarListConstructor = function($ids){
         });
         
         // setup
-        this.plugins.addAll({
+        this.seam.addAll({
                 "avatar" : new Model(_store, {
                         setAvatar : function(id){
                                 if (id){

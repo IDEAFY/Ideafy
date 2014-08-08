@@ -40,7 +40,7 @@ module.exports = function MultiBWaitConstructor($exit, $start){
                         
                         session.setTransport(Config.get("transport"));
                         
-                        widget.plugins.addAll({
+                        widget.seam.addAll({
                                 labels: new Model(labels),
                                 model: new Model(session, {
                                         setTitle : function(title){

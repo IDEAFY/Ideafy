@@ -22,7 +22,7 @@ var calendar= new Widget(),
                         
 calendar.template = '<div class="calendar"></div>';
                         
-calendar.plugins.addAll({
+calendar.seam.addAll({
         "labels": new Model(labels),
         "model": new Model(cal),
         "calevent": new Event(calendar)

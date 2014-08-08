@@ -23,7 +23,7 @@ module.exports = function AboutIdeafyConstructor(){
                                     {"name": labels.get("vincent"), "contrib": labels.get("contribvincent")}
                             ]);
                         
-                        aboutIdeafy.plugins.addAll({
+                        aboutIdeafy.seam.addAll({
                                 "labels": new Model(labels),
                                 "credits": new Model(credits)
                                 });

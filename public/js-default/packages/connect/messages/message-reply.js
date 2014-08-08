@@ -88,7 +88,7 @@ module.exports = function MessageReplyConstructor(){
                         return promise;
                 };
                 
-                messageReplyUI.plugins.addAll({
+                messageReplyUI.seam.addAll({
                         "labels" : new Model(labels),
                         "errormsg" : new Model(error),
                         "reply" : new Model(msgReply, {

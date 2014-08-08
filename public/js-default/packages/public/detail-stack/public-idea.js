@@ -44,7 +44,7 @@ module.exports = function PublicDetailConstructor($action){
 
                 //setup
                         _store.setTransport(transport);
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "publicdetail" : new Model(_store, {
                                         // toggle header buttons right

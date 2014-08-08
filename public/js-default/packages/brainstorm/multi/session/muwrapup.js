@@ -28,7 +28,7 @@ module.exports = function MUWrapupConstructor($session, $data, $prev, $next, $pr
                             _flash;
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "wrapup" : new Model(_wrapup, {
                                         formatTitle : function(title){

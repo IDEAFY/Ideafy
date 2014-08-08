@@ -42,7 +42,7 @@ module.exports = function MyTwocentsConstructor(){
                             labels = Config.get("labels"),
                             db = Config.get("db");
                             
-                        myTwocentUI.plugins.addAll({
+                        myTwocentUI.seam.addAll({
                                 "labels" : new Model(labels),
                                 "twoqbuttons" : new Model(twoQButtons,{
                                         setBg : function(name){

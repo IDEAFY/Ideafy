@@ -35,7 +35,7 @@ function TwocentListConstructor($view){
                         
                         cdb.setTransport(transport);
                         // define plugins and methods
-                        ui.plugins.addAll({
+                        ui.seam.addAll({
                                 "labels" : new Model(Config.get("labels")),
                                 "twocents" : new Model(store, {
                                         date : function date(date){

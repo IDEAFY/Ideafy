@@ -38,7 +38,7 @@ function SubMenuConstructor($dom, $setWidget){
         if ($dom.id.search("dashboard")>-1) {this.template = dashboardTemplate;}
                         
         // setup
-        this.plugins.addAll({
+        this.seam.addAll({
                 "label" : new Model(Config.get("labels")),
                 "menucontrol" : _ctrl
         });

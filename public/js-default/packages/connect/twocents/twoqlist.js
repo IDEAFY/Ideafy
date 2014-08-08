@@ -43,7 +43,7 @@ function TwoQListConstructor($type, $db, $design, $view, $query) {
                 
                 this.template = '<div><ul class="twoq-list '+ className + '" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:mousedown, setStart"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul><ul class="twoq-searchlist invisible ' + className + '" data-twoqsearch="foreach"><li class="list-item" data-twoqlistevent="listen:mousedown, setStart"><div class="item-header"><span class="date" data-twoqsearch="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqsearch="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqsearch="bind:showReplies, value.twocents"></span></div></li></ul></div>';
 
-                this.plugins.addAll({
+                this.seam.addAll({
                         "twoqlist": new Model(_store, {
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";

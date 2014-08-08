@@ -24,7 +24,7 @@ var _widget = new Widget(),
       upload = false,
       _error = new Store({"error": ""});
                             
-_widget.plugins.addAll({
+_widget.seam.addAll({
         "new2c" : new Model(_store),
         "dest" : new Model(_dest, {
                 setHeader : function(username){

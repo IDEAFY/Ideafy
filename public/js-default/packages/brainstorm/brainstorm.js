@@ -29,7 +29,7 @@ module.exports = function BrainstormConstructor(){
 			    _user = Config.get("user");
 			
 		//setup
-		        _widget.plugins.addAll({
+		        _widget.seam.addAll({
 		                "brainstormstack": _stack,
 		                "header": new Model(_store, {
 		                      setDate: function(date){

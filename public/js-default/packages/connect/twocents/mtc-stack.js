@@ -26,7 +26,7 @@ module.exports = function MTCDetailStackConstructor(){
                             
                         widget.template = '<div id = "mtcdetailstack" data-mtcdetailstack = "destination"></div>';
                         
-                        widget.plugins.addAll({
+                        widget.seam.addAll({
                                 "mtcdetailstack" : mtcDetailStack
                         });
                         
@@ -53,7 +53,7 @@ module.exports = function MTCDetailStackConstructor(){
                         
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark" data-labels="bind: innerHTML, twocentview"><span></span></div><div class="innersplash" data-labels="bind: innerHTML, twocentcenter"></div></div>';
                         
-                        defaultPage.plugins.add("labels", new Model(labels));
+                        defaultPage.seam.add("labels", new Model(labels));
                         
                         // init
                         widget.init = function init(type, value){

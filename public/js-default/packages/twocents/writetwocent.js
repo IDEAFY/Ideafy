@@ -29,7 +29,7 @@ module.exports = function WriteTwocentConstructor($view){
                     editTC = "new", // to distinguish between new and edit mode
                     position=0; // to know which position to update
                 
-                ui.plugins.addAll({
+                ui.seam.addAll({
                         "twocent": new Model(twocent,{
                                 date : function(date){
                                         if (date) {this.innerHTML = Utils.formatDate(date);}        

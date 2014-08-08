@@ -39,7 +39,7 @@ _user.watchValue("lang", function(){
         _resetLang();
 });
                         
-_widget.plugins.addAll({
+_widget.seam.addAll({
         "new2q" : new Model(_store, {
                 displayLang : function(lang){
                         var l=lang.substring(0,2);

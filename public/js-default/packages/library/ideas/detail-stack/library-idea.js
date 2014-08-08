@@ -46,7 +46,7 @@ module.exports = function IdeaDetailConstructor($action){
 
                 //setup
                         _store.setTransport(transport);
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "ideadetail" : new Model(_store, {
                                         // wait for idea to display UI

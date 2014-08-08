@@ -21,7 +21,7 @@ function TimeWidgetConstructor(){
               user = Config.get("user"),
               time = new Store({"hour": 0, "min":0, "am":true});
                         
-        _widget.plugins.addAll({
+        _widget.seam.addAll({
                 "label" : new Model(_labels),
                 "model" : new Model(time, {
                         setAMPM : function(am){

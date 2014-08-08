@@ -70,7 +70,7 @@ module.exports =  function DrawingConstructor($store, $exit){
                     _capture = false, deltaX, deltaY,
                     _LEFT = 93;
                 
-                _widget.plugins.addAll({
+                _widget.seam.addAll({
                         "labels": new Model(_labels),
                         "color": new Model(_colors, {
                                 "setColor" : function(color){

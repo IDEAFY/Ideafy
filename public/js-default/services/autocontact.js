@@ -20,7 +20,7 @@ var AutoContactConstructor = function($dom, $outputNode, $update){
               _search = false,
               _contactList = new Store([]);
                         
-        _widget.plugins.addAll({
+        _widget.seam.addAll({
                 "auto" : new Model(_contactList,{
                         setSelected : function(selected){
                                 (selected)?this.classList.add("selected"): this.classList.remove("selected");

@@ -19,7 +19,7 @@ module.exports =  function TutorialsConstructor(){
                             store = new Store(tuto);
                             
                             
-                        tutorials.plugins.addAll({
+                        tutorials.seam.addAll({
                                 "labels" : new Model(labels),
                                 "tuto" : new Model(store,{
                                         setName : function(name){

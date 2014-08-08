@@ -46,7 +46,7 @@ module.exports = function SettingsConstructor(){
                         _languages.alter("push", val);
                    });
                    
-                   settingsUI.plugins.addAll({
+                   settingsUI.seam.addAll({
                            "label" : new Model(labels),
                            "options" : new Model(options, {
                                    setLang : function(lang){

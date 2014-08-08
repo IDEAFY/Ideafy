@@ -17,7 +17,7 @@ module.exports = function WBDefaultConstructor($type, $mode){
                     _labels = Config.get("labels"),
                     _sessionType = "quick"; // current session type ("quick" or "mu")
                     
-                _widget.plugins.add("labels", new Model(_labels));
+                _widget.seam.add("labels", new Model(_labels));
                 
                 //get session type
                 ($mode) ? _sessionType = $mode : _sessionType = "quick";

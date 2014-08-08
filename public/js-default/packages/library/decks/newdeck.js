@@ -93,7 +93,7 @@ module.exports = function newConstructor($onEnd){
                         // reset languages
                         _resetLang();
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "newdeck" : new Model(_store,{
                                         displayLang : function(lang){
                                                 var l=lang.substring(0,2);

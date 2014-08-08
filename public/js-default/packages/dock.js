@@ -42,7 +42,7 @@ module.exports = function DockConstructor(){
                 
                 
         //setup
-        _widget.plugins.addAll({
+        _widget.seam.addAll({
                 "dockstack" : _stack,
                 "dockcontrol" : _control,
                 "place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": New2Q, "new2c": New2C, "help": Help, "tips": Tips, "attach": Attachment})

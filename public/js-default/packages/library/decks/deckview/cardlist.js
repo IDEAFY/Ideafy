@@ -31,7 +31,7 @@ module.exports = function CardListConstructor($cardType, $editCard, $update){
                             currentDeck = null,
                             currentHighlight = null; // used to keep track of current zoom
                         
-                        cardList.plugins.addAll({
+                        cardList.seam.addAll({
                                 "pagination" : new Model(pagination,{
                                         setPage : function(currentPage){
                                                 var nb = currentPage+1;

@@ -54,7 +54,7 @@ module.exports = function QuickIdeaConstructor($session, $data, $prev, $next, $p
                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels, {
                                         setPlaceholder : function(value){
                                                 this.setAttribute("placeholder", value);

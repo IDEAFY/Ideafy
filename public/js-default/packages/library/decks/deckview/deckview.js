@@ -37,7 +37,7 @@ module.exports = function DeckViewConstructor($update){
                             deckId = "";
                         
                         
-                        deckView.plugins.addAll({
+                        deckView.seam.addAll({
                                 "cardmenu" : new Model(cardMenu, {
                                         setClass : function(name){
                                                 (name) && this.classList.add(name);

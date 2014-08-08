@@ -26,7 +26,7 @@ function WriteTwocentReplyConstructor($parent){
               replyTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0},
               reply = new Store(replyTemplate);
                             
-        this.plugins.addAll({
+        this.seam.addAll({
                 "model": new Model(reply, {
                         date : function date(date){
                                 this.innerHTML = Utils.formatDate(date);

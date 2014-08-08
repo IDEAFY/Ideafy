@@ -17,7 +17,7 @@ var _widget = new Widget(),
       _labels = Config.get("labels"),
       _content = new Store({"html":""});
                         
-_widget.plugins.addAll({
+_widget.seam.addAll({
         "help" : new Model(_content),
         "helpevent" : new Event(_widget)
 });

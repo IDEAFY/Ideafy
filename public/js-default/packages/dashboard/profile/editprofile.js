@@ -90,7 +90,7 @@ module.exports = function EditProfileConstructor(){
                         });         
                     };
                     
-                editProfile.plugins.addAll({
+                editProfile.seam.addAll({
                         "label" : new Model(labels),
                         "avatars": new Model(defaultAvatars, {
                                 setPic : function(file){

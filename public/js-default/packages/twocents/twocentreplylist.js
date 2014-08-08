@@ -23,7 +23,7 @@ function TwocentReplyListConstructor($data, $id, $tc, $view){
               user = Config.get("user"),labels = Config.get("labels"),
               transport = Config.get("transport");
                         
-        ui.plugins.addAll({
+        ui.seam.addAll({
                 "reply": new Model(store, {
                         date : function date(date){
                                                if (date){

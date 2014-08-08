@@ -66,7 +66,7 @@ module.exports = function MUTechConstructor($session, $data, $prev, $next, $prog
                         };
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "display": new Model(_techDisplay,{
                                         setReload : function(left){

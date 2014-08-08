@@ -26,7 +26,7 @@ module.exports = function MuVoteConstructor(){
                             _uploadInProgress = false, // to avoid conflicts between two upload requests triggered to quickly
                             _onEnd; // callback when voting is finished
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "model" : new Model(_vote, {
                                         setVisible : function(bool){

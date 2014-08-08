@@ -83,7 +83,7 @@ module.exports = function NewMessageConstructor($close){
                                     return promise;
                             };
                             
-                        newMessageUI.plugins.addAll({
+                        newMessageUI.seam.addAll({
                                 "labels": new Model(labels),
                                 "errormsg": new Model(error),
                                 "newmessage" : new Model(message,{

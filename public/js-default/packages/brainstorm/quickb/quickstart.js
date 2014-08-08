@@ -41,7 +41,7 @@ module.exports = function QuickStartConstructor($session, $prev, $next, $progres
                         _resetLang();
                         
                         // setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "select" : new Model (_languages, {
                                         setBg : function(name){

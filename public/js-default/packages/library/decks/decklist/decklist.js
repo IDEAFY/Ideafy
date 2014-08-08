@@ -27,7 +27,7 @@ module.exports = function DeckListConstructor($type){
                             decks = new Store([]),
                             currentBar = null;
                         
-                        deckList.plugins.addAll({
+                        deckList.seam.addAll({
                                 "labels" : new Model(labels),
                                 "active" : new Model(user, {
                                         

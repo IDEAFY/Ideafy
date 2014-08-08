@@ -20,7 +20,7 @@ var _labels = Config.get("labels"),
       _callback, _class;
 
                         
-_widget.plugins.addAll({
+_widget.seam.addAll({
         "label" : new Model(_labels),
         "confirm" : new Model(_content),
         "confirmevent" : new Event(_widget)

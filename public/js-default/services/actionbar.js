@@ -37,7 +37,7 @@ function ActionBarConstructor($type, $parent, $data){
                 spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin(),
                 favSpinner = new Spinner({color:"#a0a0a0", lines:10, length: 6, width: 4, radius:6}).spin();
                         
-        this.plugins.addAll({
+        this.seam.addAll({
                 "buttons" : new Model(buttons, {
                         setIcon : function(icon){
                                                 this.setAttribute("style", "background-image:url('"+icon+"');");

@@ -43,7 +43,7 @@ module.exports = function PublicEditConstructor($action){
 	               
                         _store.setTransport(Config.get("transport"));
                         
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 			        "editlabel" : new Model(_labels),
 			        "editidea" : new Model(_store, {
                                         displayLang : function(lang){

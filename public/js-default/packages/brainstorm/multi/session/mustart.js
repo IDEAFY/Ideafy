@@ -33,7 +33,7 @@ module.exports = function MUStartConstructor($session, $prev, $next, $progress){
                              // deduct 20px from position shown in navigator
                         
                         // setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "model" : new Model($session, {
                                         setAvatar : function setAvatar(id){

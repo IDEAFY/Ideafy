@@ -41,7 +41,7 @@ module.exports = new function AttachmentConstructor($type){
                        
                         cdb.setTransport(transport);
                         // define plugins and methods
-                        ui.plugins.addAll({
+                        ui.seam.addAll({
                                 "labels" : new Model(labels),
                                 "attach" : new Model(cdb,{
                                         setCat : function(cat){

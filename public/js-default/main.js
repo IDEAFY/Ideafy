@@ -161,7 +161,7 @@ _login = new Login(_body.init, _body.reload, _local);
 _stack.getStack().add("#login", _login);
         
 // Widget definition
-_body.plugins.addAll({
+_body.seam.addAll({
         "stack" : _stack,
         "place": new Place({confirm: Confirm})
 });

@@ -26,7 +26,7 @@ var _widget = new Widget(),
                         
 _cdb.setTransport(Config.get("transport"));
                         
-_widget.plugins.addAll({
+_widget.seam.addAll({
         "labels" : new Model(_labels),
         "tip" : new Model(_tip,{
                 setTitle : function(id){

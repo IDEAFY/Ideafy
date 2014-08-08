@@ -224,4 +224,6 @@ module.exports = function NotifyConstructor(){
                 }
                 messages.reset(n);
         });
+        
+        return notify;
 };

@@ -178,7 +178,7 @@ function CouchDBBaseConstructor() {
      * @returns {Boolean} false if no configuration object given
      */
     this.sync = function sync() {
-        var _syncInfo;
+        //var _syncInfo;
 
         _promise = new Promise();
         _syncInfo = this.setSyncInfo.apply(this, arguments);

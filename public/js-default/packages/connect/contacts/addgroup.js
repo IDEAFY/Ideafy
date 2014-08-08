@@ -6,7 +6,7 @@
  */
 
 var olives = require("../../../libs/olives"),
-      emily = require("../../../libs/emily").
+      emily = require("../../../libs/emily"),
       Widget = olives.OObject,
       Config = require("../../../services/config"),
       Model = olives["Bind.plugin"],

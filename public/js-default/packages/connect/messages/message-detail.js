@@ -19,10 +19,7 @@ var olives = require("../../../libs/olives"),
       Reply = require("./message-reply"),
       Spinner = require("../../../libs/spin.min");
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply, Spinner){
-                
-           return function MessageDetailConstructor($close){
+module.exports = function MessageDetailConstructor($close){
            
                 var msgDetailUI = new Widget(),
                     msgReplyUI = new Reply(),
@@ -402,5 +399,4 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 return msgDetailUI;
-            };      
-        });
+};

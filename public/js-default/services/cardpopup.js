@@ -166,7 +166,7 @@ var CardPopupConstructor = function($close){
         };     
 };
                 
-modul.exports = function CardPopupFactory($close){
+module.exports = function CardPopupFactory($close){
         CardPopupConstructor.prototype = new Widget();
         return new CardPopupConstructor($close);
 };

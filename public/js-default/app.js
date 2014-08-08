@@ -27676,9 +27676,13 @@ module.exports = function IdeaStackConstructor(){
                         
                         // init
 			_ideaDetail = new IdeaDetail(_widget.action);
+			console.log("detail ok");
 			_edit = new Edit(_widget.action);
+			console.log("edit ok");
 			_sendmail = new Sendmail(_widget.action);
+			console.log("sendmail ok");
 			_share = new Share(_widget.action);
+			console.log("share ok");
 			
 			_stack.getStack().add("#library-ideadetail", _ideaDetail);
                         _stack.getStack().add("#library-edit", _edit);

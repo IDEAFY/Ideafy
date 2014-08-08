@@ -6,6 +6,7 @@
  */
 
 var amy = require("../../../libs/amy2"),
+      emily = require("../../../libs/emily"),
       Stack = amy.StackPlugin,
       Default = require("./wbdefault"),
       Main = require("./wbmain"),

@@ -46,7 +46,7 @@ _body.startDock = function startDock(firstStart){
         };
         
 _body.init = function init(firstStart) {
-                
+                console.log("in body.init");
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
                 // check db
@@ -56,6 +56,7 @@ _body.init = function init(firstStart) {
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
+                        console.log("user doc sync'd");
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
@@ -69,6 +70,7 @@ _body.init = function init(firstStart) {
                         return lblUpdate;
                 })
                 .then(function(){
+                        console.log("retrieving avatar");
                         var loadAvatar = new Promise();
                         // get user avatar and labels if necessary
                         if (_user.get("picture_file").search("img/avatars/deedee")>-1){
@@ -80,6 +82,7 @@ _body.init = function init(firstStart) {
                                 loadAvatar.fulfill();
                         }
                         else{
+                                console.log("before GETFILE request");
                                 _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
@@ -94,6 +97,7 @@ _body.init = function init(firstStart) {
                         return loadAvatar;
                 })
                 .then(function(){
+                        console.log("before calling dock.init");
                         _dock.init();
                         _login.stopSpinner();
                         _body.startDock(firstStart);

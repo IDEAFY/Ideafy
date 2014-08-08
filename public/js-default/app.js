@@ -6084,7 +6084,7 @@ var io="undefined"==typeof module?{}:module.exports;(function(){(function(a,b){v
 var olives = require("./libs/olives"),
        emily = require("./libs/emily"),
        amy = require("./libs/amy2"),
-       Widget = emily.OObject,
+       Widget = olives.OObject,
        LocalStore = olives.LocalStore,
        Stack = amy.StackPlugin,
        Model = olives["Bind.plugin"],
@@ -6112,7 +6112,7 @@ var   _body = new Widget(),
         _currentVersion = Config.get("version");
 
 // SETUP
-AMY = amy;
+
 // init logic
 _body.startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");

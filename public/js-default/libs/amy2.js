@@ -84,78 +84,66 @@ Amy.StackPlugin = function StackPluginConstructor($uis, $destination){
 	       };
 };
 
-Amy.EventController = function($scope, $touch){
+Amy.EventController = function EventControllerConstructor($scope, $touch){
         var Utils = Amy.TestUtils,
-	      Tools = emily.Tools;
-        return function EventControllerConstructor($scope, $touch){
-                var _scope = ($scope instanceof Object) ? $scope : null,
-	               //put in the assert liB? Il faut pouvoir lancer une exception ou non
-		      _isBoolean = function(bool){
-			     return (typeof bool == "boolean") ? bool : false;
-		      },
-		      //put in the test lib
-		      _isString = function(){
-			     var bool = true,l;
-			     for(l = arguments.length; l>=0; l--){
-				    bool = bool && (typeof arguments[l] == "string");
-			     }
-			     return bool;
-		      },
-		      _touch = _isBoolean($touch),
-		      //should be a store?
-		      _map = {
-			     "mousedown" : "touchstart",
-			     "mouseup" : "touchend",
-			     "mousemove" : "touchmove"
-		      };
-
-	       this.addListener = function(node, event, callback, useCapture){
-		      //errors are trigerred by addEventListener
-		      node.addEventListener(this.map(event), callback, useCapture);
-	       };
-
-	       this.call = function(method){
-		      _scope[method].apply(_scope, Tools.toArray(arguments).slice(1));
-	       };
-
-	       this.isTouch = function(){
-		      return _touch;
-	       };
-
-	       this.setTouch = function(touch){
-		      if(_isBoolean(touch)){
-			     _touch = touch;
-			     return true;
+              _scope = ($scope instanceof Object) ? $scope : null,
+              _isBoolean = function(bool){
+		      return (typeof bool == "boolean") ? bool : false;
+	       },
+	       _isString = function(){
+	               var bool = true,l;
+		      for(l = arguments.length; l>=0; l--){
+			     bool = bool && (typeof arguments[l] == "string");
 		      }
-		      return false;
+		      return bool;
+	       },
+	       _touch = _isBoolean($touch),
+	       _map = {
+		      "mousedown" : "touchstart",
+		      "mouseup" : "touchend",
+		      "mousemove" : "touchmove"
 	       };
 
-	       this.setMap = function(key, value){
-		      if(_isString(key, value)){
-			     _map[key] = value;
-			     return true;
-		      }
-		      return false;
+        this.addListener = function(node, event, callback, useCapture){
+	       node.addEventListener(this.map(event), callback, useCapture);
+        };
 
-	       };
+        this.call = function(method){
+	       _scope[method].apply(_scope, Tools.toArray(arguments).slice(1));
+        };
 
-	       this.map = function(key){
-		      var value = _map[key];
-		      return value && _touch ? value : key;
-	       };
+        this.isTouch = function(){
+	       return _touch;
+        };
 
-	       this.setScope = function(scope){
-		      //do we have to throw exception if not object?
-		      //on utilse pour l'instance le assterIsObject que dans cet objet..le laisser dans utils?
-		      //Utils.assertIsObject(scope, "Scope has to be instance of Object");
-		      _scope = scope;
+        this.setTouch = function(touch){
+	       if(_isBoolean(touch)){
+		      _touch = touch;
 		      return true;
+	       }
+	       return false;
+        };
 
-	       };
+        this.setMap = function(key, value){
+	       if(_isString(key, value)){
+	               _map[key] = value;
+		      return true;
+	       }
+	       return false;
+        };
 
-	       this.scope = function(){
-		      return _scope;
-	       };
+        this.map = function(key){
+	       var value = _map[key];
+	       return value && _touch ? value : key;
+        };
+
+        this.setScope = function(scope){
+	       _scope = scope;
+	       return true;
+        };
+
+        this.scope = function(){
+	       return _scope;
         };
 };
 
@@ -182,59 +170,53 @@ Amy.DelegatePlugin = function DelegatePluginFactory($scope, $touch){
         return new DelegatePluginConstructor();
 };
         
-Amy.ControlPlugin =  function(){
+var ControlPluginConstructor =  function(){
         var Controller = Amy.EventController,
-	      Utils = Amy.DomUtils;
-        function ControlPluginConstructor(){
-
-                var _current = null;
-
-                //mettre peut être la classe
-	       this.init = function(node){
-		      _current = node;
-	       };
-
-	       this.radio = function(node, query, className, type, callback, useCapture){
-		      var that = this;
-		      this.addListener(node, type, function(event){
-			     var target = event.target;
-			     if(Utils.hasQuerySelector(node, target, query)) {
-				    that.radioClass(target, _current, className);
-				    _current = target;
-				    that.call(callback, event);
-			     }
-		      }, (useCapture == "true"));
-	       };
-
-	       this.radioClass = function(node, previous, className){
-		      node.classList.add(className);
-		      if(previous && previous != node){
-			     previous.classList.remove(className);
-		      }
-	       };
-
-                this.toggleClass = function(node, className){
-		      return node.classList.toggle(className);
-	       };
-
-                //delete listener??
-	       this.toggle = function(node, query, className, type, callback, useCapture){
-		      var that = this;
-		      this.addListener(node, type, function(event){
-			     var target = event.target;
-			     if(Utils.hasQuerySelector(node, target, query)) {
-				    that.toggleClass(target, className);
-				    that.call(callback, event);
-			     }
-		      }, (useCapture == "true"));
-	       };
+              Utils = Amy.DomUtils,
+              _current = null;
+              
+        this.init = function(node){
+	       _current = node;
         };
 
-        //we don't care about arguments because it event controller whioch handle that
-        return function ControlPluginFactory($scope, $touch){
+        this.radio = function(node, query, className, type, callback, useCapture){
+	       var that = this;
+	       this.addListener(node, type, function(event){
+	               var target = event.target;
+		      if(Utils.hasQuerySelector(node, target, query)) {
+			     that.radioClass(target, _current, className);
+			     _current = target;
+			     that.call(callback, event);
+		      }
+	       }, (useCapture == "true"));
+        };
+
+        this.radioClass = function(node, previous, className){
+	       node.classList.add(className);
+	       if(previous && previous != node){
+		      previous.classList.remove(className);
+	       }
+        };
+
+        this.toggleClass = function(node, className){
+	       return node.classList.toggle(className);
+        };
+
+        this.toggle = function(node, query, className, type, callback, useCapture){
+	       var that = this;
+	       this.addListener(node, type, function(event){
+		      var target = event.target;
+		      if(Utils.hasQuerySelector(node, target, query)) {
+		              that.toggleClass(target, className);
+			     that.call(callback, event);
+		      }
+	       }, (useCapture == "true"));
+        };
+};
+        
+Amy.ControlPlugin = function ControlPluginFactory($scope, $touch){
 	       ControlPluginConstructor.prototype = new Controller($scope, $touch);
 	       return new ControlPluginConstructor();
-        };
 };
 
 Amy.Stack = function ScreensConstructor($uis, $default) {

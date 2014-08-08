@@ -5612,6 +5612,9 @@ module.exports = function CouchDBViewFactory(data) {
 var olives = require("./olives"),
       emily = require("./emily"),
       Tools = emily.Tools,
+      Store = emily.Store,
+      Observer = emily.Observable,
+      OObject = olives.OObject,
       Amy = {};
        
 Amy.DomUtils = function(){
@@ -5665,27 +5668,25 @@ Amy.TestUtils = function(){
         };
 };
 
-Amy.StackPlugin = function(){
-        return function StackPluginConstructor($uis, $destination){
-	       var _stack = new Amy.Stack($uis, $destination);
-	       this.getStack = function(){
+Amy.StackPlugin = function StackPluginConstructor($uis, $destination){
+        var _stack = new Amy.Stack($uis, $destination);
+        this.getStack = function(){
 		      return _stack;
 	       };
 
-	       this.destination = function(node){
+        this.destination = function(node){
 		      _stack.setDestination(node);
 	       };
 			
-	       this.hide = function(){
+        this.hide = function(){
 		      _stack.hide();
 	       };
 
-	       this.show = function(node, eventType, attribute, useCapture) {
+        this.show = function(node, eventType, attribute, useCapture) {
 		      node.addEventListener(eventType, function(event){
 		              _stack.show(event.target.getAttribute(attribute));
 		      }, (useCapture == "true"));
 	       };
-        };
 };
 
 Amy.EventController = function($scope, $touch){
@@ -5848,90 +5849,84 @@ Amy.ControlPlugin =  function(){
         };
 };
 
-Amy.Stack = function Screens($uis, $default) {
-        var Store = emily.Store,
-	       OObject = olives.OObject,
-	       Tools = emily.Tools,
-	       Observer = emily.Observable;
-        return function ScreensConstructor($uis, $default) {
+Amy.Stack = function ScreensConstructor($uis, $default) {
 
-	       var _store = new Store($uis),
-		      _observer = new Observer(),
-		      _destination = $default,
-		      _currentName = "",
-		      _currentScreen = null;
+        var _store = new Store($uis),
+	     _observer = new Observer(),
+	     _destination = $default,
+	     _currentName = "",
+	     _currentScreen = null;
 			
 
-	       this.setDestination = function setDestination(destination) {
-		      if (destination instanceof HTMLElement || destination instanceof SVGElement) {
-			     _destination = destination;
-			     return true;
-		      } else {
-			     return false;
-		      }
-	       };
+        this.setDestination = function setDestination(destination) {
+	       if (destination instanceof HTMLElement || destination instanceof SVGElement) {
+		      _destination = destination;
+		      return true;
+	       } else {
+		      return false;
+	       }
+        };
 
-	       this.getDestination = function getDestination() {
-		      return _destination;
-	       };
+        this.getDestination = function getDestination() {
+	       return _destination;
+        };
 
-	       this.setCurrentScreen = function setCurrentScreen(ui) {
-		      _currentScreen = ui;
-		      _observer.notify("StackChange", ui);
-	       };
+        this.setCurrentScreen = function setCurrentScreen(ui) {
+	       _currentScreen = ui;
+	       _observer.notify("StackChange", ui);
+        };
 
-	       this.getCurrentScreen = function getCurrentScreen() {
-		      return _currentScreen;
-	       };
+        this.getCurrentScreen = function getCurrentScreen() {
+	       return _currentScreen;
+        };
 
-	       this.add = function add(name, ui) {
-		      if (typeof name == "string" && ui instanceof OObject) {
-			     _store.set(name, ui);
-			     this.hide(ui);
-			     return true;
-		      } else {
-			     return false;
-		      }
-	       };
+        this.add = function add(name, ui) {
+	       if (typeof name == "string" && ui instanceof OObject) {
+		      _store.set(name, ui);
+		      this.hide(ui);
+		      return true;
+	       } else {
+		      return false;
+	       }
+        };
 
-	       this.get = function get(name) {
-		      return _store.get(name);
-	       };
+        this.get = function get(name) {
+	       return _store.get(name);
+        };
 			
-	       this.del = function del(name) {
-		      return _store.del(name);      
-	       };
+        this.del = function del(name) {
+	       return _store.del(name);      
+        };
 			
-	       this.reset = function reset(uis){
-		      return _store.reset(uis);      
-	       };
+        this.reset = function reset(uis){
+	       return _store.reset(uis);      
+        };
 			
-	       this.getCurrentName = function getCurrentName(){
-		      return _currentName;        
-	       };
+        this.getCurrentName = function getCurrentName(){
+	       return _currentName;        
+        };
 
-	       this.show = function show(name) {
-		      var ui = this.get(name);
+        this.show = function show(name) {
+	       var ui = this.get(name);
 
-		      if (ui && name !== _currentName) {
-		              ui.place(_destination);
-			     //empty string passe aussi
-			     _currentScreen && this.hide(_currentScreen);
-			     this.setCurrentScreen(ui);
-			     _currentName = name;
-			     return true;
-		      } else {
-			     return false;
-		      }
-	       };
+	       if (ui && name !== _currentName) {
+		      ui.place(_destination);
+		      //empty string passe aussi
+		      _currentScreen && this.hide(_currentScreen);
+		      this.setCurrentScreen(ui);
+		      _currentName = name;
+	               return true;
+	       } else {
+		      return false;
+	       }
+        };
 
-	       this.hide = function hide(ui) {
-		      ui.place(document.createDocumentFragment());
-	       };
+        this.hide = function hide(ui) {
+	       ui.place(document.createDocumentFragment());
+        };
 			
-	       this.getObserver = function getObserver(){
-		       return _observer;
-	       };
+        this.getObserver = function getObserver(){
+	       return _observer;
         };
 };
 

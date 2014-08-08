@@ -10,6 +10,7 @@ var olives = require("./libs/olives"),
        amy = require("./libs/amy2"),
        Widget = olives.OObject,
        LocalStore = olives.LocalStore,
+       Promise = emily.Promise;
        Stack = amy.StackPlugin,
        Model = olives["Bind.plugin"],
        Place = olives["Place.plugin"],

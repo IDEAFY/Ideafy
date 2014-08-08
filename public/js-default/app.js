@@ -18813,10 +18813,7 @@ var olives = require("../../../libs/olives"),
       Reply = require("./message-reply"),
       Spinner = require("../../../libs/spin.min");
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply, Spinner){
-                
-           return function MessageDetailConstructor($close){
+module.exports = function MessageDetailConstructor($close){
            
                 var msgDetailUI = new Widget(),
                     msgReplyUI = new Reply(),
@@ -19196,8 +19193,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 return msgDetailUI;
-            };      
-        });
+};
 
 },{"../../../libs/CouchDBTools":71,"../../../libs/emily":96,"../../../libs/olives":140,"../../../libs/spin.min":142,"../../../services/avatar":241,"../../../services/config":244,"../../../services/utils":255,"./message-reply":183}],183:[function(require,module,exports){
 /*

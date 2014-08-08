@@ -19,7 +19,7 @@ var olives = require("../../../libs/olives"),
       Calendar = require("./calendar"),
       Promise = emily.Promise;
 
-moduie.exports = function ProfileConstructor(){
+module.exports = function ProfileConstructor(){
 
 /*
  * IMPORTANT NOTICE : file names for icons should not be changed -- if new icons are introduced for an existing reward they should use the same name

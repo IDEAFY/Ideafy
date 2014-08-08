@@ -29534,6 +29534,8 @@ module.exports = function NotifyConstructor(){
                 }
                 messages.reset(n);
         });
+        
+        return notify;
 };
 
 },{"../libs/emily":96,"../libs/olives":140,"../services/avatar":241,"../services/config":244,"../services/map":248}],227:[function(require,module,exports){

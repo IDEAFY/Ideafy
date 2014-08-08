@@ -6133,6 +6133,7 @@ _body.init = function init(firstStart) {
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         // check user defined language
                         if (_user.get("lang") !== Config.get("lang")) {
+                                console.log("before updatelabels");
                                 updateLabels(_user.get("lang")).then(function(){
                                         lblUpdate.fulfill();
                                 });
@@ -35845,7 +35846,9 @@ _utils.updateLabels = function(lang) {
               promise = new Promise();
                    
         // retrieve ideafy-data
+        console.log("before local.sync");
         local.sync("ideafy-data");
+        console.log("before request");
         transport.request("Lang", json, function(result) {
                 if (result === "nok") {
                         local.set("labels", Config.get("defaultLabels"));

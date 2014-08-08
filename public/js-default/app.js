@@ -17391,6 +17391,7 @@ module.exports = function PostitConstructor($store, $exit){
  */
 
 var amy = require("../../../libs/amy2"),
+      emily = require("../../../libs/emily"),
       Stack = amy.StackPlugin,
       Default = require("./wbdefault"),
       Main = require("./wbmain"),
@@ -17444,7 +17445,7 @@ module.exports = function WhiteboardFactory($type, $store, $tools, $mode){
         WhiteboardConstructor.prototype = new Stack();
         return new WhiteboardConstructor($type, $store, $tools, $mode);        
 };
-},{"../../../libs/amy2":74,"./wbdefault":170,"./wbdrawing":171,"./wbimport":172,"./wbmain":173,"./wbpostit":174}],176:[function(require,module,exports){
+},{"../../../libs/amy2":74,"../../../libs/emily":96,"./wbdefault":170,"./wbdrawing":171,"./wbimport":172,"./wbmain":173,"./wbpostit":174}],176:[function(require,module,exports){
 /*
  * https://github.com/IDEAFY/Ideafy
  * Proprietary License - All rights reserved

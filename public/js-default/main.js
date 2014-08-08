@@ -62,6 +62,7 @@ _body.init = function init(firstStart) {
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         // check user defined language
                         if (_user.get("lang") !== Config.get("lang")) {
+                                console.log("before updatelabels");
                                 updateLabels(_user.get("lang")).then(function(){
                                         lblUpdate.fulfill();
                                 });

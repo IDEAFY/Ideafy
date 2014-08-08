@@ -18240,7 +18240,7 @@ module.exports = function ContactDetailsConstructor(){
  */
 
 var olives = require("../../../libs/olives"),
-      emily = require("../../../libs/emily").
+      emily = require("../../../libs/emily"),
       amy = require("../../../libs/amy2"),
       Widget = olives.OObject,
       Map = require("../../../services/map"),
@@ -18256,6 +18256,7 @@ var olives = require("../../../libs/olives"),
       AddGroup = require("./addgroup"),
       ContactDetails = require("./contact-detail"),
       GroupDetails = require("./group-detail");
+
 module.exports = function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),

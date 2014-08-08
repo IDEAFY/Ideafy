@@ -5764,36 +5764,29 @@ Amy.EventController = function($scope, $touch){
         };
 };
 
-Amy.DelegatePlugin = function(){
+var DelegatePluginConstructor = function(){
         var Controller = Amy.EventController,
-	       Utils = Amy.DomUtils;
-        function DelegatePluginConstructor(){
-
-	       //factorize useCapture?
-	       this.listen = function(node, type, listener, useCapture) {
-		      var that = this;
-		      this.addListener(node, type, function(event){
-			     that.call(listener, event, node);
-		      }, (useCapture=="true"));
-	       };
-
-	       this.selector = function(node, selector, type, listener, useCapture){
-		      var that = this;
-		      //maper le noeur avec les event listener histoire d'optimiser le nombre de listener
-		      this.addListener(node, type, function(event){
-			     if(Utils.hasQuerySelector(node, event.target, selector)) {
-				    that.call(listener, event, node);
-			     }
-		      }, (useCapture=="true"));
-	       };
+               Utils = Amy.DomUtils;
+        //factorize useCapture?
+        this.listen = function(node, type, listener, useCapture) {
+                var that = this;
+                this.addListener(node, type, function(event){that.call(listener, event, node);}, (useCapture=="true"));
         };
 
-        return function DelegatePluginFactory($scope, $touch){
-	       DelegatePluginConstructor.prototype = new Controller($scope, $touch);
-	       return new DelegatePluginConstructor();
+        this.selector = function(node, selector, type, listener, useCapture){
+	       var that = this;
+	       //maper le noeur avec les event listener histoire d'optimiser le nombre de listener
+	       this.addListener(node, type, function(event){
+		      if(Utils.hasQuerySelector(node, event.target, selector)) that.call(listener, event, node);
+	       }, (useCapture=="true"));
         };
 };
 
+Amy.DelegatePlugin = function DelegatePluginFactory($scope, $touch){
+        DelegatePluginConstructor.prototype = new Controller($scope, $touch);
+        return new DelegatePluginConstructor();
+};
+        
 Amy.ControlPlugin =  function(){
         var Controller = Amy.EventController,
 	      Utils = Amy.DomUtils;

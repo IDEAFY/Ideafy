@@ -36,7 +36,7 @@ var   _body = new Widget(),
         _currentVersion = Config.get("version");
 
 // SETUP
-
+AMY = amy;
 // init logic
 _body.startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");

@@ -207,6 +207,7 @@ else {
                         
                 // check client version
                 _transport.request("CheckVersion", {version: _currentVersion}, function(result){
+                        console.log(result);
                         var msg = _labels.get("outdated") || "Please update your application";
                         if (result === "outdated"){
                                 alert(msg);
@@ -222,6 +223,7 @@ else {
                 }
                 else {
                         _transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
+                                console.log(result);
                                 if (result.authenticated) _body.init();
                                 else {
                                         _login.setScreen("#login-screen");

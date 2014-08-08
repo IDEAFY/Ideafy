@@ -17544,7 +17544,7 @@ module.exports = function ConnectConstructor(){
 
 
 var olives = require("../../../libs/olives"),
-      emily = require("../../../libs/emily").
+      emily = require("../../../libs/emily"),
       CouchDBTools = require("../../../libs/CouchDBTools"),
       Widget = olives.OObject,
       Config = require("../../../services/config"),
@@ -17797,7 +17797,7 @@ module.exports = function AddContactConstructor(){
  */
 
 var olives = require("../../../libs/olives"),
-      emily = require("../../../libs/emily").
+      emily = require("../../../libs/emily"),
       Widget = olives.OObject,
       Config = require("../../../services/config"),
       Model = olives["Bind.plugin"],
@@ -18068,7 +18068,7 @@ module.exports = function AddGroupConstructor(){
  */
 
 var olives = require("../../../libs/olives"),
-      emily = require("../../../libs/emily").
+      emily = require("../../../libs/emily"),
       Widget = olives.OObject,
       Config = require("../../../services/config"),
       Map = require("../../../services/map"),
@@ -18529,7 +18529,7 @@ module.exports = function ContactsConstructor(){
  */
 
 var olives = require("../../../libs/olives"),
-      emily = require("../../../libs/emily").
+      emily = require("../../../libs/emily"),
       Widget = olives.OObject,
       Config = require("../../../services/config"),
       Model = olives["Bind.plugin"],

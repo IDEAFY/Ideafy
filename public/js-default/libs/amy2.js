@@ -148,8 +148,7 @@ Amy.EventController = function EventControllerConstructor($scope, $touch){
 };
 
 var DelegatePluginConstructor = function(){
-        var Controller = Amy.EventController,
-               Utils = Amy.DomUtils;
+        var Utils = Amy.DomUtils;
         //factorize useCapture?
         this.listen = function(node, type, listener, useCapture) {
                 var that = this;
@@ -166,13 +165,12 @@ var DelegatePluginConstructor = function(){
 };
 
 Amy.DelegatePlugin = function DelegatePluginFactory($scope, $touch){
-        DelegatePluginConstructor.prototype = new Controller($scope, $touch);
+        DelegatePluginConstructor.prototype = new Amy.EventController($scope, $touch);
         return new DelegatePluginConstructor();
 };
         
 var ControlPluginConstructor =  function(){
-        var Controller = Amy.EventController,
-              Utils = Amy.DomUtils,
+        var Utils = Amy.DomUtils,
               _current = null;
               
         this.init = function(node){
@@ -215,7 +213,7 @@ var ControlPluginConstructor =  function(){
 };
         
 Amy.ControlPlugin = function ControlPluginFactory($scope, $touch){
-	       ControlPluginConstructor.prototype = new Controller($scope, $touch);
+	       ControlPluginConstructor.prototype = new Amy.EventController($scope, $touch);
 	       return new ControlPluginConstructor();
 };
 

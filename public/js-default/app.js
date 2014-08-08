@@ -34590,7 +34590,7 @@ _widget.upload = function(event, node){
         }
 };
 
-moduie.exports = _widget;
+module.exports = _widget;
         
 },{"../libs/emily":96,"../libs/olives":140,"./config":244,"./map":248}],250:[function(require,module,exports){
 /*

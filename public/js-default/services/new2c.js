@@ -130,5 +130,5 @@ _widget.upload = function(event, node){
         }
 };
 
-moduie.exports = _widget;
+module.exports = _widget;
         

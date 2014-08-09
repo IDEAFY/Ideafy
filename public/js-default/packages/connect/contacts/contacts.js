@@ -132,11 +132,15 @@ module.exports = function ContactsConstructor(){
                         contactsUI.init = function init(){
                                 contactList.reset(user.get("connections"));
                                 // show add Contact page by default
+                                console.log("before addcontact init");
                                 addContact.init().then(function(){
+                                        console.log("add contact init successful");
                                         detailStack.getStack().show("#addcontact");        
                                 });
                                 addGroup.init();
+                                console.log("addgroup init ok");
                                 groupDetails.init();
+                                console.log("group details ok");
                         };
                         
                         contactsUI.reset = function reset(){

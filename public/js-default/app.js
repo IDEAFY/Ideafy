@@ -19676,7 +19676,7 @@ module.exports = function MessagesConstructor(){
                         };
                         
                         messageUI.init = function init(){
-                                cmsgList.reset(user.get("notifications"));
+                                msgList.reset(user.get("notifications"));
                                 messageUI.cleanOld();
                         };
                         

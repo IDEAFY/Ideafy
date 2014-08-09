@@ -18355,6 +18355,7 @@ module.exports = function ContactsConstructor(){
                         };
                         
                         contactsUI.init = function init(){
+                                ADDGRP = addGroup;
                                 contactList.reset(user.get("connections"));
                                 // show add Contact page by default
                                 console.log("before addcontact init");

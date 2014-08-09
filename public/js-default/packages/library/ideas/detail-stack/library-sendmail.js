@@ -16,7 +16,7 @@ var olives = require("../../../../libs/olives"),
       Utils = require("../../../../services/utils"),
       Avatar = require("../../../../services/avatar");
 
-module.export = function LibrarySendmailConstructor($action){
+module.exports = function LibrarySendmailConstructor($action){
                 //declaration
                         var _widget = new Widget(),
                             _error = new Store({"errormsg": ""}),

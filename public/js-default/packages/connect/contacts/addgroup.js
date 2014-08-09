@@ -86,11 +86,12 @@ module.exports = function AddGroupConstructor(){
              addGroupUI.template = '<div id="addgroup"><div class="header blue-dark"><span class="newfolderlbl" data-label="bind:innerHTML, newfolderlbl"></span></div><div class = "detail-contents"><div class="folderpic" data-group="bind: setColor, color"></div><form><p><input type="text" class="input" data-group="bind:value, username" data-label="bind:placeholder, groupnamelbl"></p><p><textarea class="input" data-group="bind:value, intro" data-label="bind:placeholder, groupdesclbl"></textarea></p><legend data-label="bind:innerHTML, colortouch"></legend><ul class="groupcolors" data-color="foreach"><li data-color="bind:setColor, color; bind:setSelected, selected" data-addgrpevent="listen: mousedown, selectColor"></li></ul></form><div class = "groupcontactlist" data-group="bind: setVisible, contacts"><legend name="list" data-label="bind:innerHTML, grpcontacts" data-addgrpevent="listen: mousedown, toggleHide"></legend><ul class="contactlistdetail" data-contacts="foreach"><li class = "contact list-item" data-addgrpevent="listen:mousedown, discardContact"><div data-contacts="bind:setAvatar, userid"></div><p class="contact-name" data-contacts="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-contacts="bind:innerHTML, intro"></p></li></ul></div><div class="addgroupbtns"><span class="errormsg" data-error="bind:innerHTML, error"></span><div class="addct" data-addgrpevent="listen:mousedown, press; listen:mouseup, add"></div><div class="cancelct" data-addgrpevent="listen:mousedown, press; listen:mouseup, cancel"></div></div><div class="addgrpcontacts"><legend name="add" data-label="bind:innerHTML, addgrpcontacts" data-addgrpevent="listen: mousedown, toggleHide"></legend><div class="addgrpcontactdetails"><input class="search" data-addgrpevent="listen:keyup, updateAutoContact" data-labels="bind:placeholder, tocontactlbl"><div class = "autocontact"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-addgrpevent="listen:mouseup, select"></li></ul></div></div></div></div>';
              
              addGroupUI.init = function init(){
+                     console.log("add group init");
+                     console.log(user.get("connetions"));
                      //initialize contact list with all user contacts in user's document
                      user.get("connections").forEach(function(item){
                         if (item.type === "user") contactList.alter("push", {"contact":item, "selected":false});        
                      });
-                     
              };
              
              addGroupUI.selectColor = function(event, node){

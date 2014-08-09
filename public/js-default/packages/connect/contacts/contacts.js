@@ -27,14 +27,10 @@ module.exports = function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
-                            /*addContact = new AddContact(),
+                            addContact = new AddContact(),
                             addGroup = new AddGroup(),
                             contactDetails = new ContactDetails(),
-                            groupDetails = new GroupDetails(),*/
-                           addContact,
-                           addGroup,
-                           contactDetails,
-                           groupDetails,
+                            groupDetails = new GroupDetails(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -85,15 +81,6 @@ module.exports = function ContactsConstructor(){
                                 return result;         
                             };
 
-addContact = new AddContact();
-console.log("add contact ok");
-addGroup = new AddGroup();
-console.log("add group ok");
-contactDetails = new ContactDetails();
-console.log("contact details ok");
-groupDetails = new GroupDetails();
-console.log("group details ok");
-                        
                         contactsUI.seam.addAll({
                                 "label": new Model(labels),
                                 "sort": new Model(sortButtons, {
@@ -143,17 +130,13 @@ console.log("group details ok");
                         };
                         
                         contactsUI.init = function init(){
-                                console.log("contactUI init");
                                 contactList.reset(user.get("connections"));
                                 // show add Contact page by default
                                 addContact.init().then(function(){
-                                        detailStack.getStack().show("#addcontact");
-                                        console.log("add contact init ok");        
+                                        detailStack.getStack().show("#addcontact");      
                                 });
                                 addGroup.init();
-                                console.log("add group init ok");
                                 groupDetails.init();
-                                console.log("group details ok");
                         };
                         
                         contactsUI.reset = function reset(){

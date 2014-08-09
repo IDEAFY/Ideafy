@@ -37,8 +37,7 @@ var   _body = new Widget(),
         _currentVersion = Config.get("version");
 
 // SETUP
-AMY = amy;
-CONF = Config;
+
 // init logic
 _body.startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");
@@ -47,7 +46,6 @@ _body.startDock = function startDock(firstStart){
         };
         
 _body.init = function init(firstStart) {
-                console.log("in body.init");
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
                 // check db
@@ -57,13 +55,11 @@ _body.init = function init(firstStart) {
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
-                        console.log("user doc sync'd");
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         // check user defined language
                         if (_user.get("lang") !== Config.get("lang")) {
-                                console.log("before updatelabels");
                                 updateLabels(_user.get("lang")).then(function(){
                                         lblUpdate.fulfill();
                                 });
@@ -72,7 +68,6 @@ _body.init = function init(firstStart) {
                         return lblUpdate;
                 })
                 .then(function(){
-                        console.log("retrieving avatar");
                         var loadAvatar = new Promise();
                         // get user avatar and labels if necessary
                         if (_user.get("picture_file").search("img/avatars/deedee")>-1){
@@ -84,7 +79,6 @@ _body.init = function init(firstStart) {
                                 loadAvatar.fulfill();
                         }
                         else{
-                                console.log("before GETFILE request");
                                 _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
@@ -99,7 +93,6 @@ _body.init = function init(firstStart) {
                         return loadAvatar;
                 })
                 .then(function(){
-                        console.log("before calling dock.init");
                         _dock.init();
                         _login.stopSpinner();
                         _body.startDock(firstStart);
@@ -157,11 +150,9 @@ _body.reload = function reload(firstStart) {
                         _body.startDock(firstStart);        
                 });      
         };
-
-console.log("before dock");        
+       
 // uis declaration
 _dock = new Dock();
-console.log("before login");
 _login = new Login(_body.init, _body.reload, _local);
         
 // add login to the stack

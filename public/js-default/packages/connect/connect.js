@@ -25,9 +25,19 @@ module.exports = function ConnectConstructor(){
                                  _stack.getStack().show(name);       
                             },
 			    _menu,
-			    msgUI = new Messages(),
+			    msgUI,
+			    contactsUI,
+			    twocentsUI;
+			    /*msgUI = new Messages(),
 			    contactsUI = new Contacts(),
-			    twocentsUI = new MyTwocents();
+			    twocentsUI = new MyTwocents();*/
+
+msgUI = new Messages();
+console.log("messages ok");
+contactsUI = new Contacts();
+console.log("contacts ok");
+twocentsUI = new MyTwocents();
+console.log("twocents ok");
 			    
 			_widget.seam.add("connectstack", _stack);
 			

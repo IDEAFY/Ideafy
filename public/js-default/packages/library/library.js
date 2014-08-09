@@ -52,16 +52,12 @@ module.exports = function LibraryConstructor(){
 			};
 			
 	        // init
-	               console.log("library module");
 	               _menu = new Menu(_widget.dom.querySelector("#library-menu"), setView);
-	               console.log("library menu ok");
 	               _menu.toggleActive(false);
 	               _ideas = new Ideas();
-	               console.log("library ideas ok");
 	               _sessions = new Sessions();
-	               console.log("library sessions ok");
 	               _decks = new Decks();
-	               console.log("library decks ok");
+	               
 	               _stack.getStack().add("#ideas", _ideas);
 	               _stack.getStack().add("#sessions", _sessions);
 	               _stack.getStack().add("#decks", _decks);

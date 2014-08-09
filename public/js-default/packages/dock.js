@@ -69,8 +69,7 @@ module.exports = function DockConstructor(){
         _widget.init = function init(){
 			        
                 _widget.setDisplay();
-		console.log("body init");	        
-                _public = new Public();
+		_public = new Public();
                 console.log("public ok");
                 _library = new Library();
                 console.log("library ok");

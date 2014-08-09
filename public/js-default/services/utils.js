@@ -358,9 +358,7 @@ _utils.updateLabels = function(lang) {
               promise = new Promise();
                    
         // retrieve ideafy-data
-        console.log("before local.sync");
         local.sync("ideafy-data");
-        console.log("before request");
         transport.request("Lang", json, function(result) {
                 if (result === "nok") {
                         local.set("labels", Config.get("defaultLabels"));

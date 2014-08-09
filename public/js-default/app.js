@@ -6081,8 +6081,7 @@ var   _body = new Widget(),
         _currentVersion = Config.get("version");
 
 // SETUP
-AMY = amy;
-CONF = Config;
+
 // init logic
 _body.startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");
@@ -6091,7 +6090,6 @@ _body.startDock = function startDock(firstStart){
         };
         
 _body.init = function init(firstStart) {
-                console.log("in body.init");
                 // add dock UI to the stack
                 _stack.getStack().add("#dock", _dock);
                 // check db
@@ -6101,13 +6099,11 @@ _body.init = function init(firstStart) {
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
-                        console.log("user doc sync'd");
                         var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + _user.get("_id") + '"');
                         // check user defined language
                         if (_user.get("lang") !== Config.get("lang")) {
-                                console.log("before updatelabels");
                                 updateLabels(_user.get("lang")).then(function(){
                                         lblUpdate.fulfill();
                                 });
@@ -6116,7 +6112,6 @@ _body.init = function init(firstStart) {
                         return lblUpdate;
                 })
                 .then(function(){
-                        console.log("retrieving avatar");
                         var loadAvatar = new Promise();
                         // get user avatar and labels if necessary
                         if (_user.get("picture_file").search("img/avatars/deedee")>-1){
@@ -6128,7 +6123,6 @@ _body.init = function init(firstStart) {
                                 loadAvatar.fulfill();
                         }
                         else{
-                                console.log("before GETFILE request");
                                 _transport.request("GetFile", {dir: "avatars", "filename":_user.get("_id")+"_@v@t@r"}, function(result){
                                         if (!result.error) {
                                                 Config.set("avatar", result);
@@ -6143,7 +6137,6 @@ _body.init = function init(firstStart) {
                         return loadAvatar;
                 })
                 .then(function(){
-                        console.log("before calling dock.init");
                         _dock.init();
                         _login.stopSpinner();
                         _body.startDock(firstStart);
@@ -6201,11 +6194,9 @@ _body.reload = function reload(firstStart) {
                         _body.startDock(firstStart);        
                 });      
         };
-
-console.log("before dock");        
+       
 // uis declaration
 _dock = new Dock();
-console.log("before login");
 _login = new Login(_body.init, _body.reload, _local);
         
 // add login to the stack
@@ -17490,11 +17481,8 @@ console.log("twocents ok");
                        _menu = new Menu(_widget.dom.querySelector("#connect-menu"), setView);
                        _menu.toggleActive(false);
                        
-                       console.log("before msgUI.init");
                        msgUI.init();
-                       console.log("before contactsUI.init");
                        contactsUI.init();
-                       console.log("before adding UIs to Stack");
                        _stack.getStack().add("#messages", msgUI);
                        _stack.getStack().add("#contacts", contactsUI);
                        _stack.getStack().add("#twocents", twocentsUI);
@@ -18250,14 +18238,10 @@ module.exports = function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
-                            /*addContact = new AddContact(),
+                            addContact = new AddContact(),
                             addGroup = new AddGroup(),
                             contactDetails = new ContactDetails(),
-                            groupDetails = new GroupDetails(),*/
-                           addContact,
-                           addGroup,
-                           contactDetails,
-                           groupDetails,
+                            groupDetails = new GroupDetails(),
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -18308,15 +18292,6 @@ module.exports = function ContactsConstructor(){
                                 return result;         
                             };
 
-addContact = new AddContact();
-console.log("add contact ok");
-addGroup = new AddGroup();
-console.log("add group ok");
-contactDetails = new ContactDetails();
-console.log("contact details ok");
-groupDetails = new GroupDetails();
-console.log("group details ok");
-                        
                         contactsUI.seam.addAll({
                                 "label": new Model(labels),
                                 "sort": new Model(sortButtons, {
@@ -18366,17 +18341,13 @@ console.log("group details ok");
                         };
                         
                         contactsUI.init = function init(){
-                                console.log("contactUI init");
                                 contactList.reset(user.get("connections"));
                                 // show add Contact page by default
                                 addContact.init().then(function(){
-                                        detailStack.getStack().show("#addcontact");
-                                        console.log("add contact init ok");        
+                                        detailStack.getStack().show("#addcontact");      
                                 });
                                 addGroup.init();
-                                console.log("add group init ok");
                                 groupDetails.init();
-                                console.log("group details ok");
                         };
                         
                         contactsUI.reset = function reset(){

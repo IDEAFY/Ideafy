@@ -27,10 +27,14 @@ module.exports = function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
-                            addContact = new AddContact(),
+                            /*addContact = new AddContact(),
                             addGroup = new AddGroup(),
                             contactDetails = new ContactDetails(),
-                            groupDetails = new GroupDetails(),
+                            groupDetails = new GroupDetails(),*/
+                           addContact,
+                           addGroup,
+                           contactDetails,
+                           groupDetails,
                             sortButtons = new Store([
                                     {"name": "all", "label": "allbtn", "selected": true},
                                     {"name": "users", "label": "usrbtn", "selected": false},
@@ -80,6 +84,15 @@ module.exports = function ContactsConstructor(){
                                 }
                                 return result;         
                             };
+
+addContact = new AddContact();
+console.log("add contact ok");
+addGroup = new AddGroup();
+console.log("add group ok");
+contactDetails = new ContactDetails();
+console.log("contact details ok");
+groupDetails = new GroupDetails();
+console.log("group details ok");
                         
                         contactsUI.seam.addAll({
                                 "label": new Model(labels),
@@ -281,5 +294,7 @@ module.exports = function ContactsConstructor(){
                                 ]);
                                 sortButtons.update(current, "selected", true);
                         });
+                        
+                        return contactsUI;
                         
 };

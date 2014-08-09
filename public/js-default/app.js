@@ -17456,7 +17456,7 @@ module.exports = function ConnectConstructor(){
 			    /*msgUI = new Messages(),
 			    contactsUI = new Contacts(),
 			    twocentsUI = new MyTwocents();*/
-
+console.log("before messages");
 msgUI = new Messages();
 console.log("messages ok");
 contactsUI = new Contacts();

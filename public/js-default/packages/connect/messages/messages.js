@@ -247,6 +247,7 @@ module.exports = function MessagesConstructor(){
                         };
                         
                         messageUI.init = function init(){
+                                console.log("msgUI init function");
                                 msgList.reset(user.get("notifications"));
                                 messageUI.cleanOld();
                         };

@@ -65,8 +65,11 @@ console.log("twocents ok");
                        _menu = new Menu(_widget.dom.querySelector("#connect-menu"), setView);
                        _menu.toggleActive(false);
                        
+                       console.log("before msgUI.init");
                        msgUI.init();
+                       console.log("before contactsUI.init");
                        contactsUI.init();
+                       console.log("before adding UIs to Stack");
                        _stack.getStack().add("#messages", msgUI);
                        _stack.getStack().add("#contacts", contactsUI);
                        _stack.getStack().add("#twocents", twocentsUI);

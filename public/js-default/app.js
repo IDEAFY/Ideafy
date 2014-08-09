@@ -17490,8 +17490,11 @@ console.log("twocents ok");
                        _menu = new Menu(_widget.dom.querySelector("#connect-menu"), setView);
                        _menu.toggleActive(false);
                        
+                       console.log("before msgUI.init");
                        msgUI.init();
+                       console.log("before contactsUI.init");
                        contactsUI.init();
+                       console.log("before adding UIs to Stack");
                        _stack.getStack().add("#messages", msgUI);
                        _stack.getStack().add("#contacts", contactsUI);
                        _stack.getStack().add("#twocents", twocentsUI);
@@ -19669,6 +19672,7 @@ module.exports = function MessagesConstructor(){
                         };
                         
                         messageUI.init = function init(){
+                                console.log("msgUI init function");
                                 msgList.reset(user.get("notifications"));
                                 messageUI.cleanOld();
                         };
@@ -27686,13 +27690,9 @@ module.exports = function IdeaStackConstructor(){
                         
                         // init
 			_ideaDetail = new IdeaDetail(_widget.action);
-			console.log("detail ok");
 			_edit = new Edit(_widget.action);
-			console.log("edit ok");
 			_sendmail = new Sendmail(_widget.action);
-			console.log("sendmail ok");
 			_share = new Share(_widget.action);
-			console.log("share ok");
 			
 			_stack.getStack().add("#library-ideadetail", _ideaDetail);
                         _stack.getStack().add("#library-edit", _edit);

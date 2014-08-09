@@ -17450,9 +17450,19 @@ module.exports = function ConnectConstructor(){
                                  _stack.getStack().show(name);       
                             },
 			    _menu,
-			    msgUI = new Messages(),
+			    msgUI,
+			    contactsUI,
+			    twocentsUI;
+			    /*msgUI = new Messages(),
 			    contactsUI = new Contacts(),
-			    twocentsUI = new MyTwocents();
+			    twocentsUI = new MyTwocents();*/
+
+msgUI = new Messages();
+console.log("messages ok");
+contactsUI = new Contacts();
+console.log("contacts ok");
+twocentsUI = new MyTwocents();
+console.log("twocents ok");
 			    
 			_widget.seam.add("connectstack", _stack);
 			
@@ -27741,10 +27751,8 @@ module.exports = function IdeasConstructor(){
                               _searchInput = new Store({"search": ""}),
                               _db = Config.get("db"),
                               _observer = Config.get("observer"),
-                              _radio,
-                              _detail,
-                              /*_radio = new Control(_widget),
-                              _detail = new Detail(),*/
+                              _radio = new Control(_widget),
+                              _detail = new Detail(),
                               listDate, listRating, listSearch, listFav,
                               initldQuery, initlrQuery,
                               _user = Config.get("user"),
@@ -27760,13 +27768,7 @@ module.exports = function IdeasConstructor(){
                               _usrLg = Config.get("userLanguages"),
                               _stack = new Stack(),
                               _listSpinner = new Spinner({color:"#808080", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
-
-WID = _widget;
-_radio = new Control(_widget);
-console.log("after _radio");
-_detail = new Detail();
-console.log("after detail");
-
+                        
                         // build languages & flags
                         _usrLg.forEach(function(val){
                                 _languages.alter("push", val);
@@ -28412,16 +28414,12 @@ module.exports = function LibraryConstructor(){
 			};
 			
 	        // init
-	               console.log("library module");
 	               _menu = new Menu(_widget.dom.querySelector("#library-menu"), setView);
-	               console.log("library menu ok");
 	               _menu.toggleActive(false);
 	               _ideas = new Ideas();
-	               console.log("library ideas ok");
 	               _sessions = new Sessions();
-	               console.log("library sessions ok");
 	               _decks = new Decks();
-	               console.log("library decks ok");
+	               
 	               _stack.getStack().add("#ideas", _ideas);
 	               _stack.getStack().add("#sessions", _sessions);
 	               _stack.getStack().add("#decks", _decks);

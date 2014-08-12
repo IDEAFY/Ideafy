@@ -81,7 +81,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                         });         
                     };
                     
-                editProfile.plugins.addAll({
+                editProfile.seam.addAll({
                         "label" : new Model(labels),
                         "avatars": new Model(defaultAvatars, {
                                 setPic : function(file){

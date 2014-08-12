@@ -5,10 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils", "Promise", "attach/add"],
-        function(Widget, Map, Model, Event, Place, Config, Store, Spinner, Utils, Promise, AddAttachment){
-                
-                return new function newIdeaConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Spinner = require("../libs/spin.min"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Promise = emily.Promise,
+      Store = CouchDBTools.CouchDBDocument,
+      Config = require("./config"),
+      Map = require("./map"),
+      Utils = require("./utils"),
+      AddAttachment = require("../packages/attach/add");
+
+module.exports = new function newIdeaConstructor(){
                 
                         var _widget = new Widget(),
                               _addAttachmentUI = new AddAttachment(),
@@ -38,7 +50,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         });
                         
                         // Widget setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "newidea" : new Model(_store, {
                                         displayLang : function(lang){
                                                 var l=lang.substring(0,2);
@@ -360,5 +372,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         });
                         
                         return _widget;
-                };
-        });
+};

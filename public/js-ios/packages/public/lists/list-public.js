@@ -38,7 +38,7 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
                 }
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels" : new Model(Config.get("labels")),
                         "listideas" : new Model(_store, {
                                 date : function date(date) {

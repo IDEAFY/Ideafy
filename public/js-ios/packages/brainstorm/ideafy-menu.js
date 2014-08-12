@@ -19,7 +19,7 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                             _sip = ""; // session in progress
                         
                         // setup     
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "ideafymenu" : new Model(_menu, {
                                         setActive : function(active){
                                                 (active)?this.classList.remove("inactive"):this.classList.add("inactive");

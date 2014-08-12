@@ -5,8 +5,10 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["Store"], function(Store){
-	return new Store({
+var emily = require("../libs/emily"),
+      Store = emily.Store;
+
+module.exports = new Store({
 		"body" : document.body,
 		"login" : document.getElementById("login"),
 			"login-form" : document.getElementById("login-form"),
@@ -72,5 +74,4 @@ define(["Store"], function(Store){
 		        "leaderboard": document.getElementById("leaderboard"),
 		        "dashboard-settings": document.getElementById("dashboard-settings"),
 		        "dashboard-about": document.getElementById("dashboard-about")
-	});
 });

@@ -9,10 +9,8 @@ var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
       Widget = olives.OObject,
       Model = olives["Bind.plugin"],
-      Event = olives["Event.plugin"],
       Store = emily.Store,
-      Config = require("./config"),
-      Utils = require("./utils");
+      Avatar = require("./avatar");
 
 var AvatarListConstructor = function($ids){
 

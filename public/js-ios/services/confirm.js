@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
-        function(Widget, Map, Model, Event, Config, Store){
-                
-                return new function ConfirmConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Map = require("./map"),
+      Config = require("./config");
+
+module.exports = new function ConfirmConstructor(){
                 
                         var _labels = Config.get("labels"),
                               _widget = new Widget(),
@@ -16,7 +22,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                               _callback,
                               _class;
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "confirm" : new Model(_content),
                                 "confirmevent" : new Event(_widget)
@@ -72,7 +78,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         return _widget;
-                        
-                };
-                
-        });
+};

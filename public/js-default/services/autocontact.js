@@ -8,6 +8,7 @@
 var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
       Widget = olives.OObject,
+      Store = emily.Store,
       Model = olives["Bind.plugin"],
       Event = olives["Event.plugin"],
       Map = require("./map"),

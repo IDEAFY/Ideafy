@@ -5,10 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "Store", "service/avatar", "Promise", "lib/spin.min"],
-        function(Widget, Config, Model, Event, CouchDBView, Store, Avatar, Promise, Spinner){
-                
-           return function AddContactConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBView = CouchDBTools.CouchDBView,
+      Store = emily.Store,
+      Avatar = require("../../../services/avatar"),
+      Promise = emily.Promise,
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function AddContactConstructor(){
                    
              var addContactUI = new Widget(),
                  count = new CouchDBView(),
@@ -126,7 +136,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                  };
              
              
-             addContactUI.plugins.addAll({
+             addContactUI.seam.addAll({
                      "label" : new Model(labels),
                      "count" : new Model(count),
                      "search" : new Model(search,{
@@ -237,6 +247,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
              
              //addContactUI.init();
              return addContactUI;
-                   
-           };   
-        });
+};

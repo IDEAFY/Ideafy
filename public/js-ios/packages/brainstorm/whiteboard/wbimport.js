@@ -76,7 +76,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 
                 _widget.template = '<div class="import"><ul id="importbuttons"><li><div class="importbutton choosepic" data-importevent="listen: touchstart, press; listen:touchend, picturePreview"></div><label data-labels="bind:innerHTML, importpiclbl"></label></li><li><div class="importbutton takepic" data-importevent="listen: touchstart, press; listen:touchend, cameraPreview"></div><label data-labels="bind:innerHTML, importcameralbl"></label></li></ul><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:touchstart,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: touchstart, press; listen:touchend, post"></div><div class = "delpostit" name="del" data-importevent="listen:touchstart, press;listen:touchend, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>';
                 
-                _widget.plugins.addAll({
+                _widget.seam.addAll({
                         "labels" : new Model(_labels),
                         "importmodel" : new Model(_postit, {
                                 "setVisibility" : function(content){

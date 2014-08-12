@@ -14,7 +14,7 @@ define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
                             user = Config.get("user"),
                             model = new Store();
                             
-                        eula.plugins.add("eula", new Model(model));
+                        eula.seam.add("eula", new Model(model));
                         
                         eula.template = '<div class="aboutcontent"><h4 data-eula = "bind:innerHTML, title"></h4><div data-eula="bind:innerHTML, body"></div></div>';
                         

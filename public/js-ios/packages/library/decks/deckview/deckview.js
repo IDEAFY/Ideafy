@@ -24,7 +24,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Place.plugin", "Amy/Stack-plu
                             deckId = "";
                         
                         
-                        deckView.plugins.addAll({
+                        deckView.seam.addAll({
                                 "cardmenu" : new Model(cardMenu, {
                                         setClass : function(name){
                                                 (name) && this.classList.add(name);

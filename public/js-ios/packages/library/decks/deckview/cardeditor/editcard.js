@@ -89,7 +89,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 
                 model.setTransport(Config.get("transport"));
                 
-                editCard.plugins.addAll({
+                editCard.seam.addAll({
                         "label" : new Model(labels),
                         "model" : new Model(model, {
                                 setTitle : function(title){

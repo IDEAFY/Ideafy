@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "service/utils", "Bind.plugin", "Event.plugin", "twocents/twocentreplylist", "twocents/writetwocent", "twocents/writetwocentreply", "service/avatar"],
-        function(Widget, Config, CouchDBDocument, Store, Promise, Utils, Model, Event, TwocentReplyList, WriteTwocent, WriteTwocentReply, Avatar){
-                
-                function TwocentListConstructor($view){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      CouchDBTools = require("../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../services/config"),
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Utils = require("../../services/utils"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      TwocentReplyList = require("./twocentreplylist"),
+      WriteTwocent = require("./writetwocent"),
+      WriteTwocentReply = require("./writetwocentreply"),
+      Avatar = require("../../services/avatar");
+
+function TwocentListConstructor($view){
                        
                         // declaration
                         var ui = this,
@@ -21,8 +34,8 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                             view = $view;
                         
                         cdb.setTransport(transport);
-                        // define plugins and methods
-                        ui.plugins.addAll({
+                        // define seam and methods
+                        ui.seam.addAll({
                                 "labels" : new Model(Config.get("labels")),
                                 "twocents" : new Model(store, {
                                         date : function date(date){
@@ -209,10 +222,9 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Promise", "ser
                                         node.classList.add("showReplies");
                                 }
                         };
-                }
+};
                 
-                return function TwocentListFactory($view){
-                        TwocentListConstructor.prototype = new Widget();
-                        return new TwocentListConstructor($view);
-                };
-        });
+module.exports = function TwocentListFactory($view){
+        TwocentListConstructor.prototype = new Widget();
+        return new TwocentListConstructor($view);
+};

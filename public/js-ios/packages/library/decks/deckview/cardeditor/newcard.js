@@ -207,7 +207,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option><option data-label="bind:innerHTML, importcard"></option></select></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
                         // setup
-                        newCard.plugins.addAll({
+                        newCard.seam.addAll({
                                 "label" : new Model(labels),
                                 "setup" : new Model(cardSetup),
                                 "newcardcontentstack" : _contentStack,

@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "service/config", "twocents/writetwocentreply", "service/avatar"],
-        function(Widget, Store, ModelPlugin, EventPlugin, Utils, Config, WriteTwocentReply, Avatar){
-                
-                function TwocentReplyListConstructor($data, $id, $tc, $view){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../services/utils"),
+      Config = require("../../services/config"),
+      WriteTwocentReply = require("./writetwocentreply"),
+      Avatar = require("../../services/avatar");
+
+function TwocentReplyListConstructor($data, $id, $tc, $view){
                         
                         var store = new Store($data),
                             ui = this,
@@ -17,8 +25,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                             labels = Config.get("labels"),
                             transport = Config.get("transport");
                         
-                        ui.plugins.addAll({
-                                "reply": new ModelPlugin(store, {
+                        ui.seam.addAll({
+                                "reply": new Model(store, {
                                         date : function date(date){
                                                if (date){
                                                        this.innerHTML = Utils.formatDate(date);
@@ -51,8 +59,8 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                                                 (author && author === user.get("_id")) ? this.setAttribute("style", "display: none;") : this.setAttribute("style", "display: block;");
                                         }
                                   }),
-                                  "replyevent" : new EventPlugin(ui),
-                                  "labels": new ModelPlugin(labels)
+                                  "replyevent" : new Event(ui),
+                                  "labels": new Model(labels)
                         });
                         
                    ui.template = '<ul class="replies" data-reply="foreach"><li class="twocentReply"><div class="twocentHeader"><div class="replyAvatar" data-reply="bind:setAvatar, author"></div><div class="twocentAuthor" data-reply="bind: setFirstname, firstname"></div><span class="commentLabel" data-labels="bind: setReplylbl, firstname"></span><br/><div class="twocentDate date" data-reply="bind: date, date"></div><div class="twocentMenu"><div class="twocentButton twocentEditButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, edit"></div><div class="twocentButton twocentDeleteButton" data-reply="bind: setVisible, author" data-replyevent="listen: touchstart, deleteTwocentReply"></div><div class="twocentButton twocentReplyButton" data-reply="bind: setInVisible, author" data-replyevent="listen:touchstart, reply"></div></div></div><p class="twocentMessage replyMessage" data-reply="bind: innerHTML, message"></p><div class="writePublicTwocentReply replyToReply invisible"></div></li></ul>';
@@ -100,11 +108,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/utils", "ser
                                 }
                                 parent.classList.remove("invisible");                     
                         };     
-              }
+};
                         
-              return function TwocentReplyListFactory($data, $id, $tc, $view){
-                   TwocentReplyListConstructor.prototype = new Widget;
-                   return new TwocentReplyListConstructor($data, $id, $tc, $view);       
-              };    
-                
-        });
+module.exports = function TwocentReplyListFactory($data, $id, $tc, $view){
+        TwocentReplyListConstructor.prototype = new Widget;
+        return new TwocentReplyListConstructor($data, $id, $tc, $view);       
+};

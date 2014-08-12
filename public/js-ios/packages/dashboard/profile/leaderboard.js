@@ -16,7 +16,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         
                         leaderboard.template = '<div><ul data-leaders="foreach"><li class="leader" data-leaders="bind:setSpotLight, value.userid"><div data-leaders="bind:setAvatar, value.userid"></div><div class="username" data-leaders="bind:innerHTML, value.username"></div><div class="distinction" data-leaders="bind:setDistinction, value.ip"></div><div class="grade" data-leaders="bind:setGrade, value.ip"></div><div class="score" data-leaders="bind: setScore, value.ip"></div></li></ul></div>';
                         
-                        leaderboard.plugins.addAll({
+                        leaderboard.seam.addAll({
                                 "leaders": new Model(leaders,{
                                         setSpotLight : function(userid){
                                                 if (userid === Config.get("user").get("_id")){

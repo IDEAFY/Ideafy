@@ -16,7 +16,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                     stack = new Stack(),
                     labels = Config.get("labels");
                     
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels": new Model(labels),
                         "muinitstack": stack,
                         "muinitevent": new Event(widget)

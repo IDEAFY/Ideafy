@@ -50,7 +50,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         };
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels, {
                                         setPlaceholder : function(value){
                                                 this.setAttribute("placeholder", value);

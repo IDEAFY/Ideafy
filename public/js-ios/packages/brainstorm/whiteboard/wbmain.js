@@ -20,7 +20,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                     _pageSize = 8,
                     _pagination = new Store({currentPage:1, nbPages: 1});
        
-                    _widget.plugins.addAll({
+                    _widget.seam.addAll({
                         "pagination" : new Model(_pagination,{
                                 setPage : function(currentPage){
                                     var nb = currentPage;

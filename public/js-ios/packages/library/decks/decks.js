@@ -46,7 +46,7 @@ define(["OObject", "Bind.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "Eve
                   deckView = new DeckView(deckUpdate), newDeck = new NewDeck(deckUpdate);
               
               
-              widget.plugins.addAll({
+              widget.seam.addAll({
                                 "label" : new Model(Config.get("labels")),
                                 "deckliststack" : stack,
                                 "decksevent" : new Event(widget),

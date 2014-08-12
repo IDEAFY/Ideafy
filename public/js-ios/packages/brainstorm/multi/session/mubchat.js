@@ -20,7 +20,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                 
                 chatCDB.setTransport(Config.get("transport"));
                 
-                mubChat.plugins.addAll({
+                mubChat.seam.addAll({
                         "labels" : new Model(labels),
                         "model" : new Model(chatCDB,{
                                 setReadonly : function(readonly){

@@ -39,7 +39,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             // deduct 20px from position shown in navigator
                             
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "musetup" : new Model(_selection, {
                                         setReload : function(left){

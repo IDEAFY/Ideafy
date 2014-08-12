@@ -64,7 +64,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                     _started = false;
                     _LEFT = 93; // the absolute position of the brainstorm screen (=== dock width)
                 
-                _widget.plugins.addAll({
+                _widget.seam.addAll({
                         "labels": new Model(_labels),
                         "color": new Model(_colors, {
                                 "setColor" : function(color){

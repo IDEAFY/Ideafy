@@ -32,7 +32,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _resetLang();
                         
                         // setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "select" : new Model (_languages, {
                                         setBg : function(name){

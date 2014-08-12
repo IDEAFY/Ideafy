@@ -65,7 +65,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 // reset languages
                 _resetLang();
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels": new Model(labels),
                         "newmub": new Model(session, {
                                 initSessionMode : function(mode){

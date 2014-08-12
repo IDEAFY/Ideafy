@@ -20,7 +20,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             sendInProgress = false,
                             spinner = new Spinner({color:"#5F8F28", lines:8, length: 8, width: 4, radius:8, left: 30, top: -6}).spin();
                 //setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels": new Model(_labels),
                                 "share" : new Model(_share, {
                                         setHeader : function(title){

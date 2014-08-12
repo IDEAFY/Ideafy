@@ -23,7 +23,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                                ],
                        aboutMenu = new Store(menu);
                    
-                   aboutUI.plugins.addAll({
+                   aboutUI.seam.addAll({
                            "label" : new Model(labels),
                            "aboutmenu" : new Model(aboutMenu, {
                                    setCurrent : function(currentStep){

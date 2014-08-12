@@ -16,7 +16,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
 			    _labels = Config.get("labels"),
 			    _mail = new Store({"toField":"", "from": "", "subject":"", "body": "", "signature": "", "attachment": "", "sent": false});
 		//setup
-		        _widget.plugins.addAll({
+		        _widget.seam.addAll({
                                 "labels": new Model(_labels),
                                 "mail" : new Model(_mail, {
                                         setUserAvatar : function(from){

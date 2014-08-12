@@ -17,7 +17,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                             currentBar = null,
                             touchStart, touchPoint;
                         
-                        deckList.plugins.addAll({
+                        deckList.seam.addAll({
                                 "labels" : new Model(labels),
                                 "active" : new Model(user, {
                                         

@@ -5,9 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./contacts/contacts", "./messages/messages", "./twocents/mytwocents", "service/config"], 
-	function(Widget, Map, Stack, Menu, Contacts, Messages, MyTwocents, Config){
-		return function ConnectConstructor(){
+var olives = require("../../libs/olives"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../services/map"),
+      Stack = amy.StackPlugin,
+      Menu = require("../../services/submenu"),
+      Contacts = require("./contacts/contacts"),
+      Messages = require("./messages/messages"),
+      MyTwocents = require("./twocents/mytwocents"),
+      Config = require("../../services/config");
+
+module.exports = function ConnectConstructor(){
 		//declaration
 			var _widget = new Widget(),
 			    _stack = new Stack(),
@@ -20,7 +29,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
 			    contactsUI = new Contacts(),
 			    twocentsUI = new MyTwocents();
 			    
-			_widget.plugins.add("connectstack", _stack);
+			_widget.seam.add("connectstack", _stack);
 			
 			_widget.template = '<div id="connect"><div id="connect-menu"></div><div class="stack" data-connectstack="destination"></div></div>';
 
@@ -75,5 +84,4 @@ define(["OObject", "service/map", "Amy/Stack-plugin","service/submenu", "./conta
                        
 		//return
 			return _widget;
-		};
-	});
+};

@@ -12,9 +12,8 @@ var olives = require("./olives"),
       OObject = olives.OObject,
       Amy = {};
        
-Amy.DomUtils = function(){
-        var hasQuerySelector = function(parent, node, selector) {
-                var getNodes = function getNodes(parent, selector) {
+var hasQuerySelector = function(parent, node, selector) {
+        var getNodes = function(parent, selector) {
                          if (parent instanceof HTMLElement || parent instanceof SVGElement) {
                                 if (!parent.parentNode) {
                                         document.createDocumentFragment().appendChild(parent);
@@ -25,9 +24,7 @@ Amy.DomUtils = function(){
                                 return false;
                         }
                 };
-                return Tools.toArray(getNodes(parent, selector)).indexOf(node) > -1;
-        };
-        return { hasQuerySelector : hasQuerySelector};
+        return Tools.toArray(getNodes(parent, selector)).indexOf(node) > -1;
 };
 
 Amy.TestUtils = function(){
@@ -148,7 +145,6 @@ Amy.EventController = function EventControllerConstructor($scope, $touch){
 };
 
 var DelegatePluginConstructor = function(){
-        var Utils = Amy.DomUtils;
         //factorize useCapture?
         this.listen = function(node, type, listener, useCapture) {
                 var that = this;
@@ -159,7 +155,7 @@ var DelegatePluginConstructor = function(){
 	       var that = this;
 	       //maper le noeur avec les event listener histoire d'optimiser le nombre de listener
 	       this.addListener(node, type, function(event){
-		      if(Utils.hasQuerySelector(node, event.target, selector)) that.call(listener, event, node);
+		      if(hasQuerySelector(node, event.target, selector)) that.call(listener, event, node);
 	       }, (useCapture=="true"));
         };
 };
@@ -170,8 +166,7 @@ Amy.DelegatePlugin = function DelegatePluginFactory($scope, $touch){
 };
         
 var ControlPluginConstructor =  function(){
-        var Utils = Amy.DomUtils,
-              _current = null;
+        var _current = null;
               
         this.init = function(node){
 	       _current = node;
@@ -181,7 +176,7 @@ var ControlPluginConstructor =  function(){
 	       var that = this;
 	       this.addListener(node, type, function(event){
 	               var target = event.target;
-		      if(Utils.hasQuerySelector(node, target, query)) {
+		      if(hasQuerySelector(node, target, query)) {
 			     that.radioClass(target, _current, className);
 			     _current = target;
 			     that.call(callback, event);
@@ -204,7 +199,7 @@ var ControlPluginConstructor =  function(){
 	       var that = this;
 	       this.addListener(node, type, function(event){
 		      var target = event.target;
-		      if(Utils.hasQuerySelector(node, target, query)) {
+		      if(hasQuerySelector(node, target, query)) {
 		              that.toggleClass(target, className);
 			     that.call(callback, event);
 		      }

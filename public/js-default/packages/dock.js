@@ -35,7 +35,7 @@ module.exports = function DockConstructor(){
               _brainstorm,
               _connect,
               _dashboard,
-              _control = new Control(this),
+              _control = new Control(_widget),
               _observer = Config.get("observer"),
               _user = Config.get("user"),
               _stack = new Stack();

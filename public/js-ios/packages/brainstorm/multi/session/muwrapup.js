@@ -19,7 +19,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _flash;
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "wrapup" : new Model(_wrapup, {
                                         formatTitle : function(title){

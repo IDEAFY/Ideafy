@@ -26,7 +26,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
 
                 //setup
                         _store.setTransport(transport);
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "publicdetail" : new Model(_store, {
                                         // toggle header buttons right

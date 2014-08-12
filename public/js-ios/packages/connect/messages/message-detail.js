@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "./message-reply", "lib/spin.min"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Avatar, Utils, Reply, Spinner){
-                
-           return function MessageDetailConstructor($close){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("../../../services/config"),
+      Avatar = require("../../../services/avatar"),
+      Utils = require("../../../services/utils"),
+      Reply = require("./message-reply"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function MessageDetailConstructor($close){
            
                 var msgDetailUI = new Widget(),
                     msgReplyUI = new Reply(),
@@ -22,7 +33,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 
                 msgDetailUI.template = '<div id="msgdetail"><div class="header blue-dark"><span class="subjectlbl" data-label="bind:innerHTML, subjectlbl"></span><span data-message="bind:setObject, type"></span></div><div class="msgdetailarea"><div class = "detail-contents"><div class="detail-header"><div class="msgoptions" data-message="bind: showOptions, type"><div class="defaultmsgoption"><div name="reply" class="msgreply" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="more" class="more" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div><div class="msgoptionlist invisible"><div name="replyall" class="replyall sort-button" data-label="bind:innerHTML, replyalllbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="forward" class="forward sort-button" data-label="bind:innerHTML, forwardlbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div><div name="deletemsg" class="deletemsg sort-button" data-label="bind:innerHTML, deletelbl" data-messageevent="listen:touchstart, press; listen:touchend, action"></div></div></div><div data-message="bind:setAvatar, author"></div><p data-message="bind:innerHTML, username"></p><p class="toList"><span data-label="bind: innerHTML, tolbl"></span><span data-message="bind: setToList, toList"></span></p><p class="toList invisible" data-message="bind:showCcList, ccList"><span data-label="bind: innerHTML, cclbl"></span><span data-message="bind: innerHTML, ccList"></span></p><p class="msgdate"><span class="date" data-message="bind: date, date"></span></p></div><div class="detail-body"><p data-message="bind:setBody, type"></p><p data-message="bind:setSignature, type"></p><p class="invisible" data-message="bind:setJoinMsg, sessionStatus"></p><div class="showdoc" data-message="bind: showDocBtn, type" data-messageevent="listen:touchstart, press; listen:touchend, showDoc"></div><div class="gotosession invisible" data-message="bind: showSessionBtn, sessionStatus" data-messageevent="listen:touchstart, press; listen:touchend, gotoSession"></div><div class="goto2q invisible" data-message = "bind: showTwoQ, type" data-messageevent="listen: touchstart, press; listen: touchend, showTwoQ"></div><div class="acceptrejectCXR invisible" data-message="bind:showCXRbtn, type"><div class="acceptCXR" data-label="bind:innerHTML, accept" data-messageevent="listen:touchstart, press; listen:touchend, acceptCXR"></div><div class="rejectCXR" data-label="bind:innerHTML, reject" data-messageevent="listen:touchstart, press; listen:touchend, rejectCXR"></div></div></div></div><div id="msgreply" class="invisible"></div><div id="CXRconfirm" class="invisible" data-cxr="bind:setVisibility, response"><span class="CXRconfirmed" data-cxr="bind:setResponseMessage, response"></span></div></div></div>';
                 
-                msgDetailUI.plugins.addAll({
+                msgDetailUI.seam.addAll({
                         "label": new Model(labels),
                         "message": new Model(message,{
                                 date : function date(date){
@@ -404,5 +415,4 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                 };
                 
                 return msgDetailUI;
-            };      
-        });
+};

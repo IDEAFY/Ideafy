@@ -31,7 +31,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         _languages.alter("push", val);
                 });
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels" : new Model(labels),
                         "options" : new Model(muListOptions,{
                                 setBg : function(lang){

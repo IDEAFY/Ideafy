@@ -17,7 +17,7 @@ define(["OObject", "service/config", "Store", "Promise", "Bind.plugin", "Event.p
                         
                         calendar.template = '<div class="calendar"></div>';
                         
-                        calendar.plugins.addAll({
+                        calendar.seam.addAll({
                                 "labels": new Model(labels),
                                 "model": new Model(cal),
                                 "calevent": new Event(calendar)

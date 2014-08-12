@@ -20,7 +20,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
 			    _menu;
 
 		//setup
-		        _widget.plugins.add("dashboardstack", _stack);
+		        _widget.seam.add("dashboardstack", _stack);
 		        _widget.template='<div id="dashboard"><div id="dashboard-menu"></div><div class="stack" data-dashboardstack="destination"></div></div>';
 			_widget.place(Map.get("dashboard"));
 			

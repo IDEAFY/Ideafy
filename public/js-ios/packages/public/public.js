@@ -41,7 +41,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		
                         _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-publicevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-publicevent="listen: touchstart, setLang; listen:touchend, stopPropagation"></li></ul></div></div></div><div id="public-detail" class="details" data-publicplace="place:details"></div></div>';
 		
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "liststack" : _stack,
                                 "listbtns" : new Model(_btns,{
                                         setPushed : function(pushed){

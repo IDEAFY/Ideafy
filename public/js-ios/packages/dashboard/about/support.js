@@ -21,7 +21,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         supportCDB.setTransport(Config.get("transport"));
                         maintenanceCDB.setTransport(Config.get("transport"));
                         
-                        support.plugins.addAll({
+                        support.seam.addAll({
                                 "labels": new Model(labels),
                                 "support": new Model(model),
                                 "news" : new Model(supportMSG, {

@@ -17,7 +17,7 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 			    _user = Config.get("user");
 			
 		//setup
-		        _widget.plugins.addAll({
+		        _widget.seam.addAll({
 		                "brainstormstack": _stack,
 		                "header": new Model(_store, {
 		                      setDate: function(date){

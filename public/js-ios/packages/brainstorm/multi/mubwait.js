@@ -24,7 +24,7 @@ define(["OObject", "Store", "CouchDBDocument", "service/map", "Bind.plugin", "Ev
                         
                         session.setTransport(Config.get("transport"));
                         
-                        widget.plugins.addAll({
+                        widget.seam.addAll({
                                 labels: new Model(labels),
                                 model: new Model(session, {
                                         setTitle : function(title){

@@ -5,10 +5,14 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
-        function(Widget, Model, Control, Config){
-                
-                function SubMenuConstructor($dom, $setWidget){
+var olives = require("../libs/olives"),
+      amy = require("../libs/amy2"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Control = amy.ControlPlugin,
+      Config = require("./config");
+
+function SubMenuConstructor($dom, $setWidget){
 
                         var _active = false, publicTemplate, libraryTemplate, brainstormTemplate, connectTemplate, dashboardTemplate,
                             _ctrl = new Control(this),
@@ -34,7 +38,7 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                         if ($dom.id.search("dashboard")>-1) {this.template = dashboardTemplate;}
                         
                         // setup
-                        this.plugins.addAll({
+                        this.seam.addAll({
                                 "label" : new Model(Config.get("labels")),
                                 "menucontrol" : _ctrl
                         });
@@ -72,10 +76,9 @@ define(["OObject", "Bind.plugin", "Amy/Control-plugin", "service/config"],
                         
                         this.render();
                         this.place($dom);  
-                }
+};
                 
-                return function SubMenuFactory($dom, $setWidget){
-                        SubMenuConstructor.prototype = new Widget();
-                        return new SubMenuConstructor($dom,$setWidget);
-                };
-});
+module.exports = function SubMenuFactory($dom, $setWidget){
+        SubMenuConstructor.prototype = new Widget();
+        return new SubMenuConstructor($dom,$setWidget);
+};

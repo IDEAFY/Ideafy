@@ -23,7 +23,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                    _pos = null, // the position of the postit
                    _postit = new Store({"type": "postit", "content":"", "style":{"postit": "yellow", "img": "postItYellow.png","marker": "#4D4D4D"}, "author": Config.get("user").get("_id")});
                    
-                   _widget.plugins.addAll({
+                   _widget.seam.addAll({
                            "labels": new Model(_labels),
                            "postit": new Model(_postit,{
                                    setStyle: function(style){

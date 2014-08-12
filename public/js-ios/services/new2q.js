@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Promise", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, Promise, Spinner){
-                
-                return new function new2QConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Spinner = require("../libs/spin.min"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Promise = emily.Promise,
+      Store = CouchDBTools.CouchDBDocument,
+      Config = require("./config"),
+      Map = require("./map");
+      
+module.exports = new function new2QConstructor(){
                 
                         var _widget = new Widget(),
                             _store = new Store(Config.get("TQTemplate")),
@@ -33,7 +42,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _resetLang();
                         });
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "new2q" : new Model(_store, {
                                         displayLang : function(lang){
                                                 var l=lang.substring(0,2);
@@ -211,6 +220,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         return _widget;
-                };
-                
-        });
+};

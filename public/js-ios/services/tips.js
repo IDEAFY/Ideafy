@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBView){
-                
-                return new function TipsConstructor($firstStart){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("./config"),
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Map = require("./map");
+      
+module.exports = new function TipsConstructor($firstStart){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
@@ -20,7 +28,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         _cdb.setTransport(Config.get("transport"));
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "tip" : new Model(_tip,{
                                         setTitle : function(id){
@@ -105,5 +113,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 }
                         };
                         return _widget;
-                };
-        });
+};

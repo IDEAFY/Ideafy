@@ -19,7 +19,7 @@ define(["OObject", "service/config", "Bind.plugin", "Store"],
                                     {"name": labels.get("vincent"), "contrib": labels.get("contribvincent")}
                             ]);
                         
-                        aboutIdeafy.plugins.addAll({
+                        aboutIdeafy.seam.addAll({
                                 "labels": new Model(labels),
                                 "credits": new Model(credits)
                                 });

@@ -22,7 +22,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         
                         muCDB.setTransport(transport);
                         
-                        muPreviewUI.plugins.addAll({
+                        muPreviewUI.seam.addAll({
                                 "labels" : new Model(labels),
                                 "model" : new Model(muCDB, {
                                         setTitle : function(title){

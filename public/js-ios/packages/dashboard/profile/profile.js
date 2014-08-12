@@ -27,7 +27,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                        grades = new Store([]),
                        achievements = new Store(); // always start with grade (or distinction then grade if distinction is present)
                        
-                   profileUI.plugins.addAll({
+                   profileUI.seam.addAll({
                            "label" : new Model(labels),
                            "stats" : new Model(stats,{
                                    setViewLbl : function(view){

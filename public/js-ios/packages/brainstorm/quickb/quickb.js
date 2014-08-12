@@ -29,13 +29,13 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                        _sessionData = new Store(),
                        spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
-                   _widget.plugins.add("quickstack", _stack);
+                   _widget.seam.add("quickstack", _stack);
                    
                    _widget.template = '<div id="ideafy-quick"><div class="stack" data-quickstack="destination"></div></div>';
                    
                    _widget.place(Map.get("ideafy-quick"));
                    
-                   _progress.plugins.addAll({
+                   _progress.seam.addAll({
                            "labels" : new Model(_labels),
                            "step" : new Model(_steps, {
                                    setCurrent : function(currentStep){

@@ -34,7 +34,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               // setup
               _sessionsCDB.setTransport(_transport);
               
-              _widget.plugins.addAll({
+              _widget.seam.addAll({
                         "label": new Model(_labels),
                         "sort": new Model(_sortStatus, {
                                 setSelected : function(selected){

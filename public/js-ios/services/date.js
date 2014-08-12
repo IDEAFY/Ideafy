@@ -5,16 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils"],
-        function(Widget, Model, Event, Config, Store, Utils){
-                
-                function DateWidgetConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("./config"),
+      Utils = require("./utils");
+
+function DateWidgetConstructor(){
                 
                         var _widget = this,
                               _labels = Config.get("labels"),
                               date = new Store({"day":"", "month":"", "year":""});
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "model" : new Model(date,{
                                         setYear : function(y){
@@ -105,11 +111,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.render();
                         _widget.reset();
+};
                         
-                }
-                        
-                return function DateWidgetFactory(){
-                        DateWidgetConstructor.prototype = new Widget();
-                        return new DateWidgetConstructor();
-                };
-        });
+module.exports = function DateWidgetFactory(){
+        DateWidgetConstructor.prototype = new Widget();
+        return new DateWidgetConstructor();
+};

@@ -82,7 +82,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                         allCards.setTransport(Config.get("transport"));
                         
-                        deckDetails.plugins.addAll({
+                        deckDetails.seam.addAll({
                                 "labels": new Model(labels),
                                 "range": new Model(range, {
                                         setCursorWidth : function(max){

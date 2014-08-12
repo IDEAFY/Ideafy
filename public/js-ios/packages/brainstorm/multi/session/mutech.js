@@ -51,7 +51,7 @@ define(["OObject", "service/map", "Place.plugin", "Bind.plugin", "Event.plugin",
                         };
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "display": new Model(_techDisplay,{
                                         setReload : function(left){

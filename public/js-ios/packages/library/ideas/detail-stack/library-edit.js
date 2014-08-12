@@ -31,7 +31,7 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
 	               
                         _store.setTransport(transport);
                         
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 			        "editlabel": new Model(_labels),
 			        "editidea" : new Model(_store, {
 			                displayLang : function(lang){

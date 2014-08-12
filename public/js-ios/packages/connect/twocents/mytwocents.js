@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Amy/Stack-plugin", "Amy/Control-plugin", "./mtc-stack", "./twoqlist", "Store", "service/new2q"],
-        function(Widget, Map, Config, Model, UIPlugin, Delegate, Stack, Control, MTCDetailStack, TwoQList, Store, New2Q){
-                
-                return function MyTwocentsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      UIPlugin = olives["Place.plugin"],
+      Delegate = amy.DelegatePlugin,
+      Stack = amy.StackPlugin,
+      Control = amy.ControlPlugin,
+      MTCDetailStack = require("./mtc-stack"),
+      TwoQList = require("./twoqlist"),
+      New2Q = require("../../../services/new2q");
+
+module.exports = function MyTwocentsConstructor(){
                         
                         var myTwocentUI = new Widget(),
                             mtcStack = new Stack(),
@@ -28,7 +41,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                             labels = Config.get("labels"),
                             db = Config.get("db");
                             
-                        myTwocentUI.plugins.addAll({
+                        myTwocentUI.seam.addAll({
                                 "labels" : new Model(labels),
                                 "twoqbuttons" : new Model(twoQButtons,{
                                         setBg : function(name){
@@ -324,5 +337,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Place.plugin
                         });
                         
                         return myTwocentUI;
-                };
-        });
+};

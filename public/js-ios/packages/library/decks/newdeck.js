@@ -16,7 +16,7 @@ var olives = require("../../../libs/olives"),
       Spinner = require("../../../libs/spin.min"),
       Utils = require("../../../services/utils");
 
-module.exports v= function newConstructor($onEnd){
+module.exports = function newConstructor($onEnd){
                         
                         var _widget = new Widget(),
                             _store = new Store({}),

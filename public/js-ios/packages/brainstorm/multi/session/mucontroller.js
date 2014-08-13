@@ -5,10 +5,31 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm", "service/utils"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm, Utils){
-                
-           return function MUControllerConstructor($exit){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      amy = require("../../../../libs/amy2"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      MUStart = require("./mustart"),
+      MUSetup = require("./musetup"),
+      MUScenario = require("./muscenario"),
+      MUTech = require("./mutech"),
+      MUIdea = require("./muidea"),
+      MUWrapup = require("./muwrapup"),
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      Confirm = require("../../../../services/confirm");
+
+module.exports = function MUControllerConstructor($exit){
                    
                 // declaration
                 var _widget = new Widget(),
@@ -620,9 +641,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                 // return
                 return _widget;
-           };    
-        });
- 
+}; 
 /*
  * ALSO SHOULD REGULARLY CHECK IF LEADER IS STILL CONNECTED....
  */

@@ -5,11 +5,15 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
-        function(Widget, Store, Model, Event, Config){
-                
-           return function PostitConstructor($store, $exit){
-             
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store;
+
+module.exports = function PostitConstructor($store, $exit){             
                 var _widget = new Widget(),
                     _labels = Config.get("labels"),
                     _marker = "#4D4D4D",
@@ -109,6 +113,4 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config"],
                 };
                 
                 return _widget;      
-                   
-           };
-        });
+};

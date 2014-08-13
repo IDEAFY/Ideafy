@@ -5,10 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Store, Utils){
-                
-                return function QuickWrapupConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Utils = require("../../../services/utils");
+
+module.exports = function QuickWrapupConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -144,5 +151,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

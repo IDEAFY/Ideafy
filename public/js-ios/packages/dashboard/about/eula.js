@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
-        function(Widget, Config, Model, CouchDBDocument, Store){
-           
-                return function EULAConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Store = emily.Store;
+
+module.exports = function EULAConstructor(){
                         
                         var eula = new Widget(),
                             user = Config.get("user"),
@@ -44,5 +50,4 @@ define(["OObject", "service/config", "Bind.plugin", "CouchDBDocument", "Store"],
                         });
                         
                         return eula;                
-                };
-        });
+};

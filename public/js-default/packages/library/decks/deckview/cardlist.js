@@ -409,5 +409,4 @@ module.exports = function CardListConstructor($cardType, $editCard, $update){
                         popupUI = new CardPopup(cardList.closePopup);
                         
                         return cardList;
-                        
 };

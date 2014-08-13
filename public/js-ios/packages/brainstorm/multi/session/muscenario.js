@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Event, Place, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner, Chat){
-                
-                return function MUScenarioConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      CardPopup = require("../../../../services/cardpopup"),
+      Chat = require("./mubchat"),
+      Whiteboard = require("../../whiteboard/whiteboard");
+
+module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -647,5 +662,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

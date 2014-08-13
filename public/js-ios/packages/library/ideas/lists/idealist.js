@@ -5,9 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function IdeaListConstructor($db, $design, $view, $query) {
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../../services/utils"),
+      Avatar = require("../../../../services/avatar"),
+      ActionBar = require("../../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
+                      _mosaic = new Store(),
                       touchStart,
                       touchPoint,
                       display = false,
@@ -31,11 +45,11 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                widget.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
+                widget.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,value.doc.authors"></div><h2 data-listideas="bind:innerHTML,value.doc.authornames" data-display="bind:setAuthornames, mosaic"></h2><span class="date" data-listideas="bind:date, value.doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,value.doc.title"></h3><p data-listideas="bind:innerHTML, value.doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, value.doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, value.rating"></span></div></li></ul></div>';
                 
                 // change template for listSearch
                 if (_options.query.q){
-                        widget.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
+                        widget.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:touchstart, setStart; listen:touchmove, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames" data-display="bind:setAuthornames, mosaic"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';
                 }
 
                 widget.seam.addAll({
@@ -71,6 +85,17 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                 setVisibility : function(visibility){
                                         (visibility === "public") ? this.classList.add("public") : this.classList.remove("public");
                                 }
+                        }),
+                        "display" : new Model(_mosaic, {
+                                setAuthornames : function(mosaic){
+                                        var _id = this.getAttribute("data-listideas_id"),
+                                              names = _store.get(_id).value.doc.authornames,
+                                              authors = _store.get(_id).value.doc.authors;
+                                        if (mosaic && authors.length > 1){
+                                                this.innerHTML = names.split(',')[0] + labels.get("andothers");
+                                        }
+                                        else this.innerHTML = names;
+                                } 
                         }),
                         "listevent" : new Event(this)
                         });
@@ -145,6 +170,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         return widget.resetQuery(query); 
                 };
                 
+                widget.setMosaic = function(mosaic){
+                        (mosaic) ? _mosaic.set("mosaic", true) : _mosaic.set("mosaic", false);
+                };
+                
                 widget.showActionBar = function(event, node){
                         var id = node.getAttribute("data-listideas_id"),
                               dom = document.getElementById("ideas"),
@@ -194,10 +223,9 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                         return promise;
                 };
-        }
+};
 
-        return function IdeaListFactory($db, $design, $view, $query) {
-                IdeaListConstructor.prototype = new Widget();
-                return new IdeaListConstructor($db, $design, $view, $query);
-        };
-}); 
+module.exports = function IdeaListFactory($db, $design, $view, $query) {
+        IdeaListConstructor.prototype = new Widget();
+        return new IdeaListConstructor($db, $design, $view, $query);
+};

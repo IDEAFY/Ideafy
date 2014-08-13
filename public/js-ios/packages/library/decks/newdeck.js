@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "lib/spin.min", "service/utils"],
-        function(Widget, Map, Model, Event, Config, Store, Spinner, Utils){
-                
-                return function newConstructor($onEnd){
+var olives = require("../../../libs/olives"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../services/config"),
+      Store = CouchDBTools.CouchDBDocument,
+      Spinner = require("../../../libs/spin.min"),
+      Utils = require("../../../services/utils");
+
+module.exports v= function newConstructor($onEnd){
                         
                         var _widget = new Widget(),
                             _store = new Store({}),
@@ -281,5 +289,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.reset();
                         
                         return _widget;
-                };
-        });
+};

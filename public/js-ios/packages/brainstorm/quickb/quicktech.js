@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/help", "Store", "CouchDBDocument", "Promise", "service/cardpopup", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Help, Store, CouchDBDocument, Promise, CardPopup, Utils, Spinner){
-                
-                return function QuickTechConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CardPopup = require("../../../services/cardpopup"),
+      Help = require("../../../services/help"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function QuickTechConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -424,5 +437,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

@@ -5,10 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm", "service/map"],
-        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm, Map){
-           
-           return function ImportCardConstructor($update, $close){
+var olives = require("../../../../../libs/olives"),
+      emily = require("../../../../../libs/emily"),
+      CouchDBTools = require("../../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../../services/config"),
+      Confirm = require("../../../../../services/confirm"),
+      Map = require("../../../../../services/map"),
+      Store = emily.Store,
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Promise = emily.Promise,
+      Spinner = require("../../../../../libs/spin.min");
+
+module.exports = function ImportCardConstructor($update, $close){
                    
                 var importCard = new Widget(),
                     labels = Config.get("labels"),
@@ -364,6 +376,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 });
                 
                 return importCard;
-                   
-           };
-});
+};

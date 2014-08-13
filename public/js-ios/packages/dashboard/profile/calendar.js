@@ -5,10 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Store", "Promise", "Bind.plugin", "Event.plugin", "service/utils"],
-        function(Widget, Config, Store, Promise, Model, Event, Utils){
-                
-                return new function CalendarConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils");
+
+module.exports = new function CalendarConstructor(){
                         
                         var calendar= new Widget(),
                               cal = new Store([]),
@@ -61,5 +68,4 @@ define(["OObject", "service/config", "Store", "Promise", "Bind.plugin", "Event.p
                         });
                         
                         return calendar;
-                };
-        });
+};

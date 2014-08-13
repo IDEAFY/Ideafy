@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.min", "Store" ],
-        function(Widget, Model, Event, Config, Spinner, Store){
-                
-           return function WBMainConstructor($store, $tools, $select){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function WBMainConstructor($store, $tools, $select){
              
                 var _widget = new Widget(),
                     _sid,
@@ -226,6 +232,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                 };
 
                 return _widget;
-
-           };
-        });
+};

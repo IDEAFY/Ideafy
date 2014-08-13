@@ -5,11 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
-	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min", "service/newidea"], 
-	function(Widget, Control, Model, Place, Delegate, Store, Map, Config, Detail, List, Stack, Spinner, NewIdea){
-		return function IdeasConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Control = amy.ControlPlugin,
+      Model = olives["Bind.plugin"],
+      Delegate = amy.DelegatePlugin,
+      Place = olives["Place.plugin"],
+      Store = emily.Store,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Detail = require("./idea-stack"),
+      List = require("./lists/idealist"),
+      Stack = amy.StackPlugin,
+      Spinner = require("../../../libs/spin.min"),
+      NewIdea = require("../../../services/newidea");
+
+module.exports = function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
                               _searchInput = new Store({"search": ""}),
@@ -180,7 +193,19 @@ define(["OObject", "Amy/Control-plugin" ,
 				        domDetail.classList.remove("invisible");
 				        _detail.reset(listDate.getModel(), 0);
 				}
-				else domDetail.classList.add("invisible");
+				// else domDetail.classList.add("invisible");
+				
+				// enable specific presentation treatment in mosaic view
+                                if (_widget.dom.classList.contains("mosaic")){
+                                        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(true);        
+                                        });
+                                }
+                                else{
+                                        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(false);        
+                                        });        
+                                }
 			};
 			
 			_widget.plus = function(){
@@ -373,5 +398,4 @@ define(["OObject", "Amy/Control-plugin" ,
                         
                         //return
 			return _widget;
-		};
-	});
+};

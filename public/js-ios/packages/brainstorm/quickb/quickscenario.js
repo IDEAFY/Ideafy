@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner){
-                
-                return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CardPopup = require("../../../services/cardpopup"),
+      Whiteboard = require("../whiteboard/whiteboard"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -416,5 +429,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

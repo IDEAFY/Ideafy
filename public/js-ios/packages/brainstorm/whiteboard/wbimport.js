@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "lib/spin.min"],
-        function(Widget, Map, Config, Model, Event, Utils, Store, Promise, Spinner){
-                
-           return function ImportConstructor($store, $exit){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function ImportConstructor($store, $exit){
              
                 var _widget = new Widget(),
                     _labels = Config.get("labels"),
@@ -223,7 +232,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 };
 
                 return _widget;      
-                   
-           };
-                
-        });
+};

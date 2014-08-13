@@ -5,9 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils"], 
-	function(Widget, Map, Config, Model, Event, Store, Avatar, Utils){
-		return function PublicSendmailConstructor($action){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Store = emily.Store,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar");
+
+moduie.exports = function PublicSendmailConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			    _error = new Store({"errormsg": ""}),
@@ -123,5 +132,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
 
 		//return
 			return _widget;
-		};
-	});
+};

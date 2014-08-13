@@ -5,9 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./profile/profile", "./settings/settings", "./about/about", "service/config"], 
-	function(Widget, Map, Menu, Stack, Profile, Settings, About, Config){
-		return function DashboardConstructor(){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Stack = amy.StackPlugin,
+      Map = require("../../services/map"),
+      Menu = require("../../services/submenu"),
+      Profile = require("./profile/profile"),
+      Settings = require("./settings/settings"),
+      About = require("./about/about"),
+      Config = require("../../services/config");
+
+module.exports = function DashboardConstructor(){
 		//declaration
 			var _widget = new Widget(),
                             _stack = new Stack(),
@@ -69,5 +79,4 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "./prof
                  
                 //return
 			return _widget;
-		};
-	});
+};

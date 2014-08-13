@@ -5,10 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.plugin", "service/config", "Store", "service/utils", "./ideafy-menu", "./quickb/quickb", "./multi/mub"], 
-	function(Widget, Map, Menu, Stack, Model, Config, Store, Utils, IdeafyMenu, QuickB, MultiB){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../services/map"),
+      Menu = require("../../services/submenu"),
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Config = require("../../services/config"),
+      Store = emily.Store,
+      Utils = require("../../services/utils"),
+      IdeafyMenu = require("./ideafy-menu"),
+      QuickB = require("./quickb/quickb"),
+      MultiB = require("./multi/mub");
 
-		return function BrainstormConstructor(){
+module.exports = function BrainstormConstructor(){
 		//declaration
 			var _widget = new Widget(),
 			    _submenu,
@@ -134,6 +146,4 @@ define(["OObject", "service/map", "service/submenu", "Amy/Stack-plugin", "Bind.p
 		
 		//return
 			return _widget;
-		};
-	}
-);
+};

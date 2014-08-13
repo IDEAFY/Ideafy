@@ -5,10 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, Spinner){
-                
-                return function MuVoteConstructor(){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../services/config"),
+      Store = emily.Store,
+      Spinner = require("../../../../libs/spin.min");
+
+module.exports = function MuVoteConstructor(){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
@@ -293,5 +300,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         return _widget;       
-                };
-        });
+};

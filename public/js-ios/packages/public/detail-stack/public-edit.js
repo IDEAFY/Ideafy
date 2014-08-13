@@ -5,9 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/config", "service/confirm", "Promise", "Place.plugin", "attach/attachment", "attach/add","service/utils"], 
-	function(Widget, Map, Store, CouchDBDocument, Model, Event, Config, Confirm, Promise, Place, Attachment, AddAttachment, Utils){
-		return function PublicEditConstructor($action){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Confirm = require("../../../services/confirm"),
+      Utils = require("../../../services/utils"),
+      Promise = emily.Promise,
+      Attachment = require("../../attach/attachment"),
+      AddAttachment = require("../../attach/add");
+
+module.exports = function PublicEditConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			      _attachmentUI = Attachment,
@@ -345,5 +360,4 @@ define(["OObject", "service/map", "Store", "CouchDBDocument", "Bind.plugin", "Ev
                         
 		//return
 			return _widget;
-		};
-	});
+};

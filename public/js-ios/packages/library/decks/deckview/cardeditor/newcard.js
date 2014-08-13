@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument", "./editchar", "./editcard", "./importcard", "Promise"],
-        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument, EditChar, EditCard, ImportCard, Promise){
-                
-                return function NewCardConstructor($update){
+var olives = require("../../../../../libs/olives"),
+      emily = require("../../../../../libs/emily"),
+      amy = require("../../../../../libs/amy2"),
+      CouchDBTools = require("../../../../../libs/CouchDBTools"),
+     Widget = olives.OObject,
+     Model = olives["Bind.plugin"],
+     Event = olives["Event.plugin"],
+     Stack = amy.StackPlugin,
+     Config = require("../../../../../services/config"),
+     Store = emily.Store,
+     CouchDBDocument = CouchDBTools.CouchDBDocument,
+     EditChar = require("./editchar"),
+     EditCard = require("./editcard"),
+     ImportCard = require("./importcard"),
+     Promise = emily.Promise;
+
+module.exports = function NewCardConstructor($update){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
@@ -266,5 +279,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.init();
                         
                         return newCard;     
-                };
-});
+ };

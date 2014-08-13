@@ -5,10 +5,26 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "service/cardpopup", "../../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min", "./mubchat", "./muvote"],
-        function(Widget, Map, Model, Event, Place, Config, CardPopup, Whiteboard, Store, CouchDBDocument, Promise, Utils, Spinner, Chat, Vote){
-                
-                return function MUIdeaConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      CardPopup = require("../../../../services/cardpopup"),
+      Chat = require("./mubchat"),
+      Vote = require("./muvote"),
+      Whiteboard = require("../../whiteboard/whiteboard");
+
+module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -747,5 +763,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Return
                         return _widget;
-                };    
-        });
+};

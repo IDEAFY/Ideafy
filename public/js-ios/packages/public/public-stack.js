@@ -5,9 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
-	function(Widget, Model, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
-		return function IdeaStackConstructor(){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Map = require("../../services/map"),
+      Stack = amy.StackPlugin,
+      IdeaDetail = require("./detail-stack/public-idea"),
+      Edit = require("./detail-stack/public-edit"),
+      Sendmail = require("./detail-stack/public-sendmail"),
+      Share = require("./detail-stack/public-share"),
+      Config = require("../../services/config"),
+      Store = emily.Store,
+      Spinner = require("../../libs/spin.min");
+
+module.exports = function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
                                _emptyList = new Widget(),
@@ -127,5 +140,4 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 			
 		//return
 			return _widget;
-		};
-	});
+};

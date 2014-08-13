@@ -5,10 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup", "Promise"],
-        function(Widget, Config, Model, Event, CouchDBBulkDocuments, CouchDBDocument, Store, CardPopup, Promise){
-                
-                return function CardListConstructor($cardType, $editCard, $update){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments,
+      Promise = emily.Promise,
+      CardPopup = require("../../../../services/cardpopup");
+
+module.exports = function CardListConstructor($cardType, $editCard, $update){
                         
                 
                         var cardList = new Widget(),
@@ -398,6 +408,4 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         popupUI = new CardPopup(cardList.closePopup);
                         
                         return cardList;
-                        
-                };  
-        });
+};

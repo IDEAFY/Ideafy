@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "Store", "lib/spin.min", "LocalStore"],
-        function(Widget, Config, Model, Event, Avatar, Utils, Store, Spinner, LocalStore){
-                
-           return function EditProfileConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Avatar = require("../../../services/avatar"),
+      Utils = require("../../../services/utils"),
+      Store = emily.Store,
+      Spinner = require("../../../libs/spin.min"),
+      LocalStore = olives.LocalStore;
+
+module.exports = function EditProfileConstructor(){
                    
                 var editProfile = new Widget(),
                     user = Config.get("user"),
@@ -399,6 +408,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "service/ava
                 };
                 
                 return editProfile;
-                   
-           };
-        });
+};

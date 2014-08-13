@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils", "lib/spin.min", "service/confirm"],
-        function(Widget, Config, CouchDBDocument, Store, Model, Event, Avatar, Utils, Spinner, Confirm){
-                
-                return function MUPreviewConstructor(){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Confirm = require("../../../../services/confirm"),
+      Avatar = require("../../../../services/avatar");
+
+module.exports = function MUPreviewConstructor(){
                         
                         var muPreviewUI = new Widget(),
                               labels = Config.get("labels"),
@@ -408,5 +419,4 @@ define(["OObject", "service/config", "CouchDBDocument", "Store", "Bind.plugin", 
                         };
                         
                         return muPreviewUI;       
-                };
-        });
+};

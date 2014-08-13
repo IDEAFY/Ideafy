@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "./aboutideafy", "./faq", "./userguide", "./tutorials", "./support", "./eula", "service/utils"],
-        function(Widget, Map, Model, Event, Stack, Config, Store, AboutIdeafy, FAQ, UserGuide, Tutorials, Support, EULA, Utils){
-                
-           return function AboutConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Stack = amy.StackPlugin,
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      AboutIdeafy = require("./aboutideafy"),
+      FAQ = require("./faq"),
+      UserGuide = require("./userguide"),
+      Tutorials = require("./tutorials"),
+      Support = require("./support"),
+      EULA = require("./eula"),
+      Utils = require("../../../services/utils");
+
+module.exports = function AboutConstructor(){
                    
                    var aboutUI = new Widget(),
                        aboutStack = new Stack(),
@@ -75,5 +90,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Amy/Stack-plug
                    aboutMenu.update(0, "currentUI", true);
                    
                    return aboutUI;
-           };    
-        });
+};

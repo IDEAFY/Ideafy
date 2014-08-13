@@ -5,10 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/config", "Promise", "Store", "./init/newmub", "./init/mulist"],
-        function(Widget, Stack, Model, Event, Config, Promise, Store, NewMUB, MUList){
-                
-           return function MultiBInitConstructor($exit){
+var olives = require("../../../libs/olives"),
+      amy = require("../../../libs/amy2"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      NewMUB = require("./init/newmub"),
+      MUList = require("./init/mulist");
+
+module.exports = function MultiBInitConstructor($exit){
            
                 var widget = new Widget(),
                     newMub = new NewMUB($exit),
@@ -67,7 +77,4 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "service/c
                 });
                 
                 return widget;
-                   
-           };
-});
-  
+};  

@@ -5,10 +5,30 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./quickstart", "./quicksetup", "./quickscenario", "./quicktech", "./quickidea", "./quickwrapup", "CouchDBDocument", "CouchDBView", "service/config", "Promise", "Store", "lib/spin.min"],
-        function(Widget, Map, Stack, Model, Event, QuickStart, QuickSetup, QuickScenario, QuickTech, QuickIdea, QuickWrapup, CouchDBDocument, CouchDBView, Config, Promise, Store, Spinner){
-                
-           return function QuickBConstructor($sip, $exit){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Stack = amy.StackPlugin,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Spinner = require("../../../libs/spin.min"),
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBView = CouchDBTools.CouchDBView,
+      QuickStart = require("./quickstart"),
+      QuickSetup = require("./quicksetup"),
+      QuickScenario = require("./quickscenario"),
+      QuickTech = require("./quicktech"),
+      QuickIdea = require("./quickidea"),
+      QuickWrapup = require("./quickwrapup");
+
+
+module.exports = function QuickBConstructor($sip, $exit){
                    
                    // declaration
                    var _widget = new Widget(),
@@ -302,5 +322,4 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                    
                    // return
                    return _widget;
-           };    
-        });
+};

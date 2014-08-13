@@ -5,9 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBDocument", "Promise", "lib/spin.min"], 
-        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBDocument, Promise, Spinner){
-                return function LibraryShareConstructor($action){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../../services/map"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Avatar = require("../../../../services/avatar"),
+      Utils = require("../../../../services/utils"),
+      AutoContact = require("../../../../services/autocontact"),
+      Spinner = require("../../../../libs/spin.min");
+
+module.exports = function LibraryShareConstructor($action){
                 //declaration
                         var _widget = new Widget(),
                             _error = new Store({"errormsg": ""}),
@@ -308,5 +322,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
 
                 //return
                         return _widget;
-                };
-        });
+};

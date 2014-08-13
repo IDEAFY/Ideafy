@@ -411,7 +411,7 @@ module.exports = function NewMUBConstructor($exit){
                         else if (session.get("mode") !== "roulette" && user.get("connections").length < 1){
                                 error.set("errormsg", labels.get("nofriendtoinvite"));
                         }
-                        else if (session.get("mode") === "boardroom" && !invited.getNbItems()){
+                        else if (session.get("mode") === "boardroom" && !invited.count()){
                                 error.set("errormsg", labels.get("inviteatleastone"));        
                         }
                         else {

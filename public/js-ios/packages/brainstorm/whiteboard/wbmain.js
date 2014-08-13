@@ -190,7 +190,7 @@ module.exports = function WBMainConstructor($store, $tools, $select){
                 };
        
                 _widget.getNbPages = function(){
-                    var total = $store.getNbItems(),
+                    var total = $store.count(),
                         div = total/_pageSize,
                         r = total%_pageSize;
                     if (r>0) return parseInt(div)+1;
@@ -208,7 +208,7 @@ module.exports = function WBMainConstructor($store, $tools, $select){
                     $store.watch("added", function(idx){
                                  var nb = _widget.getNbPages();
                                  _pagination.set("nbPages", nb);
-                                 if (_page.getNbItems() === _pageSize && $store.get(idx).author === Config.get("user").get("_id")){
+                                 if (_page.count() === _pageSize && $store.get(idx).author === Config.get("user").get("_id")){
                                     _widget.displayPage("next");
                                  }
                                  else{
@@ -218,7 +218,7 @@ module.exports = function WBMainConstructor($store, $tools, $select){
        
                     $store.watch("deleted", function(item){
                                  _pagination.set("nbPages", _widget.getNbPages());
-                                 if (_page.getNbItems() === 1 && _pagination.get("currentPage") === _pagination.get("nbPages")){
+                                 if (_page.count() === 1 && _pagination.get("currentPage") === _pagination.get("nbPages")){
                                  _widget.displayPage("previous");
                                  }
                                  else{

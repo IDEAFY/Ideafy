@@ -121,7 +121,7 @@ module.exports = function CardListConstructor($cardType, $editCard, $update){
                                                         cards.alter("push", v.doc);        
                                                 });
                                                 // 12 cards max per page
-                                                pagination.set("nbPages", Math.ceil(cards.getNbItems()/12)); 
+                                                pagination.set("nbPages", Math.ceil(cards.count()/12)); 
                                         
                                                 // display first page
                                                 cardList.displayPage(0);
@@ -139,7 +139,7 @@ module.exports = function CardListConstructor($cardType, $editCard, $update){
                         };
                         
                         cardList.displayPage = function displayPage(pageNB){
-                                var i, length = cards.getNbItems() - 12 * pageNB; 
+                                var i, length = cards.count() - 12 * pageNB; 
                                 
                                 //set page number
                                 pagination.set("currentPage", pageNB);

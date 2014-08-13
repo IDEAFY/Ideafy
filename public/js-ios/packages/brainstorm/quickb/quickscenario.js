@@ -335,7 +335,7 @@ module.exports = function QuickScenarioConstructor($session, $data, $prev, $next
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
                                 if ($session.get("scenario").length){
@@ -360,7 +360,7 @@ module.exports = function QuickScenarioConstructor($session, $data, $prev, $next
                                 else{
                                         // scenario fields are not uploaded separately        
                                         _scenario.reset({"title" : "", "story" : "", "solution" : ""});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
@@ -418,7 +418,7 @@ module.exports = function QuickScenarioConstructor($session, $data, $prev, $next
                                         }
                                         
                                         // toggle ready button
-                                        (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
+                                        (_wbContent.count() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
                         });
                         

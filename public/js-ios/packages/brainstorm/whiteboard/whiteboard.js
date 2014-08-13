@@ -27,7 +27,7 @@ function WhiteboardConstructor($type, $store, $tools, $mode){
                         };
                         
                         this.exitScreen = function exitScreen(name){
-                                ($store.getNbItems()) ? _stack.getStack().show("main") : _stack.getStack().show("default");
+                                ($store.count()) ? _stack.getStack().show("main") : _stack.getStack().show("default");
                                 $tools.set(name, "inactive");      
                         };
                         

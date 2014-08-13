@@ -428,7 +428,7 @@ module.exports = function QuickIdeaConstructor($session, $data, $prev, $next, $p
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("ideaWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in quickidea step
                                 clearInterval(_qiTimer);
@@ -451,7 +451,7 @@ module.exports = function QuickIdeaConstructor($session, $data, $prev, $next, $p
                                 else{
                                         // idea fields are not uploaded separately        
                                         _idea.reset({"title" : "", "description" : "", "solution" : "", "visibility":"private"});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
@@ -507,7 +507,7 @@ module.exports = function QuickIdeaConstructor($session, $data, $prev, $next, $p
                                         }
                                         
                                         // toggle ready button
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);     
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
                         });
                         

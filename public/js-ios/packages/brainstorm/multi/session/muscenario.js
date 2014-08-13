@@ -508,7 +508,7 @@ module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
                                 if (replay || $session.get("scenario").length){                                        
@@ -539,7 +539,7 @@ module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $
                                 else{
                                         // scenario fields are not uploaded separately        
                                         _scenario.reset({"title" : "", "story" : "", "solution" : ""});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // hide/reset story interface
@@ -608,7 +608,7 @@ module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $
                                         
                                         if (!_tools.get("showstory")){
                                                 // avoid upload if $session is already up-to-date (e.g. replay)
-                                                if ($session.get("scenarioWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
+                                                if ($session.get("scenarioWB").length !== _wbContent.count() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                         $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
@@ -619,7 +619,7 @@ module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $
                                                 }
                                         
                                                 // toggle ready button
-                                                 (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);
+                                                 (_wbContent.count() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);
                                         }
                                 });  
                         });
@@ -633,7 +633,7 @@ module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $
                                         if (!content.length) {
                                                 _wb.selectScreen("default");
                                         }
-                                        if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
+                                        if (content.length !== _wbContent.count() || JSON.stringify(content) !== _wbContent.toJSON()){
                                                 _wbContent.reset(content);       
                                         }
                                 }

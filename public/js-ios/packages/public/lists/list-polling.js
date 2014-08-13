@@ -108,14 +108,14 @@ function ListPollingConstructor($db, $design, $view, $query) {
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 currentBar && currentBar.hide();
                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 currentBar && currentBar.hide();
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);
@@ -173,13 +173,13 @@ function ListPollingConstructor($db, $design, $view, $query) {
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);
@@ -201,7 +201,7 @@ function ListPollingConstructor($db, $design, $view, $query) {
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 currentBar && currentBar.hide();
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);        

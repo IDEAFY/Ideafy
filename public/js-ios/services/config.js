@@ -20,7 +20,7 @@ var resetConfig= function(){
                  
                _location = "http://mobile.ideafy.com:1664"; // uncomment for app deployment
                 _version = "1.4.0";
-                _socket = io.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
+                _socket = socketio.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
                 _observer = new Observable();

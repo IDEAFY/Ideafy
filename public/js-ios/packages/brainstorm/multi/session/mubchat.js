@@ -139,7 +139,7 @@ function MUBChatConstructor(){
                                 
                                 // display message immediately
                                 chat.alter("push", {"user": position, "time": now, "msg": node.innerHTML});
-                                id = chat.getNbItems()-1;
+                                id = chat.count()-1;
                                 mubChat.dom.querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                                 
                                 // push message to couchdb
@@ -193,7 +193,7 @@ function MUBChatConstructor(){
                                         break;        
                         }
                         chat.alter("push", newMsg);
-                        id = chat.getNbItems()-1;
+                        id = chat.count()-1;
                         mubChat.dom.querySelector("li[data-chat_id='"+id+"']").scrollIntoView();
                         
                         msg.push(newMsg);

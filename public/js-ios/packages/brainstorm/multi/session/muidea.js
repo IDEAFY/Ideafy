@@ -607,7 +607,7 @@ module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $prog
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("ideaWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in muidea step
                                 clearInterval(_miTimer);
@@ -634,7 +634,7 @@ module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $prog
                                 else{
                                         // idea fields are not uploaded separately        
                                         _idea.reset({"title" : "", "description" : "", "solution" : "", "visibility":"private"});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
@@ -699,7 +699,7 @@ module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $prog
                                 _wbContent.watch(change, function(val){
                                         if (!_tools.get("showidea")){
                                                 // avoid upload if $session is already up-to-date (e.g. replay)
-                                                if ($session.get("ideaWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
+                                                if ($session.get("ideaWB").length !== _wbContent.count() || JSON.stringify($session.get("ideaWB")) !== _wbContent.toJSON()){
                                                         $session.set("ideaWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
@@ -710,7 +710,7 @@ module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $prog
                                                 }
                                         
                                                 // toggle ready button
-                                                (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                                (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         }     
                                 });
                         });
@@ -724,7 +724,7 @@ module.exports = function MUIdeaConstructor($session, $data, $prev, $next, $prog
                                         if (!content.length) {
                                                 _wb.selectScreen("default");
                                         }
-                                        if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
+                                        if (content.length !== _wbContent.count() || JSON.stringify(content) !== _wbContent.toJSON()){
                                                 _wbContent.reset(content);       
                                         }
                                 }

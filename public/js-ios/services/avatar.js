@@ -48,7 +48,7 @@ function AvatarConstructor($array){
                         // Manage presence status
                         _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
                         .then(function(){
-                                if (_cdb.getNbItems()) _store.set("online", true);
+                                if (_cdb.count()) _store.set("online", true);
                                 
                                 Config.get("socket").on("Presence", function(data){
                                         if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);

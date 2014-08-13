@@ -398,7 +398,7 @@ var _utils = {},
 		                      promise.reject();
 		              }
 		              else{
-		                      if (avatars.getNbItems() < 100){
+		                      if (avatars.count() < 100){
 		                              avatars.set(id, result);
 		                      }
 		                      else {

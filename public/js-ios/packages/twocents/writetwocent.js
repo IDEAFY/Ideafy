@@ -43,7 +43,7 @@ module.exports = function WriteTwocentConstructor($view){
                                         this.setAttribute("style", "background: url('"+ avatar + "') no-repeat center center;background-size:cover;");
                                 }        
                         }),
-                        "labels": new ModelPlugin(Config.get("labels")),
+                        "labels": new Model(Config.get("labels")),
                         "twocentevent": new Event(ui)
                 });        
                 

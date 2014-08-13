@@ -286,7 +286,7 @@ module.exports = function QuickSetupConstructor($session, $data, $prev, $next, $
                                 if (type === "problem") {pos.x=249; caret="right";}
                                 
                                 // only display popup if a card is present
-                                if (_currentCards[type].getNbItems()){
+                                if (_currentCards[type].count()){
                                         _popupUI.reset(_currentCards[type].toJSON(), pos, caret, document.getElementById("quicksetup-popup"));
                                 }        
                         };

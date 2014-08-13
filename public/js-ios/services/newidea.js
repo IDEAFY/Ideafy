@@ -241,7 +241,7 @@ module.exports = new function newIdeaConstructor(){
                                 if (_addAttachmentUI.getFileName()) Utils.deleteAttachmentFile(_addAttachmentUI.getFileName());
                                 
                                 // reset _alist
-                                if (_alist.getNbItems()){
+                                if (_alist.count()){
                                         _alist.loop(function(v,i){
                                                 Utils.deleteAttachmentDoc(v.docId)
                                                 .then(function(){
@@ -290,7 +290,7 @@ module.exports = new function newIdeaConstructor(){
                         };
                         
                         _widget.cancel = function(event, node){
-                                if (_alist.getNbItems()) _widget.clearAttachments();
+                                if (_alist.count()) _widget.clearAttachments();
                                 _widget.closePopup();   
                         };
                         
@@ -322,7 +322,7 @@ module.exports = new function newIdeaConstructor(){
                                         _store.set("creation_date", [now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()]);
                                         
                                         // add attachments to idea
-                                        if (_alist.getNbItems()){
+                                        if (_alist.count()){
                                                 _alist.loop(function(v, i){
                                                         att.push(v);                
                                                 });
@@ -367,7 +367,7 @@ module.exports = new function newIdeaConstructor(){
                         ["added", "updated", "deleted"].forEach(function(val){
                                 _alist.watch(val, function(){
                                         var node = _widget.dom.querySelector(".a-list");
-                                        (_alist.getNbItems()) ? node.setAttribute("style", "display:block;") : node.setAttribute("style", "display:none;");
+                                        (_alist.count()) ? node.setAttribute("style", "display:block;") : node.setAttribute("style", "display:none;");
                                 });       
                         });
                         

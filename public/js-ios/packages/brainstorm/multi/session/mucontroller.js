@@ -389,7 +389,7 @@ module.exports = function MUControllerConstructor($exit){
                         // connect to couchdb and retrieve session
                         _session.reset({});
                         _session.sync(_db, sid).then(function(){
-                                var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
+                                var step = _session.get("step"), current = 10000, length = _steps.count();
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -498,7 +498,7 @@ module.exports = function MUControllerConstructor($exit){
                                 }
                         });
                         
-                        if (_id < _steps.getNbItems()) {
+                        if (_id < _steps.count()) {
                                 _newStep = _steps.get(_id+1).name;
                                 _nextui = _stack.getStack().get(_newStep);
                                 

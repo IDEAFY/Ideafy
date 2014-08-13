@@ -306,7 +306,7 @@ module.exports = function MUSetupConstructor($session, $data, $prev, $next, $pro
                                 if (type === "problem") {pos.x=249; caret="right";}
                                 
                                 // only display popup if a card is present
-                                if (_currentCards[type].getNbItems()){
+                                if (_currentCards[type].count()){
                                         _popupUI.reset(_currentCards[type].toJSON(), pos, caret, document.getElementById("musetup-popup"));
                                 }        
                         };

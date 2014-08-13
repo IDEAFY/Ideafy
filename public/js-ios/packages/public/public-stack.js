@@ -48,7 +48,7 @@ module.exports = function IdeaStackConstructor(){
                         _widget.reset = function reset(viewStore, index){
                                 _store = viewStore;
                                 current = index;
-                                if (_store.getNbItems()){
+                                if (_store.count()){
                                         _stack.getStack().show("#public-ideadetail");
                                         _ideaDetail.hideCache();
                                         spinner.spin(_widget.dom);

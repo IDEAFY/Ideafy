@@ -75,7 +75,7 @@ module.exports = new function TipsConstructor($firstStart){
                         };
                         
                         _widget.getRandomTip = function getRandomTip(){
-                                var nb = _allTips.getNbItems(),
+                                var nb = _allTips.count(),
                                     id = Math.floor(Math.random()*nb);
                                 if (nb === 0) _widget.close();
                                 else{

@@ -137,7 +137,7 @@ module.exports = function PublicConstructor(){
                                         });
                                         if (name !== st.getCurrentName()){
                                                 st.show(name);
-                                                if (st.get(name).getModel().getNbItems()){
+                                                if (st.get(name).getModel().count()){
                                                         _widget.displayHighlightedIdea();
                                                 }
                                                 else{
@@ -170,7 +170,7 @@ module.exports = function PublicConstructor(){
                                         st.get(name).setLang(lang)
                                         .then(function(){
                                                 _listSpinner.stop();
-                                                if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
+                                                if (st.getCurrentName() === name && st.get(name).getModel().count() === 0){
                                                         _detail.displayEmpty(name);
                                                 }
                                                 else _widget.displayHighlightedIdea();         
@@ -235,7 +235,7 @@ module.exports = function PublicConstructor(){
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true})
                                 .then(function(){
                                         _stack.getStack().show("#list-search");
-                                        if (listSearch.getModel().getNbItems() >0){
+                                        if (listSearch.getModel().count() >0){
                                                 _widget.displayHighlightedIdea();
                                         }
                                         else {
@@ -301,18 +301,18 @@ module.exports = function PublicConstructor(){
 		        .then(function(){
                                 var lang;
                                 _stack.getStack().show("#list-date");
-                                (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                                (listDate.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
                                 // apply default language to the list of favorites
                                 return listFav.setLang(_currentLang);     
 		        })
 		        .then(function(){
 		                // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("public-favorites", function(val){
-                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                        if (val.length !== listFav.getModel().count()) {
                                                 listFav.resetQuery(_currentLang)
                                                 .then(function(){
                                                         if (_stack.getStack().getCurrentName() === "#list-fav"){
-                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                                (listFav.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
                                                         }
                                                 });
                                         }       
@@ -358,7 +358,7 @@ module.exports = function PublicConstructor(){
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
                                                 if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
-                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                                (_ideaList.count()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
                                         } 
                                  });
                                  */

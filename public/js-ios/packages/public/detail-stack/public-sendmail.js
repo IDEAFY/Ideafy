@@ -16,7 +16,7 @@ var olives = require("../../../libs/olives"),
       Utils = require("../../../services/utils"),
       Avatar = require("../../../services/avatar");
 
-moduie.exports = function PublicSendmailConstructor($action){
+module.exports = function PublicSendmailConstructor($action){
 		//declaration
 			var _widget = new Widget(),
 			    _error = new Store({"errormsg": ""}),

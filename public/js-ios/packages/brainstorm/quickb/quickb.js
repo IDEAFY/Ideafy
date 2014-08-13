@@ -118,7 +118,7 @@ module.exports = function QuickBConstructor($sip, $exit){
                                 return _session.sync(Config.get("db"), sip.id);
                            })
                            .then(function(){
-                                var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
+                                var step = _session.get("step"), current = 10000, length = _steps.count();
                                 
                                 // reset step UIs
                                 _stack.getStack().get("quickstart").reset(sip);
@@ -206,7 +206,7 @@ module.exports = function QuickBConstructor($sip, $exit){
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(Config.get("db"), "library", "_view/sessioncount", {key: '"'+sid+'"'})
                         .then(function(){
-                                if (cdb.getNbItems()){
+                                if (cdb.count()){
                                         promise.fulfill();
                                 }
                                 else{
@@ -260,7 +260,7 @@ module.exports = function QuickBConstructor($sip, $exit){
                                 }
                         });
                         
-                        if (_id < _steps.getNbItems()-1) {
+                        if (_id < _steps.count()-1) {
                                 
                                 // update progress bar
                                 _steps.update(_id, "currentStep", false);

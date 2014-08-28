@@ -14,7 +14,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                 //_location = "http://app.ideafy.com:1664"; 
                 _location = "http://8.19.34.68:1664";
                 //_location = location.origin;
-                _version = "1.3.0";
+                _version = "1.4.0";
                 _socket = io.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();

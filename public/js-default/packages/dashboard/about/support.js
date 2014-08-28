@@ -5,9 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBDocument"],
-        function(Widget, Config, Model, Event, Store, CouchDBDocument){
-                return function SupportConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument;
+
+module.exports = function SupportConstructor(){
                   
                         var support = new Widget(),
                             labels = Config.get("labels"),
@@ -21,7 +29,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         supportCDB.setTransport(Config.get("transport"));
                         maintenanceCDB.setTransport(Config.get("transport"));
                         
-                        support.plugins.addAll({
+                        support.seam.addAll({
                                 "labels": new Model(labels),
                                 "support": new Model(model),
                                 "news" : new Model(supportMSG, {
@@ -121,4 +129,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                         
                         return support;
                  }; 
-        });
+

@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "Store", "Promise", "lib/spin.min"],
-        function(Widget, Map, Config, Model, Event, Utils, Store, Promise, Spinner){
-                
-           return function ImportConstructor($store, $exit){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function ImportConstructor($store, $exit){
              
                 var _widget = new Widget(),
                     _labels = Config.get("labels"),
@@ -73,7 +82,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                                 
                 _widget.template = '<div class="import"><span class="importbutton"><input type="file" enctype="multipart/form-data" accept = "image/\*" data-importevent="listen: mousedown, selectpress; listen:mouseup, check; listen: change, preview"><div data-labels="bind:innerHTML, importlbl" data-importevent="listen: mousedown, press; listen: mouseup, release"></div></span><div id="postpic" class="wbpostit invisible" data-importmodel="bind:setVisibility, content"><div class="postit-cancel postit-close" data-importevent="listen:mousedown,cancel"></div><div class="picframe"><canvas id="preview" data-importmodel="bind:showPreview, content"></canvas></div><div name="post" class = "postpostit" data-importevent="listen: mousedown, press; listen:mouseup, post"></div><div class = "delpostit" name="del" data-importevent="listen:mousedown, press;listen:mouseup, del"></div><div class="uploadprogress" data-importprogress="bind:showProgress, status"></div></div>';
                 
-                _widget.plugins.addAll({
+                _widget.seam.addAll({
                         "labels" : new Model(_labels),
                         "importmodel" : new Model(_postit, {
                                 "setVisibility" : function(content){
@@ -197,6 +206,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
 
                 return _widget;      
                    
-           };
-                
-        });
+};

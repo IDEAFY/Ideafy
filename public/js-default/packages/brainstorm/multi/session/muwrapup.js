@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "Store", "service/utils", "./mubchat"],
-        function(Widget, Map, Model, Event, Place, Config, Store, Utils, Chat){
-                
-                return function MUWrapupConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Place = olives["Place.plugin"],
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../services/config"),
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Chat = require("./mubchat");
+
+module.exports = function MUWrapupConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -19,7 +28,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                             _flash;
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "wrapup" : new Model(_wrapup, {
                                         formatTitle : function(title){
@@ -233,5 +242,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

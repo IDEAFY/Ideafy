@@ -5,9 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils", "service/autocontact", "CouchDBDocument", "Promise", "lib/spin.min"], 
-        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils, AutoContact, CouchDBDocument, Promise, Spinner){
-                return function PublicShareConstructor($action){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar"),
+      Promise = emily.Promise,
+      AutoContact = require("../../../services/autocontact"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function PublicShareConstructor($action){
                 //declaration
                         var _widget = new Widget(),
                             _error = new Store({"errormsg": ""}),
@@ -20,7 +34,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             sendInProgress = false,
                             spinner = new Spinner({color:"#5F8F28", lines:8, length: 8, width: 4, radius:8, left: 30, top: -6}).spin();
                 //setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels": new Model(_labels),
                                 "share" : new Model(_share, {
                                         setHeader : function(title){
@@ -308,4 +322,3 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                 //return
                         return _widget;
                 };
-        });

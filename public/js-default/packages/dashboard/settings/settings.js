@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/config", "Store", "service/utils", "CouchDBBulkDocuments"],
-        function(Widget, Map, Model, Event, Config, Store, Utils, CouchDBBulkDocuments){
-                
-           return function SettingsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Utils = require("../../../services/utils"),
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments;
+
+module.exports = function SettingsConstructor(){
                    
                    var settingsUI = new Widget(),
                        labels = Config.get("labels"),
@@ -37,7 +46,7 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                         _languages.alter("push", val);
                    });
                    
-                   settingsUI.plugins.addAll({
+                   settingsUI.seam.addAll({
                            "label" : new Model(labels),
                            "options" : new Model(options, {
                                    setLang : function(lang){
@@ -337,5 +346,4 @@ define(["OObject", "service/map", "Bind.plugin",  "Event.plugin", "service/confi
                    Utils.updateLabels(user.get("lang"));
                    
                    return settingsUI;
-           };    
-        });
+           };

@@ -5,10 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "twocents/writetwocent", "twocents/twocentlist", "Place.plugin", "service/utils", "service/confirm", "Promise", "lib/spin.min"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, WriteTwocent, TwocentList, Place, Utils, Confirm, Promise, Spinner){
-                
-                return new function AttachmentConstructor($type){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      CouchDBTools = require("../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../services/config"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      WriteTwocent = require("../twocents/writetwocent"),
+      TwocentList = require("../twocents/twocentlist"),
+      Place = olives["Place.plugin"],
+      Utils = require("../../services/utils"),
+      Confirm = require("../../services/confirm"),
+      Promise = emily.Promise,
+      Spinner = require("../../libs/spin.min");
+
+module.exports = new function AttachmentConstructor($type){
                        
                         // declaration
                         var ui = new Widget(),
@@ -27,7 +41,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                        
                         cdb.setTransport(transport);
                         // define plugins and methods
-                        ui.plugins.addAll({
+                        ui.seam.addAll({
                                 "labels" : new Model(labels),
                                 "attach" : new Model(cdb,{
                                         setCat : function(cat){
@@ -535,4 +549,3 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         
                         return ui;
                 };
-        });

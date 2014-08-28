@@ -5,10 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "service/date", "service/time", "dashboard/profile/calendar"],
-        function(Widget, Model, Event, CouchDBDocument, Config, Promise, Store, Utils, Spinner, Place, DateWidget, TimeWidget, Calendar){
-                
-           return function NewMUBConstructor($exit){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      DateWidget = require("../../../../services/date"),
+      TimeWidget = require("../../../../services/time"),
+      Calendar = require("../../../dashboard/profile/calendar");
+
+module.exports = function NewMUBConstructor($exit){
            
                 var widget = new Widget(),
                     session = new Store({}),
@@ -65,7 +79,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                 // reset languages
                 _resetLang();
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels": new Model(labels),
                         "newmub": new Model(session, {
                                 initSessionMode : function(mode){
@@ -397,7 +411,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         else if (session.get("mode") !== "roulette" && user.get("connections").length < 1){
                                 error.set("errormsg", labels.get("nofriendtoinvite"));
                         }
-                        else if (session.get("mode") === "boardroom" && !invited.getNbItems()){
+                        else if (session.get("mode") === "boardroom" && !invited.count()){
                                 error.set("errormsg", labels.get("inviteatleastone"));        
                         }
                         else {
@@ -560,5 +574,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBDocument", "service/co
                         error.reset(tempError);        
                 });
                 return widget;
-            };
-});
+};

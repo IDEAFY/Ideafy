@@ -5,8 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function TwoQListConstructor($type, $db, $design, $view, $query) {
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar"),
+      ActionBar = require("../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function TwoQListConstructor($type, $db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
                     _searchList = new Store([]),display = false,
                     className = "",
@@ -30,7 +43,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                 
                 this.template = '<div><ul class="twoq-list '+ className + '" data-twoqlist="foreach"><li class="list-item" data-twoqlistevent="listen:mousedown, setStart"><div class="item-header"><span class="date" data-twoqlist="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqlist="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqlist="bind:showReplies, value.twocents"></span></div></li></ul><ul class="twoq-searchlist invisible ' + className + '" data-twoqsearch="foreach"><li class="list-item" data-twoqlistevent="listen:mousedown, setStart"><div class="item-header"><span class="date" data-twoqsearch="bind:date,value.creation_date"></span></div><div class="item-body"><p data-twoqsearch="bind:innerHTML,value.question"></p></div><div class="item-footer"><a class="item-twocent"></a><span class="replies" data-twoqsearch="bind:showReplies, value.twocents"></span></div></li></ul></div>';
 
-                this.plugins.addAll({
+                this.seam.addAll({
                         "twoqlist": new Model(_store, {
                                 date : function date(date) {
                                         (date) ? this.innerHTML = Utils.formatDate(date) : this.innerHTML="";
@@ -188,10 +201,9 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                         });
                         return promise;
                 };
-        }
+};
 
-        return function TwoQListFactory($type, $db, $design, $view, $query) {
-                TwoQListConstructor.prototype = new Widget();
-                return new TwoQListConstructor($type, $db, $design, $view, $query);
-        };
-});
+module.exports = function TwoQListFactory($type, $db, $design, $view, $query) {
+        TwoQListConstructor.prototype = new Widget();
+        return new TwoQListConstructor($type, $db, $design, $view, $query);
+};

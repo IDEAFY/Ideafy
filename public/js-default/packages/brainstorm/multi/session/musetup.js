@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Store", "Promise", "service/cardpopup", "service/help", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Place, Event, Config, CouchDBDocument, Store, Promise, CardPopup, Help, Utils, Spinner, Chat){
-                
-                return function MUSetupConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      CardPopup = require("../../../../services/cardpopup"),
+      Chat = require("./mubchat"),
+      Help = require("../../../../services/help");
+      
+module.exports = function MUSetupConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -39,7 +54,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                             // deduct 20px from position shown in navigator
                             
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "musetup" : new Model(_selection, {
                                         setReload : function(left){
@@ -291,7 +306,7 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                                 if (type === "problem") {pos.x=249; caret="right";}
                                 
                                 // only display popup if a card is present
-                                if (_currentCards[type].getNbItems()){
+                                if (_currentCards[type].count()){
                                         _popupUI.reset(_currentCards[type].toJSON(), pos, caret, document.getElementById("musetup-popup"));
                                 }        
                         };
@@ -588,5 +603,4 @@ define(["OObject", "service/map", "Bind.plugin", "Place.plugin", "Event.plugin",
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

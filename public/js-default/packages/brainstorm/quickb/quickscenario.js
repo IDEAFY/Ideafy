@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner){
-                
-                return function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CardPopup = require("../../../services/cardpopup"),
+      Whiteboard = require("../whiteboard/whiteboard"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function QuickScenarioConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -44,7 +57,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels, {
                                         setPlaceholder : function(value){
                                                 this.setAttribute("placeholder", value);
@@ -322,7 +335,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
                                 if ($session.get("scenario").length){
@@ -347,7 +360,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 else{
                                         // scenario fields are not uploaded separately        
                                         _scenario.reset({"title" : "", "story" : "", "solution" : ""});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
@@ -405,7 +418,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         
                                         // toggle ready button
-                                        (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
+                                        (_wbContent.count() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
                         });
                         
@@ -416,5 +429,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

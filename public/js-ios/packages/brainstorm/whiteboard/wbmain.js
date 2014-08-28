@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.min", "Store" ],
-        function(Widget, Model, Event, Config, Spinner, Store){
-                
-           return function WBMainConstructor($store, $tools, $select){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function WBMainConstructor($store, $tools, $select){
              
                 var _widget = new Widget(),
                     _sid,
@@ -20,7 +26,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                     _pageSize = 8,
                     _pagination = new Store({currentPage:1, nbPages: 1});
        
-                    _widget.plugins.addAll({
+                    _widget.seam.addAll({
                         "pagination" : new Model(_pagination,{
                                 setPage : function(currentPage){
                                     var nb = currentPage;
@@ -184,7 +190,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                 };
        
                 _widget.getNbPages = function(){
-                    var total = $store.getNbItems(),
+                    var total = $store.count(),
                         div = total/_pageSize,
                         r = total%_pageSize;
                     if (r>0) return parseInt(div)+1;
@@ -202,7 +208,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                     $store.watch("added", function(idx){
                                  var nb = _widget.getNbPages();
                                  _pagination.set("nbPages", nb);
-                                 if (_page.getNbItems() === _pageSize && $store.get(idx).author === Config.get("user").get("_id")){
+                                 if (_page.count() === _pageSize && $store.get(idx).author === Config.get("user").get("_id")){
                                     _widget.displayPage("next");
                                  }
                                  else{
@@ -212,7 +218,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
        
                     $store.watch("deleted", function(item){
                                  _pagination.set("nbPages", _widget.getNbPages());
-                                 if (_page.getNbItems() === 1 && _pagination.get("currentPage") === _pagination.get("nbPages")){
+                                 if (_page.count() === 1 && _pagination.get("currentPage") === _pagination.get("nbPages")){
                                  _widget.displayPage("previous");
                                  }
                                  else{
@@ -226,6 +232,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "lib/spin.mi
                 };
 
                 return _widget;
-
-           };
-        });
+};

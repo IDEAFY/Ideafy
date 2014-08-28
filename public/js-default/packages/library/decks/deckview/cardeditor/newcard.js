@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/config", "Store", "CouchDBDocument", "./editchar", "./editcard", "./importcard", "Promise"],
-        function(Widget, Model, Event, Stack, Config, Store, CouchDBDocument, EditChar, EditCard, ImportCard, Promise){
-                
-                return function NewCardConstructor($update){
+var olives = require("../../../../../libs/olives"),
+      emily = require("../../../../../libs/emily"),
+      amy = require("../../../../../libs/amy2"),
+      CouchDBTools = require("../../../../../libs/CouchDBTools"),
+     Widget = olives.OObject,
+     Model = olives["Bind.plugin"],
+     Event = olives["Event.plugin"],
+     Stack = amy.StackPlugin,
+     Config = require("../../../../../services/config"),
+     Store = emily.Store,
+     CouchDBDocument = CouchDBTools.CouchDBDocument,
+     EditChar = require("./editchar"),
+     EditCard = require("./editcard"),
+     ImportCard = require("./importcard"),
+     Promise = emily.Promise;
+
+module.exports = function NewCardConstructor($update){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
@@ -207,7 +220,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         newCard.template= '<div id="card_creation" class="invisible"><div class="header blue-dark" data-label="bind: innerHTML, cardeditor"></div><div class="create_header"><label data-label="bind:innerHTML, createnew"></label><select class="changetype" data-setup="bind: selectedIndex, type" data-newcardevent="listen: change, changeType"><option data-label="bind:innerHTML, char"></option><option data-label="bind:innerHTML, context"></option><option data-label="bind:innerHTML, problem"></option><option data-label="bind:innerHTML, techno"></option><option data-label="bind:innerHTML, importcard"></option></select></div><div class="createcontentstack" data-newcardcontentstack="destination"></div></div>';
                             
                         // setup
-                        newCard.plugins.addAll({
+                        newCard.seam.addAll({
                                 "label" : new Model(labels),
                                 "setup" : new Model(cardSetup),
                                 "newcardcontentstack" : _contentStack,
@@ -267,4 +280,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "Amy/Stack-plugin", "service/c
                         
                         return newCard;     
                 };
-});
+

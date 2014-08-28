@@ -5,9 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./detail-stack/library-idea", "./detail-stack/library-edit", "./detail-stack/library-sendmail", "./detail-stack/library-share", "service/config", "Store", "lib/spin.min"], 
-	function(Widget, Map, Stack, Model, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
-		return function IdeaStackConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      IdeaDetail = require("./detail-stack/library-idea"),
+      Edit = require("./detail-stack/library-edit"),
+      Sendmail = require("./detail-stack/library-sendmail"),
+      Share = require("./detail-stack/library-share"),
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
 			     _emptyList = new Widget(),
@@ -22,14 +35,14 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./detail-s
 		//setup
 		        
 			
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 			        "detailstack" : _stack
 			});
 			
 			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
 			
 			_emptyList.template = '<div class="msgsplash"><div class="header blue-dark"><span data-labels="bind:innerHTML, noideafound"></span></div><div class="innersplash"><span data-labels="bind: innerHTML, tryotherview"></span></div></div>';
-                        _emptyList.plugins.add("labels", new Model(_labels));
+                        _emptyList.seam.add("labels", new Model(_labels));
 
 		//library
 			_widget.reset = function reset(viewStore, index){
@@ -124,5 +137,4 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./detail-s
 			
 		//return
 			return _widget;
-		};
-	});
+};

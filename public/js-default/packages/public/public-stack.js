@@ -5,9 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-stack/public-idea", "./detail-stack/public-edit", "./detail-stack/public-sendmail", "./detail-stack/public-share", "service/config", "Store", "lib/spin.min"], 
-	function(Widget, Model, Map, Stack, IdeaDetail, Edit, Sendmail, Share, Config, Store, Spinner){
-		return function IdeaStackConstructor(){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Map = require("../../services/map"),
+      Stack = amy.StackPlugin,
+      IdeaDetail = require("./detail-stack/public-idea"),
+      Edit = require("./detail-stack/public-edit"),
+      Sendmail = require("./detail-stack/public-sendmail"),
+      Share = require("./detail-stack/public-share"),
+      Config = require("../../services/config"),
+      Store = emily.Store,
+      Spinner = require("../../libs/spin.min");
+
+module.exports = function IdeaStackConstructor(){
 		//declaration
 			var  _widget = new Widget(),
 			       _emptyList = new Widget(),
@@ -22,20 +35,20 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 		//setup
 		        
 			
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 			        "detailstack" : _stack
 			});
 			
 			_widget.template = '<div class="detail-stack" data-detailstack="destination"></div>';
 			
 			_emptyList.template = '<div class="msgsplash"><div class="header blue-dark"><span data-labels="bind:innerHTML, noideafound"></span></div><div class="innersplash"><span data-labels="bind: innerHTML, tryotherview"></span></div></div>';
-                        _emptyList.plugins.add("labels", new Model(_labels));
+                        _emptyList.seam.add("labels", new Model(_labels));
 
 		//detail
                         _widget.reset = function reset(viewStore, index){
                                 _store = viewStore;
                                 current = index;
-                                if (_store.getNbItems()){
+                                if (_store.count()){
                                         _stack.getStack().show("#public-ideadetail");
                                         _ideaDetail.hideCache();
                                         spinner.spin(_widget.dom);
@@ -126,4 +139,3 @@ define(["OObject", "Bind.plugin", "service/map", "Amy/Stack-plugin", "./detail-s
 		//return
 			return _widget;
 		};
-	});

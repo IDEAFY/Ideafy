@@ -5,9 +5,27 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "service/utils", "service/avatar", "service/config", "twocents/writetwocent", "twocents/twocentlist", "Observable", "Promise", "CouchDBDocument", "Place.plugin", "lib/spin.min", "attach/attachment"], 
-        function(Widget, Store, Model, Event, Map, Utils, Avatar, Config, WriteTwocent, TwocentList, Observable, Promise, CouchDBDocument, Place, Spinner, Attachment){
-                return function PublicDetailConstructor($action){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar"),
+      Promise = emily.Promise,
+      Observable = emily.Observable,
+      Attachment = require("../../attach/attachment"),
+      WriteTwocent = require("../../twocents/writetwocent"),
+      TwocentList = require("../../twocents/twocentlist"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function PublicDetailConstructor($action){
                 //declaration
                         var  _widget = new Widget(),
                              _attachmentUI = Attachment,
@@ -26,7 +44,7 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
 
                 //setup
                         _store.setTransport(transport);
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "publicdetail" : new Model(_store, {
                                         // toggle header buttons right
@@ -376,5 +394,4 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/map", "servi
 
                 //return
                         return _widget;
-                };
-        });
+};

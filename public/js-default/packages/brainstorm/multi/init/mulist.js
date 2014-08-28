@@ -5,10 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config", "Promise", "Store", "service/utils", "lib/spin.min", "Place.plugin", "./mupreview", "service/utils"],
-        function(Widget, Model, Event, CouchDBView, Config, Promise, Store, Utils, Spinner, UIPlugin, MUPreview, Utils){
-                
-           return function MuListConstructor($exit){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      UIPlugin = olives["Place.plugin"],
+      MUPreview = require("./mupreview");
+
+module.exports = function MuListConstructor($exit){
            
                 var widget = new Widget(),
                     labels=Config.get("labels"),
@@ -31,7 +43,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                         _languages.alter("push", val);
                 });
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels" : new Model(labels),
                         "options" : new Model(muListOptions,{
                                 setBg : function(lang){
@@ -465,6 +477,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "CouchDBView", "service/config
                 });
                 
                 return widget;
-                   
-           };
-});
+};

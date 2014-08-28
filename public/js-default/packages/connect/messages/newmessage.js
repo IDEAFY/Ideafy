@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Promise", "service/autocontact", "lib/spin.min"],
-        function(Widget, Model, Event, Config, Store, Promise, AutoContact, Spinner){
-                
-                return function NewMessageConstructor($close){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Spinner = require("../../../libs/spin.min"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("../../../services/config"),
+      AutoContact = require("../../../services/autocontact"),
+      Promise = emily.Promise;
+
+module.exports = function NewMessageConstructor($close){
                         
                         var newMessageUI = new Widget(),
                             message = new Store(),
@@ -75,7 +83,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                                     return promise;
                             };
                             
-                        newMessageUI.plugins.addAll({
+                        newMessageUI.seam.addAll({
                                 "labels": new Model(labels),
                                 "errormsg": new Model(error),
                                 "newmessage" : new Model(message,{
@@ -198,5 +206,4 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Pr
                         };
                         
                         return newMessageUI;
-                };
-        });
+};

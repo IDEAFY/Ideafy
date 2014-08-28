@@ -5,17 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
-        function(Widget, Map, Model, Event, Config, Store){
-                
-                function AutoContactConstructor($dom, $outputNode, $update){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Map = require("./map"),
+      Config = require("./config");
+
+function AutoContactConstructor($dom, $outputNode, $update){
                 
                         var _widget = this,
                             _user = Config.get("user"),
                             _search = false,
                             _contactList = new Store([]);
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "auto" : new Model(_contactList,{
                                         setSelected : function(selected){
                                                 (selected)?this.classList.add("selected"): this.classList.remove("selected");
@@ -179,11 +185,9 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         _widget.init();
                         _widget.render();
                         _widget.place($dom);
+};
                         
-                }
-                        
-                return function AutoContactFactory($dom, $outputNode, $update){
-                        AutoContactConstructor.prototype = new Widget();
-                        return new AutoContactConstructor($dom, $outputNode, $update);
-                };
-        });
+module.exports = function AutoContactFactory($dom, $outputNode, $update){
+        AutoContactConstructor.prototype = new Widget();
+        return new AutoContactConstructor($dom, $outputNode, $update);
+};

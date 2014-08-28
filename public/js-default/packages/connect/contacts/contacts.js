@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "Amy/Control-plugin", "Store", "service/avatar", "service/actionbar", "./addcontact", "./addgroup", "./contact-detail", "./group-detail"],
-        function(Widget, Map, Config, Stack, Model, Event, Control, Store, Avatar, ActionBar, AddContact, AddGroup, ContactDetails, GroupDetails){
-                
-                return function ContactsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Control = amy.ControlPlugin,
+      Store = emily.Store,
+      Avatar = require("../../../services/avatar"),
+      ActionBar = require("../../../services/actionbar"),
+      AddContact = require("./addcontact"),
+      AddGroup = require("./addgroup"),
+      ContactDetails = require("./contact-detail"),
+      GroupDetails = require("./group-detail");
+
+module.exports = function ContactsConstructor(){
                         
                         var contactsUI = new Widget(),
                             detailStack = new Stack(),
@@ -65,8 +80,8 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 }
                                 return result;         
                             };
-                        
-                        contactsUI.plugins.addAll({
+
+                        contactsUI.seam.addAll({
                                 "label": new Model(labels),
                                 "sort": new Model(sortButtons, {
                                         "setLabel" : function(name){
@@ -118,7 +133,7 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 contactList.reset(user.get("connections"));
                                 // show add Contact page by default
                                 addContact.init().then(function(){
-                                        detailStack.getStack().show("#addcontact");        
+                                        detailStack.getStack().show("#addcontact");      
                                 });
                                 addGroup.init();
                                 groupDetails.init();
@@ -224,12 +239,6 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                         detailStack.getStack().add("#addcontact", addContact);
                         detailStack.getStack().add("#addgroup", addGroup);
                         
-                        addGroup.init();
-                        
-                        // get message list from user document
-                        contactsUI.init();
-                        
-                        
                         // watch for changes in connections
                         user.watchValue("connections", function(){
                                 var id;
@@ -269,6 +278,6 @@ define (["OObject", "service/map", "service/config", "Amy/Stack-plugin", "Bind.p
                                 sortButtons.update(current, "selected", true);
                         });
                         
-                        return contactsUI;    
-                };
-        });
+                        return contactsUI;
+                        
+};

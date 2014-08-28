@@ -5,10 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils", "CouchDBDocument", "CouchDBView", "lib/spin.min"],
-        function(Widget, Config, Model, Event, Store, Utils, CouchDBDocument, CouchDBView, Spinner){
-                
-                return function DeckDetailsConstructor($update){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min");
+
+module.exports = function DeckDetailsConstructor($update){
                  
                         var deckDetails = new Widget(),
                             deckModel = new Store(),
@@ -82,7 +92,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                         allCards.setTransport(Config.get("transport"));
                         
-                        deckDetails.plugins.addAll({
+                        deckDetails.seam.addAll({
                                 "labels": new Model(labels),
                                 "range": new Model(range, {
                                         setCursorWidth : function(max){
@@ -197,7 +207,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (allCards.get(id-2+i))?arr[i]=allCards.get(id-2+i).value : arr[i] = {style: "null"};
                                 }
                                 deckCards.reset(arr);
-                                (deckCards.getNbItems()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
+                                (deckCards.count()) ? slider.classList.remove("invisible") : slider.classList.add("invisible");
                         };
                         
                         deckDetails.updateCards = function(event, node){
@@ -362,7 +372,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 allCards.reset([]);
                                 allCards.sync(Config.get("db"), "library", "_view/cards", {key: '"'+ deckModel.get("_id")+'"'}).then(function(){
                                         carouselSpinner.stop();
-                                        if (allCards.getNbItems()) range.set("max", allCards.getNbItems()-1);
+                                        if (allCards.count()) range.set("max", allCards.count()-1);
                                         // try to sort by title...
                                         allCards.unsync();
                                         allCards.alter("sort", function(x,y){
@@ -377,5 +387,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                 });
                         };
                         return deckDetails;
-                };
-        });
+};

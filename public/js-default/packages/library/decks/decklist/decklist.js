@@ -5,10 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin', 'Store', 'CouchDBBulkDocuments', "Promise", "service/utils", "service/actionbar"],
-        function(Widget, Map, Config, Model, Event, Store, CouchDBBulkDocuments, Promise, Utils, ActionBar){
-                
-                return function DeckListConstructor($type){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../../services/map"),
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments,
+      Promise = emily.Promise,
+      Utils = require("../../../../services/utils"),
+      ActionBar = require("../../../../services/actionbar");
+
+module.exports = function DeckListConstructor($type){
                         
                         var deckList = new Widget(),
                             labels = Config.get("labels"),
@@ -16,7 +27,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                             decks = new Store([]),
                             currentBar = null;
                         
-                        deckList.plugins.addAll({
+                        deckList.seam.addAll({
                                 "labels" : new Model(labels),
                                 "active" : new Model(user, {
                                         
@@ -154,4 +165,3 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", 'Event.plugin
                         return deckList;
                         
                 };
-        });

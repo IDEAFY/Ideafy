@@ -5,15 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
-   function(Store, Transport, CouchDBDocument, Observable) {
-        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
+var olives = require("../libs/olives"),
+        emily = require("../libs/emily"),
+        CouchDBTools = require("../libs/CouchDBTools"),
+        socketio = require("../libs/socket.io.min"),
+        Transport = olives.SocketIOTransport.Client,
+        Store = emily.Store,
+        Observable = emily.Observable,
+        CouchDBDocument = CouchDBTools.CouchDBDocument;
+
+var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
         
-        this.reset = function(){
+var resetConfig= function(){
                  
                _location = "http://mobile.ideafy.com:1664"; // uncomment for app deployment
                 _version = "1.4.0";
-                _socket = io.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
+                _socket = socketio.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
                 _transport = new Transport(_socket);
                 _user =  new CouchDBDocument();
                 _observer = new Observable();
@@ -761,8 +768,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                         });
                 };
         
-        // init
-        this.reset();
+// init
+resetConfig();
         
-        return _config;
-});
+module.exports = _config;

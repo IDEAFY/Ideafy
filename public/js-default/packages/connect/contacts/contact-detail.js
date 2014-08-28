@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Event.plugin", "service/avatar", "service/utils"],
-        function (Widget, Config, Map, Store, Model, Event, Avatar, Utils){
-                
-                return function ContactDetailsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Avatar = require("../../../services/avatar"),
+      Utils = require("../../../services/utils");
+
+module.exports = function ContactDetailsConstructor(){
         
                         var contactDetails = new Widget(),
                             details = new Store(),
@@ -20,7 +28,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                             transport = Config.get("transport");               
                         
                         
-                        contactDetails.plugins.addAll({
+                        contactDetails.seam.addAll({
                                 "label" : new Model(labels),
                                 "basicinfo": new Model(contact, {
                                         setAvatar : function(userid){
@@ -159,5 +167,4 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Eve
                        };
                        
                        return contactDetails; 
-                };
-        });
+};

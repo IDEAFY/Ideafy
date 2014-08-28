@@ -5,11 +5,28 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin", 
-	"public/public", "library/library", "brainstorm/brainstorm", "connect/connect", "dashboard/dashboard",
-	"service/map", "service/config", "./notify", "service/newidea", "service/help", "service/new2q", "service/new2c", "service/tips", "attach/attachment"], 
-	function(Widget, Place, Stack, Control, Public, Library, Brainstorm, Connect, Dashboard, Map, Config, Notify, NewIdea, Help, New2Q, New2C, Tips, Attachment){
-		return function DockConstructor(){
+var olives = require("../libs/olives"),
+      amy = require("../libs/amy2"),
+      Widget = olives.OObject,
+      Place = olives["Place.plugin"],
+      Stack = amy.StackPlugin,
+      Control = amy.ControlPlugin,
+      Public = require("./public/public"),
+      Library = require("./library/library"),
+      Brainstorm = require("./brainstorm/brainstorm"),
+      Connect = require("./connect/connect"),
+      Dashboard = require("./dashboard/dashboard"),
+      Map = require("../services/map"),
+      Config = require("../services/config"),
+      Notify = require("./notify"),
+      NewIdea = require("../services/newidea"),
+      Help = require("../services/help"),
+      New2Q = require("../services/new2q"),
+      New2C = require("../services/new2c"),
+      Tips = require("../services/tips"),
+      Attachment = require("./attach/attachment");
+
+module.exports = function DockConstructor(){
 
 		//declaration
 			var _widget = new Widget(),
@@ -26,7 +43,7 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 
 		//setup
 			//labels have to configurable
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 				"dockstack" : _stack,
 				"dockcontrol" : _control,
 				"place" : new Place({"notify":_notify, "newidea": NewIdea, "new2q": New2Q, "new2c": New2C, "help": Help, "tips": Tips, "attach": Attachment})
@@ -209,4 +226,3 @@ define(["OObject", "Place.plugin", "Amy/Stack-plugin", "Amy/Control-plugin",
 			return _widget;
 
 		};
-});

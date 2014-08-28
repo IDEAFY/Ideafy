@@ -5,10 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBView", "CouchDBDocument", "Store", "service/utils", "service/avatarlist", "service/confirm", "lib/spin.min", "Promise"],
-        function(Widget, Map, Model, Event, Config, CouchDBView, CouchDBDocument, Store, Utils, AvatarList, Confirm, Spinner, Promise){
-                
-           return function MySessionsContructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../services/config"),
+      CouchDBView = CouchDBTools.CouchDBView,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Store = emily.Store,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      AvatarList = require("../../../services/avatarlist"),
+      Confirm = require("../../../services/confirm"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function MySessionsContructor(){
               
               // declaration     
               var _widget = new Widget(),
@@ -32,7 +46,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               // setup
               _sessionsCDB.setTransport(_transport);
               
-              _widget.plugins.addAll({
+              _widget.seam.addAll({
                         "label": new Model(_labels),
                         "sort": new Model(_sortStatus, {
                                 setSelected : function(selected){
@@ -425,6 +439,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
               // return
               return _widget;
                    
-           };    
-                
-        });
+};

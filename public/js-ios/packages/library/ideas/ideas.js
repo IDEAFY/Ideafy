@@ -5,11 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "Store", "service/map", "service/config",
-	"./idea-stack", "./lists/idealist", "Amy/Stack-plugin", "lib/spin.min", "service/newidea"], 
-	function(Widget, Control, Model, Place, Delegate, Store, Map, Config, Detail, List, Stack, Spinner, NewIdea){
-		return function IdeasConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Control = amy.ControlPlugin,
+      Model = olives["Bind.plugin"],
+      Delegate = amy.DelegatePlugin,
+      Place = olives["Place.plugin"],
+      Store = emily.Store,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Detail = require("./idea-stack"),
+      List = require("./lists/idealist"),
+      Stack = amy.StackPlugin,
+      Spinner = require("../../../libs/spin.min"),
+      NewIdea = require("../../../services/newidea");
+
+module.exports = function IdeasConstructor(){
 		//declaration
 			var _widget = new Widget(),
                               _searchInput = new Store({"search": ""}),
@@ -41,7 +54,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		       _widget.template='<div id = "ideas"><div id="idea-list" class="list"><div class="header blue-light"><div class="option left" data-ideascontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, idealistheadertitle">My Ideas</span><div class="option right" data-ideasevent="listen: touchstart, plus"></div></div><div data-idealiststack="destination" data-ideascontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-search="bind: value, search" data-label="bind: placeholder, searchprivateplaceholder" data-ideasevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-ideasevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-ideasevent="listen: touchstart, setLang; listen:touchend, stopPropagation"></li></ul></div></div></div><div id="ideas-detail" class="details" data-ideaplace="place:details"></div></div>';
 
 		       
-			_widget.plugins.addAll({
+			_widget.seam.addAll({
 				"idealiststack" : _stack,
 				"listbtns" : new Model(_btns,{
                                         setPushed : function(pushed){
@@ -127,7 +140,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                      });
                                      if (name !== st.getCurrentName){
                                              st.show(name);
-                                             if (st.get(name).getModel().getNbItems()){
+                                             if (st.get(name).getModel().count()){
                                                      _widget.displayHighlightedIdea();
                                              }
                                              else{
@@ -160,7 +173,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         st.get(name).setLang(lang)
                                         .then(function(){
                                                 _listSpinner.stop();
-                                                if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
+                                                if (st.getCurrentName() === name && st.get(name).getModel().count() === 0){
                                                         _detail.displayEmpty(name);
                                                 }
                                                 else _widget.displayHighlightedIdea();         
@@ -180,7 +193,19 @@ define(["OObject", "Amy/Control-plugin" ,
 				        domDetail.classList.remove("invisible");
 				        _detail.reset(listDate.getModel(), 0);
 				}
-				else domDetail.classList.add("invisible");
+				// else domDetail.classList.add("invisible");
+				
+				// enable specific presentation treatment in mosaic view
+                                if (_widget.dom.classList.contains("mosaic")){
+                                        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(true);        
+                                        });
+                                }
+                                else{
+                                        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(false);        
+                                        });        
+                                }
 			};
 			
 			_widget.plus = function(){
@@ -214,7 +239,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true}).then(function(){
                                         // display search list and fill search field with idea title if applicable
                                         _stack.getStack().show("#list-search");
-                                        if (listSearch.getModel().getNbItems() >0){
+                                        if (listSearch.getModel().count() >0){
                                                 _searchInput.set("search", listSearch.getModel().get(0).doc.title);
                                                 _widget.dom.querySelector(".noresult").classList.add("invisible");
                                                 _widget.displayHighlightedIdea();
@@ -274,17 +299,17 @@ define(["OObject", "Amy/Control-plugin" ,
                         listDate.init(_currentLang)
                         .then(function(){
                                 _stack.getStack().show("#list-date");
-                                (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                                (listDate.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
                                 return listFav.setLang(_currentLang);     
                         })
                         .then(function(){
                                 // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("library-favorites", function(val){
-                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                        if (val.length !== listFav.getModel().count()) {
                                                 listFav.resetQuery(_currentLang)
                                                 .then(function(){
                                                         if (_stack.getStack().getCurrentName() === "#list-fav"){
-                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                                (listFav.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
                                                         }
                                                 });
                                         }       
@@ -327,7 +352,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
                                                 if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
-                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                                (_ideaList.count()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
                                         } 
                                  });
                                  */
@@ -373,5 +398,4 @@ define(["OObject", "Amy/Control-plugin" ,
                         
                         //return
 			return _widget;
-		};
-	});
+};

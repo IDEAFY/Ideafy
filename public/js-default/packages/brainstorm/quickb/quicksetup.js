@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "CouchDBDocument", "Store", "Promise", "service/cardpopup", "service/help", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, CouchDBDocument, Store, Promise, CardPopup, Help, Utils, Spinner){
-                
-                return function QuickSetupConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CardPopup = require("../../../services/cardpopup"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Help = require("../../../services/help"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function QuickSetupConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -39,7 +52,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             // deduct 20px from position shown in navigator
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "quicksetup" : new Model(_selection, {
                                         setReload : function(left){
@@ -273,7 +286,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 if (type === "problem") {pos.x=249; caret="right";}
                                 
                                 // only display popup if a card is present
-                                if (_currentCards[type].getNbItems()){
+                                if (_currentCards[type].count()){
                                         _popupUI.reset(_currentCards[type].toJSON(), pos, caret, document.getElementById("quicksetup-popup"));
                                 }        
                         };
@@ -491,5 +504,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                        
                        // Return
                         return _widget;
-                };     
-        });
+};

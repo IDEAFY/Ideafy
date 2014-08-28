@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
-        function(Widget, Map, Model, Event, Config, Store){
-                
-                return new function new2CConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("./config"),
+      Map = require("./map");
+      
+module.exports = new function new2CConstructor(){
                 
                         var _widget = new Widget(),
                             _dest = new Store({"userid":"", "username":""}),
@@ -20,7 +26,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             upload = false,
                             _error = new Store({"error": ""});
                             
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "new2c" : new Model(_store),
                                 "dest" : new Model(_dest, {
                                         setHeader : function(username){
@@ -128,7 +134,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         return _widget;
-                };
-                
-        });
-        
+};        

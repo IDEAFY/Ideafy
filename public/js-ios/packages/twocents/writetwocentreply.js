@@ -5,10 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "service/utils", "lib/spin.min"],
-        function(Widget, Store, ModelPlugin, EventPlugin, Config, Utils, Spinner){
-                
-                function WriteTwocentReplyConstructor($parent){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../services/config"),
+      Utils = require("../../services/utils"),
+      Spinner = require("../../libs/spin.min");
+
+function WriteTwocentReplyConstructor($parent){
                         
                         var user = Config.get("user"),
                             transport = Config.get("transport"),
@@ -19,19 +26,19 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                             replyTemplate = {"author": user.get("_id"), "message": "", "firstname": user.get("firstname"), "date": "", "datemod": "", "plusones": 0},
                             reply = new Store(replyTemplate);
                             
-                        this.plugins.addAll({
-                                "model": new ModelPlugin(reply, {
+                        this.seam.addAll({
+                                "model": new Model(reply, {
                                         date : function date(date){
                                                 this.innerHTML = Utils.formatDate(date);
                                         }
                                 }),
-                                "config": new ModelPlugin(Config, {
+                                "config": new Model(Config, {
                                         setAvatar : function(avatar){
                                                 this.setAttribute("style", "background: url('"+ avatar + "') no-repeat center center;background-size:cover;");
                                         }        
                                 }),
-                                "writereplyevent" : new EventPlugin(this),
-                                "labels" : new ModelPlugin(Config.get("labels"))
+                                "writereplyevent" : new Event(this),
+                                "labels" : new Model(Config.get("labels"))
                         });
                         
                         this.template = '<div class="writeTwocent writeTwocentReply"><div class="replyAvatar" data-config="bind: setAvatar, avatar"></div><textarea class="twocentText replyMessage" data-labels="bind: placeholder, addtwocentreplyplaceholder" data-model="bind: value, message"></textarea><div class="writeFooter"><ul class="twocentContext"><li class="creadate"><span class="creadatelbl" data-labels="bind:innerHTML, twocentcreationdate"></span><span class="date" data-model="bind: date, date"></span></li></ul><div class="twocentCancel" data-labels="bind: innerHTML, cancellbl" data-writereplyevent="listen: touchstart, press; listen: touchend, cancel">Cancel</div><div class="twocentPublish" data-labels="bind: innerHTML, publishlbl" data-writereplyevent="listen: touchstart, press; listen: touchend, publish;">Publish</div></div></div>';
@@ -99,11 +106,9 @@ define(["OObject", "Store", "Bind.plugin", "Event.plugin", "service/config", "se
                         this.press = function(event, node){
                                 node.setAttribute("style", "-webkit-box-shadow: inset 0 0 5px 1px rgba(0,0,0,0.6); background: #666666;");
                         };
-                        
-                }
+};
                 
-                return function WriteTwocentReplyFactory($parent){
-                        WriteTwocentReplyConstructor.prototype = new Widget;
-                        return new WriteTwocentReplyConstructor($parent); 
-                };                    
-        });
+module.exports = function WriteTwocentReplyFactory($parent){
+        WriteTwocentReplyConstructor.prototype = new Widget;
+        return new WriteTwocentReplyConstructor($parent); 
+};

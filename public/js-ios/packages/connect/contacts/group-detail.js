@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar"],
-        function(Widget, Config, Model, Event, Store, Avatar){
-                
-                return function GroupDetailsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Avatar = require("../../../services/avatar");
+
+module.exports = function GroupDetailsConstructor(){
                         
                         var groupDetails = new Widget(),
                             group = new Store(),
@@ -32,7 +38,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         
                         groupDetails.template = '<div id="groupdetails"><div class="header blue-dark"><span class="newfolderlbl" data-group="bind:innerHTML, username"></span></div><div class = "detail-contents"><div class="folderpic" data-group="bind: setColor, color"></div><form><p><input type="text" class="input" data-group="bind:value, username" data-label="bind:placeholder, groupnamelbl"></p><p><textarea class="input" data-group="bind:value, intro" data-label="bind:placeholder, groupdesclbl"></textarea></p><legend data-label="bind:innerHTML, colortouch"></legend><ul class="groupcolors" data-color="foreach"><li data-color="bind:setColor, color; bind:setSelected, selected" data-grpdetailsevent="listen: touchstart, selectColor"></li></ul></form><div class = "grpcontactlist" data-group="bind: setVisible, contacts"><legend name="list" data-label="bind:innerHTML, grpcontacts" data-grpdetailsevent="listen: touchstart, toggleHide"></legend><ul class="contactlistdetail" data-grpcontacts="foreach"><li class = "contact list-item" data-grpdetailsevent="listen:touchstart, discardContact"><div data-grpcontacts="bind:setAvatar, userid"></div><p class="contact-name" data-grpcontacts="bind:innerHTML, username"></p><div class="remove-contact"></div><p class="contact-intro" data-grpcontacts="bind:innerHTML, intro"></p></li></ul></div><p class="update"><label class="cancelmail" data-label="bind:innerHTML, cancellbl" data-grpdetailsevent="listen: touchstart, press; listen:touchend, cancel">Cancel</label><label class="sendmail" data-label="bind:innerHTML, updatelbl" data-grpdetailsevent="listen:touchstart, press; listen:touchend, updateGroup"></label><label class="editerror" data-error="bind:innerHTML, error"></label><div class="addgrpcontacts"><legend name="add" data-label="bind:innerHTML, addgrpcontacts" data-grpdetailsevent="listen: touchstart, toggleHide"></legend><div class="addgrpcontactdetails"><input class="search" data-grpdetailsevent="listen:keyup, updateAutoContact" data-label="bind:placeholder, tocontactlbl"><div class = "autocontact"><ul data-auto="foreach"><li data-auto="bind:innerHTML, contact.username; bind:highlight, selected" data-grpdetailsevent="listen:touchend, select"></li></ul></div></div></div></div>';
                         
-                        groupDetails.plugins.addAll({
+                        groupDetails.seam.addAll({
                                 "label" : new Model(labels),
                                 "error" : new Model(error),
                                 "color" : new Model(colors, {
@@ -259,6 +265,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                         // groupDetails.init(); -- init now called by contacts.js
                         
                         return groupDetails;        
-                        
-                };
-        });
+};

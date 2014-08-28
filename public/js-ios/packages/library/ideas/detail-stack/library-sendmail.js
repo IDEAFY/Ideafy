@@ -5,9 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/avatar", "service/utils"], 
-        function(Widget, Map, Config, Model, Event, Store, Avatar, Utils){
-                return function LibrarySendmailConstructor($action){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../../../services/map"),
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../services/config"),
+      Utils = require("../../../../services/utils"),
+      Avatar = require("../../../../services/avatar");
+
+module.exports = function LibrarySendmailConstructor($action){
                 //declaration
                         var _widget = new Widget(),
                             _error = new Store({"errormsg": ""}),
@@ -16,7 +25,7 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
                             _labels = Config.get("labels"),
                             _mail = new Store({"toField":"", "from": "", "subject":"", "body": "", "signature": "", "attachment": "", "sent": false});
                 //setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels": new Model(_labels),
                                 "mail" : new Model(_mail, {
                                         setUserAvatar : function(from){
@@ -125,5 +134,4 @@ define(["OObject", "service/map", "service/config", "Bind.plugin", "Event.plugin
 
                 //return
                         return _widget;
-                };
-        });
+};

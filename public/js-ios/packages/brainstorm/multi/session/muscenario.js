@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin", "service/config", "Store", "CouchDBDocument", "service/cardpopup", "../../whiteboard/whiteboard", "Promise", "service/utils", "lib/spin.min", "./mubchat"],
-        function(Widget, Map, Model, Event, Place, Config, Store, CouchDBDocument, CardPopup, Whiteboard, Promise, Utils, Spinner, Chat){
-                
-                return function MUScenarioConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      CardPopup = require("../../../../services/cardpopup"),
+      Chat = require("./mubchat"),
+      Whiteboard = require("../../whiteboard/whiteboard");
+
+module.exports = function MUScenarioConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -52,7 +67,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         };
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels, {
                                         setPlaceholder : function(value){
                                                 this.setAttribute("placeholder", value);
@@ -493,7 +508,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("scenarioWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // if scenario is present show write up interface and board in readonly mode
                                 if (replay || $session.get("scenario").length){                                        
@@ -524,7 +539,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                 else{
                                         // scenario fields are not uploaded separately        
                                         _scenario.reset({"title" : "", "story" : "", "solution" : ""});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // hide/reset story interface
@@ -593,7 +608,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         
                                         if (!_tools.get("showstory")){
                                                 // avoid upload if $session is already up-to-date (e.g. replay)
-                                                if ($session.get("scenarioWB").length !== _wbContent.getNbItems() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
+                                                if ($session.get("scenarioWB").length !== _wbContent.count() || JSON.stringify($session.get("scenarioWB")) !== _wbContent.toJSON()){
                                                         $session.set("scenarioWB", JSON.parse(_wbContent.toJSON()));
                                                         $session.upload()
                                                         .then(function(response){
@@ -604,7 +619,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                                 }
                                         
                                                 // toggle ready button
-                                                 (_wbContent.getNbItems() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);
+                                                 (_wbContent.count() && _next === "step") ? _tools.set("ready", true) : _tools.set("ready", false);
                                         }
                                 });  
                         });
@@ -618,7 +633,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                                         if (!content.length) {
                                                 _wb.selectScreen("default");
                                         }
-                                        if (content.length !== _wbContent.getNbItems() || JSON.stringify(content) !== _wbContent.toJSON()){
+                                        if (content.length !== _wbContent.count() || JSON.stringify(content) !== _wbContent.toJSON()){
                                                 _wbContent.reset(content);       
                                         }
                                 }
@@ -647,5 +662,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "Place.plugin",
                         
                         // Return
                         return _widget;
-                };     
-        });
+};

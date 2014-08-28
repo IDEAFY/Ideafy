@@ -5,9 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Store, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function ListPollingConstructor($db, $design, $view, $query) {
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar"),
+      ActionBar = require("../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function ListPollingConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
+                _mosaic = new Store(),
                 touchStart,
                 touchPoint,
                 polling, // timer variable (to use clearInterval)
@@ -29,9 +43,9 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         _options.query = $query;
                 }
 
-                this.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
+                this.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames' data-display='bind:setAuthornames, mosaic'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
 
-                this.plugins.addAll({
+                this.seam.addAll({
                         "labels": new Model(Config.get("labels")),
                         "listideas" : new Model(_store, {
                                 date : function date(creadate) {
@@ -63,6 +77,17 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                         }*/
                                 }
                         }),
+                        "display" : new Model(_mosaic, {
+                                setAuthornames : function(mosaic){
+                                        var _id = this.getAttribute("data-listideas_id"),
+                                              names = _store.get(_id).value.doc.authornames,
+                                              authors = _store.get(_id).value.doc.authors;
+                                        if (mosaic && authors.length > 1){
+                                                this.innerHTML = names.split(',')[0] + _labels.get("andothers");
+                                        }
+                                        else this.innerHTML = names;
+                                } 
+                        }),
                         "listevent" : new Event(this)
                         });
 
@@ -83,14 +108,14 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 currentBar && currentBar.hide();
                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 currentBar && currentBar.hide();
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);
@@ -106,6 +131,10 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         else{
                                 return widget.resetQuery({key:'[1,"'+lang+'"]', descending: true, limit: 50});
                         }       
+                };
+                
+                this.setMosaic = function(mosaic){
+                        (mosaic) ? _mosaic.set("mosaic", true) : _mosaic.set("mosaic", false);
                 };
                 
                 this.setStart = function(event, node){
@@ -144,13 +173,13 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                         cdb.setTransport(Config.get("transport"));
                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                 cdb.unsync();
                                 polling = setInterval(function(){
                                         cdb.reset([]);
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);
@@ -172,7 +201,7 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                                         cdb.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                                 currentBar && currentBar.hide();
                                                 _store.reset(JSON.parse(cdb.toJSON()));
-                                                (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                                (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                                 cdb.unsync();
                                         });
                                 },interval);        
@@ -183,11 +212,9 @@ define(["OObject", "CouchDBView", "Store", "service/config", "Bind.plugin", "Eve
                 Config.get("observer").watch("update-polling", function(){
                         widget.resetQuery();                
                 });
+};
 
-        }
-
-        return function ListPollingFactory($db, $design, $view, $query) {
-                ListPollingConstructor.prototype = new Widget();
-                return new ListPollingConstructor($db, $design, $view, $query);
-        };
-}); 
+module.exports = function ListPollingFactory($db, $design, $view, $query) {
+        ListPollingConstructor.prototype = new Widget();
+        return new ListPollingConstructor($db, $design, $view, $query);
+};

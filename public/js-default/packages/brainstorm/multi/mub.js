@@ -5,10 +5,25 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDocument", "CouchDBView", "service/config", "Promise", "Store", "./mubinit", "./mubwait", "./session/mucontroller", "lib/spin.min"],
-        function(Widget, Stack, Model, Event, CouchDBDocument, CouchDBView, Config, Promise, Store, MUInit, MUWait, MUController, Spinner){
-                
-           return function MultiBConstructor($sip, $exit){
+var olives = require("../../../libs/olives"),
+      amy = require("../../../libs/amy2"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      MUInit = require("./mubinit"),
+      MUWait = require("./mubwait"),
+      MUController = require("./session/mucontroller"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function MultiBConstructor($sip, $exit){
            
                 var widget = new Widget(),
                     stack = new Stack(),
@@ -16,7 +31,7 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                     muWait, muInit, muController,
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 12, width: 6, radius:10, top: 328}).spin();
                 
-                widget.plugins.add("mustack", stack);
+                widget.seam.add("mustack", stack);
                 
                 widget.template = '<div id="ideafy-multi"><div class="stack" data-mustack="destination"></div></div>';
                 
@@ -141,6 +156,4 @@ define(["OObject", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "CouchDBDo
                 
                 return widget;
                    
-           };
-});
-  
+};  

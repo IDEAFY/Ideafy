@@ -5,9 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "CouchDBView", "CouchDBDocument", "Promise", "service/new2c", "lib/spin.min", "service/confirm", "service/utils"],
-        function(Widget, Model, Event, Config, Store, CouchDBView, CouchDBDocument, Promise, New2C, Spinner, Confirm, Utils){
-                function ActionBarConstructor($type, $parent, $data){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("./config"),
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      New2C = require("./new2c"),
+      Spinner = require("../libs/spin.min"),
+      Confirm = require("./confirm"),
+      Utils = require("./utils");
+
+function ActionBarConstructor($type, $parent, $data){
                 
                         var buttons = new Store([]),
                             parentHeight = $parent.offsetHeight,
@@ -23,7 +37,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                             spinner = new Spinner({color:"#9AC9CD", lines:10, length: 10, width: 8, radius:10}).spin(),
                             favSpinner = new Spinner({color:"#a0a0a0", lines:10, length: 6, width: 4, radius:6}).spin();
                         
-                        this.plugins.addAll({
+                        this.seam.addAll({
                                 "buttons" : new Model(buttons, {
                                         setIcon : function(icon){
                                                 this.setAttribute("style", "background-image:url('"+icon+"');");
@@ -483,11 +497,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "Co
                                 if ($hide) {$hide(ui);}
                         }, 10000);
                         */
+};
                 
-                }
-                
-                return function ActionBarFactory($type, $parent, $data){
-                        ActionBarConstructor.prototype = new Widget();
-                        return new ActionBarConstructor($type, $parent, $data);
-                };
-        });
+module.exports = function ActionBarFactory($type, $parent, $data){
+        ActionBarConstructor.prototype = new Widget();
+        return new ActionBarConstructor($type, $parent, $data);
+};

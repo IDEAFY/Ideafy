@@ -105,8 +105,15 @@ var handlers = new Store(),
                 .use('/upload', srvUtils.uploadFunc)
 		.use('/downloads', srvUtils.downloadFunc)      
                 .use(function(req, res, next) {
+                        var ori = req.headers.origin || "http://app.ideafy.com";
+                        res.setHeader("Access-Control-Allow-Origin", ori);
+                        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
+                        res.setHeader("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
                         res.setHeader("Ideady Server", "node.js/" + process.versions.node);
                         res.setHeader("X-Powered-By", "OlivesJS + Connect + Socket.io");
+                        if ('OPTIONS' == req.method) {
+                                res.send(200);
+                        }
                         next();
                 })
                 .use(connect.cookieParser())

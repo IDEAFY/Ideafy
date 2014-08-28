@@ -5,10 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject" ,"Amy/Stack-plugin", 
-        "service/map", "Event.plugin", "service/config", "Bind.plugin", "Store", "lib/spin.min", "Promise", "CouchDBDocument"],
-        function(Widget, Stack, Map, Event, Config, Model, Store, Spinner, Promise, CouchDBDocument){
-                return function LoginConstructor($init, $reload, $local){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      amy = require("../libs/amy2"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Spinner = require("../libs/spin.min"),
+      Widget = olives.OObject,
+      Stack = amy.StackPlugin,
+      Map = require("../services/map"),
+      Event = olives["Event.plugin"],
+      Config = require("../services/config"),
+      Model = olives["Bind.plugin"],
+      Store = emily.Store,
+      Promise = emily.Promise,
+      CouchDBDocument = CouchDBTools.CouchDBDocument;
+
+module.exports = function LoginConstructor($init, $reload, $local){
                 //declaration
                         var _login = new Widget(),
                             _loginForm = new Widget(),
@@ -34,27 +46,27 @@ define(["OObject" ,"Amy/Stack-plugin",
                              reload = false;  // boolean to differentiate between initial start and usbsequent logout/login
                 
                 //setup && UI DEFINITIONS               
-                         _login.plugins.addAll({
+                         _login.seam.addAll({
                                 "loginstack" : _stack
                         });
                         
                         _login.template = '<div id="login"><div id="login-stack" data-loginstack="destination"><div class="squirrel"></div></div></div>';
                         
                         // loading UI
-                        _loading.plugins.add("label", new Model(_labels));
+                        _loading.seam.add("label", new Model(_labels));
                         _loading.template = '<div id="loading"><p data-label="bind: innerHTML, loadingmessage"></p><div id="loadingspin"></div></div>';
                         _loading.place(document.getElementById("loading"));
                         
                         // maintenance UI
-                        _serverdown.plugins.add("label", new Model(_labels));
+                        _serverdown.seam.add("label", new Model(_labels));
                         _serverdown.template = '<div id="serverdown"><p data-label="bind: innerHTML, maintenancemessage"></p><div id="loadingspin"></div></div>';
                         
                         // no connection UI
-                        _internetdown.plugins.add("label", new Model(_labels));
+                        _internetdown.seam.add("label", new Model(_labels));
                         _internetdown.template = '<div id="nointernet"><p data-label="bind: innerHTML, nointernet"></p><div id="loadingspin"></div></div>';
                         
                         // signup form
-                        _signupForm.plugins.addAll({
+                        _signupForm.seam.addAll({
                                 "label": new Model(_labels),
                                 "loginmodel" : new Model(_store),
                                 "signupevent" : new Event(_signupForm)
@@ -205,7 +217,7 @@ define(["OObject" ,"Amy/Stack-plugin",
                         };
                         
                         // login form
-                        _loginForm.plugins.addAll({
+                        _loginForm.seam.addAll({
                                 "label": new Model(_labels),
                                 "loginmodel" : new Model(_store,{
                                         forgotpwd : function(reset){
@@ -339,6 +351,4 @@ define(["OObject" ,"Amy/Stack-plugin",
                 
                 //return
                 return _login;
-                };
-        }
-);
+};

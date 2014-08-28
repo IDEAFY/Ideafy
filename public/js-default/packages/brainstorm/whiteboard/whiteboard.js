@@ -5,10 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport", "./wbdrawing", "Store"],
-        function(Stack, Default, Main, Postit, Import, Drawing, Store){
-        
-                function WhiteboardConstructor($type, $store, $tools, $mode){
+var amy = require("../../../libs/amy2"),
+      emily = require("../../../libs/emily"),
+      Stack = amy.StackPlugin,
+      Default = require("./wbdefault"),
+      Main = require("./wbmain"),
+      Postit = require("./wbpostit"),
+      Import = require("./wbimport"),
+      Drawing = require("./wbdrawing"),
+      Store = emily.Store;
+
+function WhiteboardConstructor($type, $store, $tools, $mode){
                         
                         var _wbContent = new Store([]), // a store of whiteboard objects
                             _stack = this;
@@ -20,7 +27,7 @@ define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport
                         };
                         
                         this.exitScreen = function exitScreen(name){
-                                ($store.getNbItems()) ? _stack.getStack().show("main") : _stack.getStack().show("default");
+                                ($store.count()) ? _stack.getStack().show("main") : _stack.getStack().show("default");
                                 $tools.set(name, "inactive");      
                         };
                         
@@ -47,10 +54,9 @@ define(["Amy/Stack-plugin", "./wbdefault", "./wbmain", "./wbpostit", "./wbimport
                         this.init = function(){
                                 _stack.getStack().get("main").init($type);
                         };
-                }
+};
                 
-                return function WhiteboardFactory($type, $store, $tools, $mode){
-                        WhiteboardConstructor.prototype = new Stack();
-                        return new WhiteboardConstructor($type, $store, $tools, $mode);        
-                };
-        });
+module.exports = function WhiteboardFactory($type, $store, $tools, $mode){
+        WhiteboardConstructor.prototype = new Stack();
+        return new WhiteboardConstructor($type, $store, $tools, $mode);        
+};

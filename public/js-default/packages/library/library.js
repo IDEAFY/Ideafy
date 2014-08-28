@@ -5,20 +5,30 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./ideas/ideas", "./sessions/sessions", "./decks/decks", "service/config"], 
-	function(Widget, Stack, Map, Menu, Ideas, Sessions, Decks, Config){
-		return function LibraryConstructor(){
-		//declaration
-			var _widget = new Widget(),
-			    _stack = new Stack(),
-			    _ideas, _sessions, _decks,
-			    _observer = Config.get("observer"),
-			    setView = function setView(name){
+var olives = require("../../libs/olives"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Stack = amy.StackPlugin,
+      Map = require("../../services/map"),
+      Menu = require("../../services/submenu"),
+      Ideas = require("./ideas/ideas"),
+      Sessions = require("./sessions/sessions"),
+      Decks = require("./decks/decks"),
+      Config = require("../../services/config");
+
+module.exports = function LibraryConstructor(){
+        //declaration
+        var _widget = new Widget(),
+              _stack = new Stack(),
+              _ideas, _sessions, _decks,
+              _observer = Config.get("observer"),
+              setView = function setView(name){
 			         _stack.getStack().show(name);       
 			    },
-			    _menu;
-		//setup
-		        _widget.plugins.add("librarystack", _stack);
+	     _menu;
+
+        //setup
+		        _widget.seam.add("librarystack", _stack);
 		        
 		        _widget.template = '<div id="library"><div class="cache"></div><div id="library-menu"></div><div class="stack" data-librarystack="destination"></div></div>';
 		      
@@ -47,6 +57,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 	               _ideas = new Ideas();
 	               _sessions = new Sessions();
 	               _decks = new Decks();
+	               
 	               _stack.getStack().add("#ideas", _ideas);
 	               _stack.getStack().add("#sessions", _sessions);
 	               _stack.getStack().add("#decks", _decks);
@@ -73,4 +84,3 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 		//return
 			return _widget;
 		};
-	});

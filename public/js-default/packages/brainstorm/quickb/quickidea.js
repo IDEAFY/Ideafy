@@ -5,10 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "service/cardpopup", "../whiteboard/whiteboard", "Store", "CouchDBDocument", "Promise", "service/utils", "lib/spin.min"],
-        function(Widget, Map, Model, Event, Config, CardPopup, Whiteboard, Store, CouchDBDocument, Promise, Utils, Spinner){
-                
-                return function QuickIdeaConstructor($session, $data, $prev, $next, $progress){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Map = require("../../../services/map"),
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      CardPopup = require("../../../services/cardpopup"),
+      Whiteboard = require("../whiteboard/whiteboard"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Promise = emily.Promise,
+      Utils = require("../../../services/utils"),
+      Spinner = require("../../../libs/spin.min");
+
+module.exports = function QuickIdeaConstructor($session, $data, $prev, $next, $progress){
                         
                         // Declaration
                         var _widget = new Widget(),
@@ -41,7 +54,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                             spinner = new Spinner({color:"#657B99", lines:10, length: 8, width: 4, radius:8, top: 665, left: 690}).spin();
                         
                         // Setup
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "labels" : new Model(_labels, {
                                         setPlaceholder : function(value){
                                                 this.setAttribute("placeholder", value);
@@ -415,7 +428,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 _wb.setSessionId($session.get("_id"));
                                 _wbContent.reset($session.get("ideaWB"));
                                 _wb.init();
-                                (_wbContent.getNbItems()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
+                                (_wbContent.count()) ? _wb.selectScreen("main") : _wb.selectScreen("default");
                                 
                                 // reset timer if previous session was exited while in quickidea step
                                 clearInterval(_qiTimer);
@@ -438,7 +451,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                 else{
                                         // idea fields are not uploaded separately        
                                         _idea.reset({"title" : "", "description" : "", "solution" : "", "visibility":"private"});
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);
                                         // remove readonly
                                         _wb.setReadonly(false);
                                         // set next to step
@@ -494,7 +507,7 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                                         }
                                         
                                         // toggle ready button
-                                        (_wbContent.getNbItems()) ? _tools.set("ready", true) : _tools.set("ready", false);     
+                                        (_wbContent.count()) ? _tools.set("ready", true) : _tools.set("ready", false);     
                                 });  
                         });
                         
@@ -505,5 +518,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         
                         // Return
                         return _widget;
-                };    
-        });
+};

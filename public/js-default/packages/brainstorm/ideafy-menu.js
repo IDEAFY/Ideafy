@@ -5,10 +5,16 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "service/config"],
-        function(Widget, Map, Store, Model, Event, Config){
-                
-                return function IdeafyMenuConstructor($selectScreen){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      Widget = olives.OObject,
+      Map = require("../../services/map"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../services/config"),
+      Store = emily.Store;
+
+module.exports = function IdeafyMenuConstructor($selectScreen){
                         
                         // declaration
                         var _widget = new Widget(),
@@ -19,7 +25,7 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                             _sip = ""; // session in progress
                         
                         // setup     
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "ideafymenu" : new Model(_menu, {
                                         setActive : function(active){
                                                 (active)?this.classList.remove("inactive"):this.classList.add("inactive");
@@ -118,5 +124,4 @@ define(["OObject", "service/map", "Store", "Bind.plugin", "Event.plugin", "servi
                         
                         //return
                         return _widget;
-                }; 
-        });
+};

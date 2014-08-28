@@ -5,12 +5,27 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Control-plugin" ,
-	"Bind.plugin", "Place.plugin", "Amy/Delegate-plugin", "service/map", "service/config",
-	"./public-stack", "service/utils", "./lists/list-public", "./lists/list-polling", "Amy/Stack-plugin", "service/submenu", "Store", "lib/spin.min", "service/newidea"], 
-	function(Widget, Control, Model, Place, Delegate, Map, 
-		Config, Detail, Utils, List, Polling, Stack, Menu, Store, Spinner, NewIdea){
-		return function PublicConstructor(){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Control = amy.ControlPlugin,
+      Model = olives["Bind.plugin"],
+      Place = olives["Place.plugin"],
+      Delegate = amy.DelegatePlugin,
+      Map = require("../../services/map"),
+      Config = require("../../services/config"),
+      Detail = require("./public-stack"),
+      Utils = require("../../services/utils"),
+      List = require("./lists/list-public"),
+      Polling = require("./lists/list-polling"),
+      Stack = amy.StackPlugin,
+      Menu = require("../../services/submenu"),
+      Store = emily.Store,
+      Spinner = require("../../libs/spin.min"),
+      NewIdea = require("../../services/newidea");
+
+module.exports = function PublicConstructor(){
 		//declaration
 			var _widget = new Widget(),
                               _db = Config.get("db"),
@@ -41,7 +56,7 @@ define(["OObject", "Amy/Control-plugin" ,
 		
                         _widget.template='<div id="public"><div id = "public-menu"></div><div id="public-list" class="list"><div class="header blue-light"><div class="option left" data-publiccontrol="toggle:.option.left,mosaic,touchstart,mosaic"></div><span data-label="bind: innerHTML, publicideasheadertitle"></span><div class="option right" data-publicevent="listen: touchstart, plus"></div></div><div data-liststack="destination" data-publiccontrol="radio:li.list-item,selected,touchstart,selectStart"><div class="tools"><input class="search" type="text" data-label="bind: placeholder, searchpublicplaceholder" data-publicevent="listen: keypress, search"><ul class="listbtns" data-listbtns="foreach"><li class="tools-button" data-listbtns="bind:setName, name; bind:setClass, css; bind:setPushed, pushed; bind:setLang, lang" data-publicevent="listen:touchstart,show"></li></ul><ul class="langlist invisible" data-select="foreach"><li data-select="bind: setBg, name" data-publicevent="listen: touchstart, setLang; listen:touchend, stopPropagation"></li></ul></div></div></div><div id="public-detail" class="details" data-publicplace="place:details"></div></div>';
 		
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "liststack" : _stack,
                                 "listbtns" : new Model(_btns,{
                                         setPushed : function(pushed){
@@ -122,7 +137,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         });
                                         if (name !== st.getCurrentName()){
                                                 st.show(name);
-                                                if (st.get(name).getModel().getNbItems()){
+                                                if (st.get(name).getModel().count()){
                                                         _widget.displayHighlightedIdea();
                                                 }
                                                 else{
@@ -155,7 +170,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                         st.get(name).setLang(lang)
                                         .then(function(){
                                                 _listSpinner.stop();
-                                                if (st.getCurrentName() === name && st.get(name).getModel().getNbItems() === 0){
+                                                if (st.getCurrentName() === name && st.get(name).getModel().count() === 0){
                                                         _detail.displayEmpty(name);
                                                 }
                                                 else _widget.displayHighlightedIdea();         
@@ -174,6 +189,18 @@ define(["OObject", "Amy/Control-plugin" ,
                                 if (domDetail.classList.contains("invisible")) {
                                         domDetail.classList.remove("invisible");
                                         _detail.reset(listDate.getModel(), 0);
+                                }
+                                
+                                // enable specific presentation treatment in mosaic view
+                                if (_widget.dom.classList.contains("mosaic")){
+                                        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(true);        
+                                        });
+                                }
+                                else{
+                                        ["#list-date", "#list-rating", "#list-fav", "#list-search"].forEach(function(ui){
+                                                _stack.getStack().get(ui).setMosaic(false);        
+                                        });        
                                 }
 			};
 			
@@ -208,7 +235,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                 listSearch.resetQuery({q: query, sort: '\\creation_date<date>', include_docs: true})
                                 .then(function(){
                                         _stack.getStack().show("#list-search");
-                                        if (listSearch.getModel().getNbItems() >0){
+                                        if (listSearch.getModel().count() >0){
                                                 _widget.displayHighlightedIdea();
                                         }
                                         else {
@@ -274,18 +301,18 @@ define(["OObject", "Amy/Control-plugin" ,
 		        .then(function(){
                                 var lang;
                                 _stack.getStack().show("#list-date");
-                                (listDate.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
+                                (listDate.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-date");
                                 // apply default language to the list of favorites
                                 return listFav.setLang(_currentLang);     
 		        })
 		        .then(function(){
 		                // Watch for favorites changes in user document and update list accordingly
                                 _user.watchValue("public-favorites", function(val){
-                                        if (val.length !== listFav.getModel().getNbItems()) {
+                                        if (val.length !== listFav.getModel().count()) {
                                                 listFav.resetQuery(_currentLang)
                                                 .then(function(){
                                                         if (_stack.getStack().getCurrentName() === "#list-fav"){
-                                                                (listFav.getModel().getNbItems()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
+                                                                (listFav.getModel().count()) ? _widget.displayHighlightedIdea() : _detail.displayEmpty("#list-fav");
                                                         }
                                                 });
                                         }       
@@ -331,7 +358,7 @@ define(["OObject", "Amy/Control-plugin" ,
                                          if (wid === _stack.getStack().getCurrentScreen()){
                                                 _ideaNode = wid.dom.querySelector(".list-item.selected") || wid.dom.querySelector("li[data-listideas_id='0']");
                                                 if (_ideaNode) _id = _ideaNode.getAttribute("data-listideas_id");
-                                                (_ideaList.getNbItems()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
+                                                (_ideaList.count()) ? _detail.reset(_ideaList, _id) :_detail.displayEmpty(_stack.getStack().getCurrentName());
                                         } 
                                  });
                                  */
@@ -381,5 +408,4 @@ define(["OObject", "Amy/Control-plugin" ,
 		        
                         //return
 			return _widget;
-		};
-	});
+};

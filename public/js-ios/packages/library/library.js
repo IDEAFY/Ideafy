@@ -5,9 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./ideas/ideas", "./sessions/sessions", "./decks/decks", "service/config"], 
-	function(Widget, Stack, Map, Menu, Ideas, Sessions, Decks, Config){
-		return function LibraryConstructor(){
+var olives = require("../../libs/olives"),
+      amy = require("../../libs/amy2"),
+      Widget = olives.OObject,
+      Stack = amy.StackPlugin,
+      Map = require("../../services/map"),
+      Menu = require("../../services/submenu"),
+      Ideas = require("./ideas/ideas"),
+      Sessions = require("./sessions/sessions"),
+      Decks = require("./decks/decks"),
+      Config = require("../../services/config");
+
+module.exports = function LibraryConstructor(){
 		//declaration
 			var _widget = new Widget(),
 			    _stack = new Stack(),
@@ -18,7 +27,7 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 			    },
 			    _menu;
 		//setup
-		        _widget.plugins.add("librarystack", _stack);
+		        _widget.seam.add("librarystack", _stack);
 		        
 		        _widget.template = '<div id="library"><div class="cache"></div><div id="library-menu"></div><div class="stack" data-librarystack="destination"></div></div>';
 		      
@@ -72,5 +81,4 @@ define(["OObject", "Amy/Stack-plugin", "service/map", "service/submenu", "./idea
 
 		//return
 			return _widget;
-		};
-	});
+};

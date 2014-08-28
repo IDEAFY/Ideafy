@@ -5,10 +5,14 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Store", "service/avatar"],
-        function(Widget, Model, Store, Avatar){
-                
-                function AvatarListConstructor($ids){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Store = emily.Store,
+      Avatar = require("./avatar");
+
+function AvatarListConstructor($ids){
 
                         var _store = new Store([]);
                         
@@ -17,7 +21,7 @@ define(["OObject", "Bind.plugin", "Store", "service/avatar"],
                         });
                         
                         // setup
-                        this.plugins.addAll({
+                        this.seam.addAll({
                                 "avatar" : new Model(_store, {
                                         setAvatar : function(id){
                                                 if (id){
@@ -33,11 +37,9 @@ define(["OObject", "Bind.plugin", "Store", "service/avatar"],
                         // set template
                         this.template='<ul data-avatar="foreach"><li data-avatar="bind: setAvatar, id"></li></ul>';
                         // init
-
-                }
+};
                 
-                return function AvatarListFactory($ids){
-                        AvatarListConstructor.prototype = new Widget();
-                        return new AvatarListConstructor($ids);
-                };      
-        });
+module.exports = function AvatarListFactory($ids){
+        AvatarListConstructor.prototype = new Widget();
+        return new AvatarListConstructor($ids);
+};      

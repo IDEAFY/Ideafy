@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Place.plugin", "Event.plugin", "service/avatar"],
-        function(Widget, Config, Map, Store, Model, Place, Event, Avatar){
-                
-                return function NotifyConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Place = olives["Place.plugin"],
+      Map = require("../services/map"),
+      Config = require("../services/config"),
+      Avatar = require("../services/avatar");
+
+module.exports = function NotifyConstructor(){
                 
                 var notify = new Widget(),
                     notifyPopup = new Widget(),
@@ -21,7 +29,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                     notif = new Store({"unread": 0, "newmsg":false}),
                     messages = new Store([]); 
                 
-                notify.plugins.addAll({
+                notify.seam.addAll({
                         "notif" : new Model(notif, {
                                 flashNew : function(newmsg){
                                         var flash, node = this;
@@ -86,7 +94,7 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 };
                 
                 // popup user interface
-                notifyPopup.plugins.addAll({
+                notifyPopup.seam.addAll({
                         "labels" : new Model(labels),
                         "notify" : new Model(messages,{
                                 setObject : function(type){
@@ -218,5 +226,4 @@ define(["OObject", "service/config", "service/map", "Store", "Bind.plugin", "Pla
                 });
                 
                 return notify;
-                };
-        });
+};

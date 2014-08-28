@@ -5,10 +5,31 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plugin", "./mustart", "./musetup", "./muscenario", "./mutech", "./muidea", "./muwrapup", "CouchDBDocument", "service/config", "Promise", "Store", "lib/spin.min", "Place.plugin", "service/confirm", "service/utils"],
-        function(Widget, Map, Stack, Model, Event, MUStart, MUSetup, MUScenario, MUTech, MUIdea, MUWrapup, CouchDBDocument, Config, Promise, Store, Spinner, Place, Confirm, Utils){
-                
-           return function MUControllerConstructor($exit){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      amy = require("../../../../libs/amy2"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget= olives.OObject,
+      Map = require("../../../../services/map"),
+      Stack = amy.StackPlugin,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      MUStart = require("./mustart"),
+      MUSetup = require("./musetup"),
+      MUScenario = require("./muscenario"),
+      MUTech = require("./mutech"),
+      MUIdea = require("./muidea"),
+      MUWrapup = require("./muwrapup"),
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Config = require("../../../../services/config"),
+      Promise = emily.Promise,
+      Store = emily.Store,
+      Utils = require("../../../../services/utils"),
+      Spinner = require("../../../../libs/spin.min"),
+      Place = olives["Place.plugin"],
+      Confirm = require("../../../../services/confirm");
+
+module.exports = function MUControllerConstructor($exit){
                    
                 // declaration
                 var _widget = new Widget(),
@@ -36,7 +57,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                     spinner = new Spinner({color:"#9AC9CD", lines:10, length: 20, width: 8, radius:15}).spin();
                    
                 // progress bar setup
-                _progress.plugins.addAll({
+                _progress.seam.addAll({
                         "labels" : new Model(_labels),
                         "step" : new Model(_steps, {
                                 setCurrent : function(currentStep){
@@ -110,7 +131,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 // Main UI setup
                 _widget.template = '<div id="musession"><div data-place="place:progress"></div><div class="sessionmsg invisible"> <span data-info="bind:innerHTML, msg"></div><div class="stack" data-musessionstack="destination"></div></div>';
                    
-                _widget.plugins.addAll({
+                _widget.seam.addAll({
                         "musessionstack": _stack,
                         "place": new Place({"progress": _progress}),
                         "info": new Model(info)
@@ -368,7 +389,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                         // connect to couchdb and retrieve session
                         _session.reset({});
                         _session.sync(_db, sid).then(function(){
-                                var step = _session.get("step"), current = 10000, length = _steps.getNbItems();
+                                var step = _session.get("step"), current = 10000, length = _steps.count();
                                 
                                 // check session's current step and set as active
                                 _steps.loop(function(v, i){
@@ -478,7 +499,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                                 }
                         });
                         
-                        if (_id < _steps.getNbItems()) {
+                        if (_id < _steps.count()) {
                                 _newStep = _steps.get(_id+1).name;
                                 _nextui = _stack.getStack().get(_newStep);
                                 
@@ -621,9 +642,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "Event.plug
                 
                 // return
                 return _widget;
-           };    
-        });
- 
+}; 
 /*
  * ALSO SHOULD REGULARLY CHECK IF LEADER IS STILL CONNECTED....
  */ 

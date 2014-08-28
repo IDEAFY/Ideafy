@@ -5,10 +5,22 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "CouchDBBulkDocuments", "CouchDBView", "Promise", "lib/spin.min", "service/confirm", "service/map"],
-        function(Widget, Config, Model, Event, Store, CouchDBBulkDocuments, CouchDBView, Promise, Spinner, Confirm, Map){
-           
-           return function ImportCardConstructor($update, $close){
+var olives = require("../../../../../libs/olives"),
+      emily = require("../../../../../libs/emily"),
+      CouchDBTools = require("../../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../../services/config"),
+      Confirm = require("../../../../../services/confirm"),
+      Map = require("../../../../../services/map"),
+      Store = emily.Store,
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Promise = emily.Promise,
+      Spinner = require("../../../../../libs/spin.min");
+
+module.exports = function ImportCardConstructor($update, $close){
                    
                 var importCard = new Widget(),
                     labels = Config.get("labels"),
@@ -24,7 +36,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 
                 importCard.template = '<div class="importcard"><div class="importfrom"><label data-label="bind:innerHTML, importfrom"></label><select data-model="bind:setDecks, decks" data-importevent="listen: change, updateSelect"></select></div><div class="importlist"><legend data-label="bind:innerHTML, seldeck"></legend><ul name="selected" data-selected="foreach"><li name="selected" data-selected="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="importarea"><button class="addremove invisible" data-model="bind: setVisible, sel; bind: setDirection, direction" data-importevent="listen: touchend, addRemoveSelected">Add/remove</button><button class="invisible" data-label="bind:innerHTML, selall" data-model="bind:setVisible, sel" data-importevent="listen: touchend, selectAll"></button><button class="invisible" data-label="bind:innerHTML, clearsel" data-model="bind: setVisible, sel" data-importevent="listen: touchend, clearSelected">Clear selection</button></div><div class="importlist"><legend data-label="bind:innerHTML, workdeck"></legend><ul data-current="foreach"><li name="current" data-current="bind: setType, type; bind: innerHTML, title; bind: setSelected, selected" data-importevent="listen: touchend, toggleSelect"></li></ul></div><div class="cancelmail" data-importevent="listen:touchstart, press; listen:touchend, cancel" data-label="bind:innerHTML, cancellbl"></div><div class="sendmail" data-importevent="listen:touchstart, press; listen:touchend, upload" data-label="bind:innerHTML, savelbl">Save</div></div>';
                 
-                importCard.plugins.addAll({
+                importCard.seam.addAll({
                         "label" : new Model(labels),
                         "model" : new Model(model,{
                                 setDecks: function(decks){
@@ -364,6 +376,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "Co
                 });
                 
                 return importCard;
-                   
-           };
-});
+};

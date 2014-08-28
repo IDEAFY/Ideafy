@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView", "service/utils", "service/avatar", "lib/spin.min"],
-        function(Widget, Config, Model, Event, CouchDBView, Utils, Avatar, Spinner){
-                
-                return function LeaderboardConstructor(){
+var olives = require("../../../libs/olives"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+       Widget = olives.OObject,
+       Config = require("../../../services/config"),
+       Model = olives["Bind.plugin"],
+       Event = olives["Event.plugin"],
+       CouchDBView = CouchDBTools.CouchDBView,
+       Utils = require("../../../services/utils"),
+       Avatar = require("../../../services/avatar"),
+       Spinner = require ("../../../libs/spin.min");
+
+module.exports = function LeaderboardConstructor(){
                         
                         var leaderboard = new Widget(),
                               leaders = new CouchDBView([]),
@@ -16,7 +24,7 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         
                         leaderboard.template = '<div><ul data-leaders="foreach"><li class="leader" data-leaders="bind:setSpotLight, value.userid"><div data-leaders="bind:setAvatar, value.userid"></div><div class="username" data-leaders="bind:innerHTML, value.username"></div><div class="distinction" data-leaders="bind:setDistinction, value.ip"></div><div class="grade" data-leaders="bind:setGrade, value.ip"></div><div class="score" data-leaders="bind: setScore, value.ip"></div></li></ul></div>';
                         
-                        leaderboard.plugins.addAll({
+                        leaderboard.seam.addAll({
                                 "leaders": new Model(leaders,{
                                         setSpotLight : function(userid){
                                                 if (userid === Config.get("user").get("_id")){
@@ -80,4 +88,3 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBView
                         
                         return leaderboard;
                 };
-        });

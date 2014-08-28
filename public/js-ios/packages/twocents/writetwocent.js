@@ -5,10 +5,17 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "service/utils", "lib/spin.min"],
-        function(Widget, Config, ModelPlugin, EventPlugin, Store, Utils, Spinner){
-                
-                return function WriteTwocentConstructor($view){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Utils = require("../../services/utils"),
+      Spinner = require("../../libs/spin.min");
+
+module.exports = function WriteTwocentConstructor($view){
                 
                 var ui = new Widget(),
                     user = Config.get("user"),
@@ -22,8 +29,8 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                     editTC = "new", // to distinguish between new and edit mode
                     position=0; // to know which position to update
                 
-                ui.plugins.addAll({
-                        "twocent": new ModelPlugin(twocent,{
+                ui.seam.addAll({
+                        "twocent": new Model(twocent,{
                                 date : function(date){
                                         if (date) {this.innerHTML = Utils.formatDate(date);}        
                                 },
@@ -31,13 +38,13 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
                                         (date) ? this.classList.remove("invisible") : this.classList.add("invisible");
                                 }
                         }),
-                        "config": new ModelPlugin(Config, {
+                        "config": new Model(Config, {
                                 setAvatar : function(avatar){
                                         this.setAttribute("style", "background: url('"+ avatar + "') no-repeat center center;background-size:cover;");
                                 }        
                         }),
-                        "labels": new ModelPlugin(Config.get("labels")),
-                        "twocentevent": new EventPlugin(ui)
+                        "labels": new Model(Config.get("labels")),
+                        "twocentevent": new Event(ui)
                 });        
                 
                 
@@ -104,6 +111,4 @@ define(["OObject", "service/config", "Bind.plugin", "Event.plugin", "Store", "se
               
                
                 return ui;
-        };    
-                
-  });
+};

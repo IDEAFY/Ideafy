@@ -5,17 +5,24 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin", "Store"],
-        function(Widget, Config, CouchDBView, Model, Event, Store){
-           
-           return function FAQConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      CouchDBView = CouchDBTools.CouchDBView,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store;
+
+module.exports = function FAQConstructor(){
                 
                 var FAQ = new Widget(),
                     cdb = new CouchDBView(),
                     user = Config.get("user");
                     faqlist = new Store([]);
                     
-                FAQ.plugins.addAll({
+                FAQ.seam.addAll({
                         "faq" : new Model(faqlist),
                         "faqevent" : new Event(FAQ)
                 });
@@ -46,5 +53,4 @@ define(["OObject", "service/config", "CouchDBView", "Bind.plugin", "Event.plugin
                 });
                 
                 return FAQ;         
-           };   
-        });
+           };

@@ -5,10 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.plugin", "Store", "service/utils", "lib/spin.min"],
-        function(Widget, Config, CouchDBDocument, Model, Event, Store, Utils, Spinner){
-           
-           return function EditCardConstructor($update, $close){
+var olives = require("../../../../../libs/olives"),
+      emily = require("../../../../../libs/emily"),
+      CouchDBTools = require("../../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Config = require("../../../../../services/config"),
+      Utils = require("../../../../../services/utils"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Spinner = require("../../../../../libs/spin.min");
+
+module.exports = function EditCardConstructor($update, $close){
                 
                 var editCard = new Widget(),
                     user = Config.get("user"),
@@ -89,7 +98,7 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                 
                 model.setTransport(Config.get("transport"));
                 
-                editCard.plugins.addAll({
+                editCard.seam.addAll({
                         "label" : new Model(labels),
                         "model" : new Model(model, {
                                 setTitle : function(title){
@@ -300,5 +309,5 @@ define(["OObject", "service/config", "CouchDBDocument", "Bind.plugin", "Event.pl
                
                return editCard;         
            };   
-        });
+
 

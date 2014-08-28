@@ -5,177 +5,183 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"], 
-   function(Store, Transport, CouchDBDocument, Observable) {
-        var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
-        
-        this.reset = function(){
-                //_location = "http://ideafy59.ideafy.com:5959";
-                //_location = "http://app.ideafy.com:1664"; 
-                _location = "http://8.19.34.68:1664";
-                //_location = location.origin;
-                _version = "1.4.0";
-                _socket = io.connect(_location, {'reconnect': true, 'reconnection delay': 500, 'max reconnection attempts': 10});
-                _transport = new Transport(_socket);
-                _user =  new CouchDBDocument();
-                _observer = new Observable();
-                _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"];
-                _catColors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"];
-                _user.setTransport(_transport);
+var olives = require("../libs/olives"),
+        emily = require("../libs/emily"),
+        CouchDBTools = require("../libs/CouchDBTools"),
+        socketio = require("../libs/socket.io.min"),
+        Transport = olives.SocketIOTransport.Client,
+        Store = emily.Store,
+        Observable = emily.Observable,
+        CouchDBDocument = CouchDBTools.CouchDBDocument;
+
+
+var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
+
+        _location = "http://app.ideafy.com:1664"; 
+        //_location = "http://8.19.34.68:1664";
+        //_location = location.origin;
+        _version = "1.4.0";
+        _socket = socketio.connect(_location);
+        _transport = new Transport(_socket);
+        _user =  new CouchDBDocument();
+         _observer = new Observable();
+        _categories = ["bus", "mkt", "notes", "arch", "spec", "planning"];
+        _catColors = ["#9ac9cd", "#f27b3d", "#bd262c", "#5f8f28", "#657b99", "#a000a1"];
+        _user.setTransport(_transport);
                 
-                _config.reset({
-                        location : _location,
-                        version: _version,
-                        socket : _socket,
-                        transport : _transport,
-                        db : "ideafy",
-                        user : _user,
-                        observer : _observer,
-                        cat : _categories,
-                        catColors : _catColors,
-                        polling_interval : 60000,
-                        userTemplate : {
-                                "lastname" : "",
-                                "firstname" : "",
-                                "address" : {
-                                        "street1" : "",
-                                        "street2" : "",
-                                        "zip" : null,
-                                        "state": "",
-                                        "city" : "",
-                                        "country" : ""
-                                },
-                                "gender" : 1,
-                                "lang" : "en-us",
-                                "birthdate" : [],
-                                "connections" : [],
-                                "taiaut_decks" : ["INT"],
-                                "custom_decks" : [],
-                                "active_deck": "INT",
-                                "categories": [],
-                                "calendar": [],
-                                "occupation" : {
-                                        "situation" : "",
-                                        "job" : "",
-                                        "organization" : ""
-                                },
-                                "family" : {
-                                        "couple" : null,
-                                        "children" : null
-                                },
-                                "leisure_activities" : [
-                                        {"name" : "", "comment" : ""},
-                                        {"name" : "", "comment" : ""},
-                                        {"name" : "", "comment" : "" }
-                                ],
-                                "interests" : [
-                                        {"name" : "", "comment" : ""},
-                                        {"name" : "", "comment" : ""},
-                                        {"name" : "", "comment" : ""}],
-                                "type" : 7,
-                                "notifications" : [],
-                                "sentMessages" : [],
-                                "facebook" : "",
-                                "twitter" : "",
-                                "gplus" : "",
-                                "linkedin" : "",
+        _config.reset({
+                location : _location,
+                version: _version,
+                socket : _socket,
+                transport : _transport,
+                db : "ideafy",
+                user : _user,
+                observer : _observer,
+                cat : _categories,
+                catColors : _catColors,
+                polling_interval : 60000,
+                userTemplate : {
+                        "lastname" : "",
+                        "firstname" : "",
+                        "address" : {
+                                "street1" : "",
+                                "street2" : "",
+                                "zip" : null,
+                                "state": "",
+                                "city" : "",
+                                "country" : ""
+                        },
+                        "gender" : 1,
+                        "lang" : "en-us",
+                        "birthdate" : [],
+                        "connections" : [],
+                        "taiaut_decks" : ["INT"],
+                        "custom_decks" : [],
+                        "categories": [],
+                        "calendar": [],
+                        "active_deck": "INT",
+                        "occupation" : {
+                                "situation" : "",
+                                "job" : "",
+                                "organization" : ""
+                        },
+                        "family" : {
+                                "couple" : null,
+                                "children" : null
+                        },
+                        "leisure_activities" : [
+                                {"name" : "", "comment" : ""},
+                                {"name" : "", "comment" : ""},
+                                {"name" : "", "comment" : "" }
+                        ],
+                        "interests" : [
+                                {"name" : "", "comment" : ""},
+                                {"name" : "", "comment" : ""},
+                                {"name" : "", "comment" : ""}],
+                        "type" : 7,
+                        "notifications" : [],
+                        "sentMessages" : [],
+                        "facebook" : "",
+                        "twitter" : "",
+                        "gplus" : "",
+                        "linkedin" : "",
+                        "username" : "",
+                        "sessionInProgress" : {},
+                        "organization" : "",
+                        "rated" : [],
+                        "rated_ideas" : [],
+                        "favorites" : [],
+                        "ip" : 0,
+                        "picture_file" : "img/avatars/deedee0.png",
+                        "intro" : "Ideafyer",
+                        "title" : null,
+                        "achievements" : [],
+                        "ideas_count" : 0,
+                        "su_sessions_count" : 0,
+                        "mu_sessions_count": 0,
+                        "twocents_count" : 0,
+                        "twoquestions_count" : 0,
+                        "tutorial_complete" : false,
+                        "profile_complete" : false,
+                        "news" : [],
+                        "twocents" : [],
+                        "twoquestions" : [],
+                        "public-favorites": [],
+                        "library-favorites": [],
+                        "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000, "contentLang": ""},
+                        "online": false
+                },
+                ideaTemplate:{
+                        "title": "",
+                        "sessionId": "",
+                        "sessionReplay": false,
+                        "authors": [],
+                        "description": "",
+                        "solution": "",
+                        "creation_date": [],
+                        "character": "",
+                        "problem": "",
+                        "lang": "en-us",
+                        "context": "",
+                        "techno": [],
+                        "type": 6,
+                        "sharedwith": [],
+                        "modification_date": [],
+                        "inspired_by": "",
+                        "visibility": "private",
+                        "votes": [],
+                        "rating": "",
+                        "authornames": "",
+                        "twocents": [],
+                        "attachments":[]
+                },
+                TQTemplate:{
+                        "author": [],
+                        "question": "",
+                        "creation_date": [],
+                        "lang": "en-us",
+                        "type": 10,
+                        "modification_date": [],
+                        "votes": [],
+                        "rating": "",
+                        "username": "",
+                        "twocents": []
+                },
+                sessionTemplate : {
+                        "title" : "",
+                        "description" : "",
+                        "initiator" : {
+                                "id" : "",
                                 "username" : "",
-                                "sessionInProgress" : {},
-                                "organization" : "",
-                                "rated" : [],
-                                "rated_ideas" : [],
-                                "favorites" : [],
-                                "ip" : 0,
-                                "picture_file" : "img/avatars/deedee0.png",
-                                "intro" : "Ideafyer",
-                                "title" : null,
-                                "achievements" : [],
-                                "ideas_count" : 0,
-                                "su_sessions_count" : 0,
-                                "mu_sessions_count": 0,
-                                "twocents_count" : 0,
-                                "twoquestions_count" : 0,
-                                "tutorial_complete" : false,
-                                "profile_complete" : false,
-                                "news" : [],
-                                "twocents" : [],
-                                "twoquestions" : [],
-                                "public-favorites": [],
-                                "library-favorites": [],
-                                "settings": {"notifyPopup": true, "useascharacter": false, "ccme": false, "privacy_lvl": 0, "showTips": true, "startupScreen": "#public", "listSize": null, "polling_interval": 60000, "contentLang": ""},
-                                "online": false
+                                "picture_file" : ""
                         },
-                        ideaTemplate:{
-                                "title": "",
-                                "sessionId": "",
-                                "sessionReplay": false,
-                                "authors": [],
-                                "description": "",
-                                "solution": "",
-                                "creation_date": [],
-                                "character": "",
-                                "problem": "",
-                                "lang": "en-us",
-                                "context": "",
-                                "techno": [],
-                                "type": 6,
-                                "sharedwith": [],
-                                "modification_date": [],
-                                "inspired_by": "",
-                                "visibility": "private",
-                                "votes": [],
-                                "rating": "",
-                                "authornames": "",
-                                "twocents": [],
-                                "attachments":[]
-                        },
-                        TQTemplate:{
-                                "author": [],
-                                "question": "",
-                                "creation_date": [],
-                                "lang": "en-us",
-                                "type": 10,
-                                "modification_date": [],
-                                "votes": [],
-                                "rating": "",
-                                "username": "",
-                                "twocents": []
-                        },
-                        sessionTemplate : {
-                                "title" : "",
-                                "description" : "",
-                                "initiator" : {
-                                        "id" : "",
-                                        "username" : "",
-                                        "picture_file" : ""
-                                },
-                                "participants" : [],
-                                "date" : [],
-                                "startTime" : null,
-                                "resumeTime" : null,
-                                "duration" : null,
-                                "elapsedTime" : 0,
-                                "elapsedTimers" : {},
-                                "mode" : "",
-                                "type" : 8,
-                                "deck" : "",
-                                "status" : "in progress",
-                                "step" : "",
-                                "lang" : "en-us",
-                                "characters" : [],
-                                "contexts" : [],
-                                "problems" : [],
-                                "scenarioWB" : [],
-                                "scenario" : [], //{"title" : "", "story" : "", "solution" : ""}
-                                "techno" : [[]],
-                                "ideaWB" : [],
-                                "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
-                                "score" : 0,
-                                "sessionReplay" : false
-                        },
-                        avatars : new Store({}), // to keep frequently used avatars (.e.g connections)
-                        avatar : null, // user's avatar
-                        defaultLabels : {
+                        "participants" : [],
+                        "date" : [],
+                        "startTime" : null,
+                        "resumeTime" : null,
+                        "duration" : null,
+                        "elapsedTime" : 0,
+                        "elapsedTimers" : {},
+                        "mode" : "",
+                        "type" : 8,
+                        "deck" : "",
+                        "status" : "in progress",
+                        "step" : "",
+                        "lang" : "en-us",
+                        "characters" : [],
+                        "contexts" : [],
+                        "problems" : [],
+                        "scenarioWB" : [],
+                        "scenario" : [], //{"title" : "", "story" : "", "solution" : ""}
+                        "techno" : [[]],
+                        "ideaWB" : [],
+                        "idea" : [], //{"title" : "", "description" : "", "solution" : "", "visibility" : "private", "id" : "" }
+                        "score" : 0,
+                        "sessionReplay" : false
+                },
+                avatars : new Store({}), // to keep frequently used avatars (.e.g connections)
+                avatar : null, // user's avatar
+                defaultLabels : {
         "language": "en-us",
         "outdated": "Your version is outdated and some features may not work properly. Please update Ideafy",
         "emailplaceholder": "Email",
@@ -744,7 +750,7 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
         "deleteattachment": "Are you sure you want to delete this attachment ?",
         "attachdescplaceholder" : "Enter a description of your attachment",
         "EULArejected": "You must accept the license agreement prior to using the application"
-},
+                },
                 lang: "en-us",
                 userLanguages:[
                         {name:"en"},
@@ -758,11 +764,8 @@ define(["Store", "SocketIOTransport", "CouchDBDocument", "Observable"],
                         {name: "ru"}
                 ],
                 labels : new Store({})        
-                        });
-                };
+        });
         
-        // init
-        this.reset();
         
-        return _config;
-});
+module.exports = _config;
+

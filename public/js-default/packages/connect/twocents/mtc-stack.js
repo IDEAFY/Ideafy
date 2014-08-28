@@ -5,11 +5,19 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-details", "./mtq-details", "service/config", "Store"], 
-        function(Widget, Map, Stack, Model, MTCDetail, MTQDetail, Config, Store){
-                
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      amy = require("../../../libs/amy2"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Store = emily.Store,
+      Model = olives["Bind.plugin"],
+      Map = require("../../../services/map"),
+      Stack = amy.StackPlugin,
+      MTCDetail = require("./mtc-details"),
+      MTQDetail = require("./mtq-details");
 
-                return function MTCDetailStackConstructor(){
+module.exports = function MTCDetailStackConstructor(){
                 
                         var widget = new Widget,
                             defaultPage = new Widget(),
@@ -18,7 +26,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-deta
                             
                         widget.template = '<div id = "mtcdetailstack" data-mtcdetailstack = "destination"></div>';
                         
-                        widget.plugins.addAll({
+                        widget.seam.addAll({
                                 "mtcdetailstack" : mtcDetailStack
                         });
                         
@@ -45,7 +53,7 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-deta
                         
                         defaultPage.template = '<div class="msgsplash"><div class="header blue-dark" data-labels="bind: innerHTML, twocentview"><span></span></div><div class="innersplash" data-labels="bind: innerHTML, twocentcenter"></div></div>';
                         
-                        defaultPage.plugins.add("labels", new Model(labels));
+                        defaultPage.seam.add("labels", new Model(labels));
                         
                         // init
                         widget.init = function init(type, value){
@@ -64,5 +72,4 @@ define(["OObject", "service/map", "Amy/Stack-plugin", "Bind.plugin", "./mtc-deta
                         };
                         
                         return widget;
-                };
-});
+};

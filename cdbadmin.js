@@ -212,7 +212,7 @@ function CDBAdmin(){
                       since: "now"
                 };
 
-                _transport().listen(
+                _transport.listen(
                         "CouchDBChange", {
                                 path: "/" + _syncInfo.database,
                                 query: options
@@ -249,9 +249,7 @@ function CDBAdmin(){
                                                                         cdbStore.alter("splice", idx, 0, value);
                                                                 }
                                                         });
-                                                },
-                                                this
-                                        );
+                                                }, this);
                                 }
                                 else {
                                         _transport.request(
@@ -275,18 +273,16 @@ function CDBAdmin(){
                                                                         }
                                                                 }, this);
                                                         }
-                                                        else {
-                                                                // If a document was removed from the view
-                                                                if (view.length < nbItems) {
-                                                                        // Look for it in the store to remove it
-                                                                        cdbStore.loop(function (value, idx) {
-                                                                                if (value.id == id) {
-                                                                                        cdbStore.del(idx);
-                                                                                }
-                                                                        );
+                                                        else if (json.row.length < nbItems) {
+                                                                // Look for it in the store to remove it
+                                                                cdbStore.loop(function (value, idx) {
+                                                                        if (value.id == id) {
+                                                                                cdbStore.del(idx);
+                                                                        }
+                                                                });
                                                         }
                                                         // If a document was added to the view
-                                                        else if (view.length > nbItems) {
+                                                        else {
                                                                 // Look for it in the view and add it to the store at the same place
                                                                 view.some(function (value, idx) {
                                                                         if (value.id == changes.id) {
@@ -295,12 +291,9 @@ function CDBAdmin(){
                                                                 });
                                                         }
                                                 },
-                                                this
-                                        );
-                                }
-                        },
-                        this
-                );
+                                                this);
+                                        }
+                                },this);
         };
         
         /*

@@ -5,9 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function ListPublicConstructor($db, $design, $view, $query) {
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      CouchDBTools = require("../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../services/utils"),
+      Avatar = require("../../../services/avatar"),
+      ActionBar = require("../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function ListPublicConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
+                      _mosaic = new Store(),
                       _usr =  Config.get("user"),
                       touchStart,
                       touchPoint,
@@ -31,14 +45,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         _options.query = $query;
                 }
                 
-                widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
+                widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,value.doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,value.doc.authornames' data-display='bind:setAuthornames, mosaic'></h2>" + "<span class='date' data-listideas='bind:date,value.doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,value.doc.title'>Idea title</h3>" + "<p data-listideas='bind:innerHTML,value.doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, value.rating'></span>" + " </div>" + "</li>" + "</ul></div>";
 
                 // change template for listSearch
                 if (_options.query.q){
-                        widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
+                        widget.template = "<div><div class='noresult date invisible' data-labels='bind:innerHTML,noresult' ></div><ul class='idea-list' data-listideas='foreach'>" + "<li class='list-item' data-listevent='listen:touchstart, setStart; listen:touchmove, showActionBar'>" + "<div class='item-header'>" + "<div class='avatar' data-listideas='bind:setAvatar,doc.authors'></div>" + "<h2 data-listideas='bind:innerHTML,doc.authornames' data-display='bind:setAuthornames, mosaic'></h2>" + "<span class='date' data-listideas='bind:date,doc.creation_date'></span>" + "</div>" + "<div class='item-body'>" + "<h3 data-listideas='bind:innerHTML,doc.title'>Idea title</h3>" + "<p data-listideas='bind:setDesc,doc.description'></p>" + "</div>" + "<div class='item-footer'>" + "<a class='idea-type'></a>" + "<a class='item-acorn'></a>" + "<span class='rating' data-listideas='bind:setRating, rating'></span>" + " </div>" + "</li>" + "</ul></div>";       
                 }
                 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels" : new Model(Config.get("labels")),
                         "listideas" : new Model(_store, {
                                 date : function date(date) {
@@ -69,6 +83,17 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                         }*/
                                 }
                         }),
+                        "display" : new Model(_mosaic, {
+                                setAuthornames : function(mosaic){
+                                        var _id = this.getAttribute("data-listideas_id"),
+                                              names = _store.get(_id).value.doc.authornames,
+                                              authors = _store.get(_id).value.doc.authors;
+                                        if (mosaic && authors.length > 1){
+                                                this.innerHTML = names.split(',')[0] + _labels.get("andothers");
+                                        }
+                                        else this.innerHTML = names;
+                                } 
+                        }),
                         "listevent" : new Event(this)
                         });
 
@@ -96,14 +121,14 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                                                         if (query === lang) _store.alter("push", arr[i]);
                                                 }        
                                         }
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();
                                 });
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         currentBar && currentBar.hide();
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }
@@ -119,6 +144,10 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         else{
                                 return widget.resetQuery({startkey:'[1,"'+lang+'", {}]', endkey:'[1,"'+lang+'"]', descending: true, limit: 50});
                         }  
+                };
+                
+                widget.setMosaic = function(mosaic){
+                        (mosaic) ? _mosaic.set("mosaic", true) : _mosaic.set("mosaic", false);
                 };
                 
                 widget.setStart = function(event, node){
@@ -171,17 +200,16 @@ define(["OObject", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }
                         return promise;
                 };
 
-        }
+};
 
-        return function ListPublicFactory($db, $design, $view, $query) {
-                ListPublicConstructor.prototype = new Widget();
-                return new ListPublicConstructor($db, $design, $view, $query);
-        };
-}); 
+module.exports = function ListPublicFactory($db, $design, $view, $query) {
+        ListPublicConstructor.prototype = new Widget();
+        return new ListPublicConstructor($db, $design, $view, $query);
+};

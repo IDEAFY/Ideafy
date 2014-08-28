@@ -5,11 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransport", "CouchDBDocument"], function(Config, Observable, Promise, LocalStore, Transport, Store){
-        var _utils = {},
-              user = Config.get("user"),
-              transport = Config.get("transport"),
-              socket = Config.get("socket");
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Config =require("./config"),
+      Observable =emily.Observable,
+      Promise = emily.Promise,
+      LocalStore = olives.LocalStore,
+      Transport = olives.SocketIOTransport,
+      Store = CouchDBTools.CouchDBDocument;
+
+var _utils = {},
+      user = Config.get("user"),
+      transport = Config.get("transport"),
+      socket = Config.get("socket");
 
         _utils.formatDate = function(array){
 	       var month = array[1] + 1;
@@ -389,7 +398,7 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
 		                      promise.reject();
 		              }
 		              else{
-		                      if (avatars.getNbItems() < 100){
+		                      if (avatars.count() < 100){
 		                              avatars.set(id, result);
 		                      }
 		                      else {
@@ -603,5 +612,4 @@ define(["service/config", "Observable", "Promise", "LocalStore", "SocketIOTransp
                 window.open(encodeURI(location), "_system", "location = no");
         };   
 	
-	return _utils;
-});
+module.exports = _utils;

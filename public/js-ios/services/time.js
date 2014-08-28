@@ -5,17 +5,23 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils"],
-        function(Widget, Model, Event, Config, Store, Utils){
-                
-                function TimeWidgetConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("./config"),
+      Utils = require("./utils");
+
+function TimeWidgetConstructor(){
                 
                         var _widget = this,
                               _labels = Config.get("labels"),
                               user = Config.get("user"),
                               time = new Store({"hour": 0, "min":0, "am":true});
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "label" : new Model(_labels),
                                 "model" : new Model(time, {
                                         setAMPM : function(am){
@@ -94,11 +100,9 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         _widget.render();
                         _widget.reset();
+};
                         
-                }
-                        
-                return function TimeWidgetFactory(){
-                        TimeWidgetConstructor.prototype = new Widget();
-                        return new TimeWidgetConstructor();
-                };
-        });
+module.exports = function TimeWidgetFactory(){
+        TimeWidgetConstructor.prototype = new Widget();
+        return new TimeWidgetConstructor();
+};

@@ -5,16 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Bind.plugin", "Store"],
-        function(Widget, Config, Model, Store){
-                return function TutorialsConstructor(){
+var olives = require("../../../libs/olives"),
+      emily = require("../../../libs/emily"),
+      Widget = olives.OObject,
+      Config = require("../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Store = emily.Store;
+
+module.exports = function TutorialsConstructor(){
                         var tutorials = new Widget(),
                             labels = Config.get("labels"),
                             tuto = [{"name": "brainstormtutorial", "src": Config.get("location")+"/tuto04.m4v"}],
                             store = new Store(tuto);
                             
                             
-                        tutorials.plugins.addAll({
+                        tutorials.seam.addAll({
                                 "labels" : new Model(labels),
                                 "tuto" : new Model(store,{
                                         setName : function(name){
@@ -27,5 +32,4 @@ define(["OObject", "service/config", "Bind.plugin", "Store"],
                         
                         
                         return tutorials;   
-                };
-        });
+};

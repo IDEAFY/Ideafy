@@ -5,16 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config", "Store"],
-        function(Widget, Map, Model, Event, Config, Store){
-                
-                return new function HelpConstructor(){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      Config = require("./config");
+
+module.exports = new function HelpConstructor(){
                 
                         var _widget = new Widget(),
                             _labels = Config.get("labels"),
                             _content = new Store({"html":""});
                         
-                        _widget.plugins.addAll({
+                        _widget.seam.addAll({
                                 "help" : new Model(_content),
                                 "helpevent" : new Event(_widget)
                         });
@@ -32,6 +37,4 @@ define(["OObject", "service/map", "Bind.plugin", "Event.plugin", "service/config
                         };
                         
                         return _widget;
-                };
-                
-        });
+};

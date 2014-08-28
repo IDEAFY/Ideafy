@@ -5,10 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBulkDocuments", "CouchDBDocument", "Store", "service/cardpopup", "Promise"],
-        function(Widget, Config, Model, Event, CouchDBBulkDocuments, CouchDBDocument, Store, CardPopup, Promise){
-                
-                return function CardListConstructor($cardType, $editCard, $update){
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      CouchDBBulkDocuments = CouchDBTools.CouchDBBulkDocuments,
+      Promise = emily.Promise,
+      CardPopup = require("../../../../services/cardpopup");
+
+module.exports = function CardListConstructor($cardType, $editCard, $update){
                         
                 
                         var cardList = new Widget(),
@@ -22,7 +32,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                             currentDeck = null,
                             currentHighlight = null; // used to keep track of current zoom
                         
-                        cardList.plugins.addAll({
+                        cardList.seam.addAll({
                                 "pagination" : new Model(pagination,{
                                         setPage : function(currentPage){
                                                 var nb = currentPage+1;
@@ -111,7 +121,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                                                         cards.alter("push", v.doc);        
                                                 });
                                                 // 12 cards max per page
-                                                pagination.set("nbPages", Math.ceil(cards.getNbItems()/12)); 
+                                                pagination.set("nbPages", Math.ceil(cards.count()/12)); 
                                         
                                                 // display first page
                                                 cardList.displayPage(0);
@@ -129,7 +139,7 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         };
                         
                         cardList.displayPage = function displayPage(pageNB){
-                                var i, length = cards.getNbItems() - 12 * pageNB; 
+                                var i, length = cards.count() - 12 * pageNB; 
                                 
                                 //set page number
                                 pagination.set("currentPage", pageNB);
@@ -398,6 +408,4 @@ define (["OObject", "service/config", "Bind.plugin", "Event.plugin", "CouchDBBul
                         popupUI = new CardPopup(cardList.closePopup);
                         
                         return cardList;
-                        
-                };  
-        });
+};

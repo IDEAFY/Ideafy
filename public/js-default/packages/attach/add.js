@@ -5,10 +5,20 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", "Event.plugin", "service/utils", "Promise", "lib/spin.min"],
-        function(Widget, Config, Store, CouchDBDocument, Model, Event, Utils, Promise, Spinner){
-                
-                function AddAttachmentConstructor(){
+var olives = require("../../libs/olives"),
+      emily = require("../../libs/emily"),
+      CouchDBTools = require("../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Config = require("../../services/config"),
+      Store = emily.Store,
+      CouchDBDocument = CouchDBTools.CouchDBDocument,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../services/utils"),
+      Promise = emily.Promise,
+      Spinner = require("../../libs/spin.min");
+
+function AddAttachmentConstructor(){
                        
                         // declaration
                         var ui = this,
@@ -38,7 +48,7 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                         cdb.setTransport(transport);
                         
                         // define plugins and methods
-                        ui.plugins.addAll({
+                        ui.seam.addAll({
                                 "labels" : new Model(_labels),
                                 "attach" : new Model(cdb,{
                                         show : function(bool){
@@ -341,10 +351,9 @@ define(["OObject", "service/config", "Store", "CouchDBDocument", "Bind.plugin", 
                                         _progress.reset({status: ""});
                                 }        
                         };
-                }
+};
                 
-                return function AddAttachmentFactory(){
-                        AddAttachmentConstructor.prototype = new Widget();
-                        return new AddAttachmentConstructor();
-                };
-        });
+module.exports = function AddAttachmentFactory(){
+        AddAttachmentConstructor.prototype = new Widget();
+        return new AddAttachmentConstructor();
+};

@@ -5,8 +5,21 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Event.plugin", "service/utils", "service/avatar", "service/actionbar", "Promise"], function(Widget, Store, CouchDBView, Config, Model, Event, Utils, Avatar, ActionBar, Promise) {
-        function IdeaListConstructor($db, $design, $view, $query) {
+var olives = require("../../../../libs/olives"),
+      emily = require("../../../../libs/emily"),
+      CouchDBTools = require("../../../../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("../../../../services/config"),
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Utils = require("../../../../services/utils"),
+      Avatar = require("../../../../services/avatar"),
+      ActionBar = require("../../../../services/actionbar"),
+      Promise = emily.Promise;
+
+function IdeaListConstructor($db, $design, $view, $query) {
                 var _store = new CouchDBView([]),
                       _mosaic = new Store(),
                       display = false,
@@ -38,7 +51,7 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                         this.template = '<div><div class="noresult date invisible" data-labels="bind:innerHTML, noresult"></div><ul class="idea-list" data-listideas="foreach"><li class="list-item" data-listevent="listen:mousedown, setStart; listen:dblclick, showActionBar"><div class="item-header"><div class="avatar" data-listideas="bind:setAvatar,doc.authors"></div><h2 data-listideas="bind:innerHTML,doc.authornames" data-display="bind:setAuthornames, mosaic"></h2><span class="date" data-listideas="bind:date, doc.creation_date"></span></div><div class="item-body"><h3 data-listideas="bind:innerHTML,doc.title"></h3><p data-listideas="bind:setDesc, doc.description"></p></div><div class="item-footer"><a class="idea-type private" data-listideas="bind:setVisibility, doc.visibility"></a><a class="item-acorn"></a><span class="rating" data-listideas="bind:setRating, rating"></span></div></li></ul></div>';        
                 }
 
-                widget.plugins.addAll({
+                widget.seam.addAll({
                         "labels": new Model(labels),
                         "listideas": new Model(_store, {
                                 date : function date(date) {
@@ -106,14 +119,14 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                                                         if (query === lang) _store.alter("push", arr[i]);
                                                 }        
                                         }
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();
                                 });
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
                                         currentBar && currentBar.hide();
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }
@@ -205,16 +218,15 @@ define(["OObject", "Store", "CouchDBView", "service/config", "Bind.plugin", "Eve
                         }
                         else {
                                 _store.sync(_options.db, _options.design, _options.view, _options.query).then(function(){
-                                        (_store.getNbItems()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
+                                        (_store.count()) ? nores.classList.add("invisible") : nores.classList.remove("invisible");
                                         promise.fulfill();      
                                 });
                         }
                         return promise;
                 };
-        }
+};
 
-        return function IdeaListFactory($db, $design, $view, $query) {
-                IdeaListConstructor.prototype = new Widget();
-                return new IdeaListConstructor($db, $design, $view, $query);
-        };
-}); 
+module.exports = function IdeaListFactory($db, $design, $view, $query) {
+        IdeaListConstructor.prototype = new Widget();
+        return new IdeaListConstructor($db, $design, $view, $query);
+};

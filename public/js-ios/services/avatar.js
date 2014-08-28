@@ -5,10 +5,18 @@
  * Copyright (c) 2014 IDEAFY LLC
  */
 
-define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "service/utils", "CouchDBView"],
-        function(Widget, Model, Event, Config, Store, Utils, CouchDBView){
-                
-                function AvatarConstructor($array){
+var olives = require("../libs/olives"),
+      emily = require("../libs/emily"),
+      CouchDBTools = require("../libs/CouchDBTools"),
+      Widget = olives.OObject,
+      Model = olives["Bind.plugin"],
+      Event = olives["Event.plugin"],
+      Store = emily.Store,
+      CouchDBView = CouchDBTools.CouchDBView,
+      Config = require("./config"),
+      Utils = require("./utils");
+      
+function AvatarConstructor($array){
 
                         var _store = new Store({"img":"", "online": false}),
                               _avatars = Config.get("avatars"),
@@ -18,7 +26,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         
                         // setup
                         _cdb.setTransport(Config.get("transport"));
-                        this.plugins.addAll({
+                        this.seam.addAll({
                                 "avatar" : new Model(_store, {
                                         setStyle : function(img){
                                                 if (img && img !== "in progress") {
@@ -40,7 +48,7 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                         // Manage presence status
                         _cdb.sync(Config.get("db"), "users", "_view/online", {key: '"'+_id+'"'})
                         .then(function(){
-                                if (_cdb.getNbItems()) _store.set("online", true);
+                                if (_cdb.count()) _store.set("online", true);
                                 
                                 Config.get("socket").on("Presence", function(data){
                                         if (data.presenceData.id === _id) _store.set("online", data.presenceData.online);
@@ -78,12 +86,10 @@ define(["OObject", "Bind.plugin", "Event.plugin", "service/config", "Store", "se
                                         _store.set("img", _avatars.get(_id));
                                 });
                         }
-                             
-                }
+};
                 
-                return function AvatarFactory($id){
-                        AvatarConstructor.prototype = new Widget();
-                        return new AvatarConstructor($id);
-                };      
-        });
+module.exports = function AvatarFactory($id){
+        AvatarConstructor.prototype = new Widget();
+        return new AvatarConstructor($id);
+};      
         

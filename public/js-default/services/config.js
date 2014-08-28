@@ -17,8 +17,8 @@ var olives = require("../libs/olives"),
 
 var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
 
-        _location = "http://app.ideafy.com:1664"; 
-        //_location = "http://8.19.34.68:1664";
+        //_location = "http://app.ideafy.com:1664"; 
+        _location = "http://8.19.34.68:1664";
         //_location = location.origin;
         _version = "1.4.0";
         _socket = socketio.connect(_location);

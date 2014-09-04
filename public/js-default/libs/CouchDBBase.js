@@ -63,6 +63,7 @@ function CouchDBBaseConstructor() {
      * @private
      */
     _handlerName = "CouchDB",
+    _changeHandlerName = "CouchDBChange",
 
     /**
      * The transport to use to issue the requests
@@ -154,6 +155,14 @@ function CouchDBBaseConstructor() {
     this.getHandlerName = function getHandlerName() {
         return _handlerName;
     };
+    
+    /**
+     * Get the current CouchDBChange handler name
+     * @returns {String} the current changeHandler name
+     */
+     this.getChangeHandlerName = function getChangeHandlerName() {
+        return _changeHandlerName;
+     };
 
     /**
      * Set the current CouchDB handler name

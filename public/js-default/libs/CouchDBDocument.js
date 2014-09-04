@@ -71,9 +71,9 @@ function CouchDBDocumentConstructor() {
         var _syncInfo = this.getSyncInfo();
 
         this.stopListening = this.getTransport().listen(
-            this.getHandlerName(),
+            this.getChangeHandlerName(),
             {
-                path: "/" + _syncInfo.database + "/_changes",
+                path: "/" + _syncInfo.database,
                 query: {
                     feed: "continuous",
                     heartbeat: 20000,

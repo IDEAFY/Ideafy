@@ -106,11 +106,11 @@ function CouchDBBulkDocumentsConstructor() {
         }, _syncInfo.query);
 
         this.stopListening = this.getTransport().listen(
-            this.getHandlerName(),
-            {
-                path: "/" + _syncInfo.database + "/_changes",
-                query: _syncInfo.query
-            },
+            this.getChangeHandlerName(),
+                    {
+                        path: "/" + _syncInfo.database,
+                        query: _syncInfo.query
+                    },
             function (changes) {
                 var json,
                 action;

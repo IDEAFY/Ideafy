@@ -120,7 +120,8 @@ function CouchDBBulkDocumentsConstructor() {
                 if (changes == "\n") {
                     return false;
                 }
-
+                
+                console.log("change event -- bulk", changes, _syncInfo.query);
                 json = JSON.parse(changes);
 
                 if (json.changes[0].rev.search("1-") === 0) {

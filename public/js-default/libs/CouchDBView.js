@@ -94,7 +94,7 @@ function CouchDBViewConstructor() {
                     return false;
                 }
                 
-                console.log("change event -- view ", changes, _syncInfo.query);
+                console.log("change event -- view ", JSON.stringify(changes), _syncInfo.query);
                 var json = JSON.parse(changes),
                     action;
 

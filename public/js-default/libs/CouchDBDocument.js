@@ -87,7 +87,7 @@ function CouchDBDocumentConstructor() {
                 if (changes == "\n") {
                     return false;
                 }
-                console.log("change event --", changes, _syncInfo.document);
+                console.log("change event --", JSON.stringify(changes), _syncInfo.document);
                 json = JSON.parse(changes);
 
                 // The document is the modified document is the current one

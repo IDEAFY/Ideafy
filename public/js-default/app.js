@@ -4651,7 +4651,7 @@ function CouchDBBulkDocumentsConstructor() {
                     return false;
                 }
                 
-                console.log("change event -- bulk", JSON.stringify(changes), _syncInfo.query);
+                console.log("change event -- bulk", changes, _syncInfo.query);
                 json = JSON.parse(changes);
 
                 if (json.changes[0].rev.search("1-") === 0) {
@@ -4889,7 +4889,7 @@ function CouchDBDocumentConstructor() {
                 if (changes == "\n") {
                     return false;
                 }
-                console.log("change event --", JSON.stringify(changes), _syncInfo.document);
+                console.log("change event --", changes, _syncInfo.document);
                 json = JSON.parse(changes);
 
                 // The document is the modified document is the current one
@@ -5444,7 +5444,7 @@ function CouchDBViewConstructor() {
                     return false;
                 }
                 
-                console.log("change event -- view ", JSON.stringify(changes), _syncInfo.query);
+                console.log("change event -- view ", changes, _syncInfo.query);
                 var json = JSON.parse(changes),
                     action;
 

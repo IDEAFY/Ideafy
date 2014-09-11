@@ -8,7 +8,8 @@
 var CouchDBBase = require("./CouchDBBase");
 
 var Promise = require("emily").Promise,
-    StateMachine = require("emily").StateMachine;
+    StateMachine = require("emily").StateMachine,
+    CouchDBChanges = require("./CouchDBChanges");
 
 function CouchDBDocumentConstructor() {
 
@@ -68,41 +69,25 @@ function CouchDBDocumentConstructor() {
      */
     this.onListen = function onListen() {
 
-        var _syncInfo = this.getSyncInfo();
-
-        this.stopListening = this.getTransport().listen(
-            this.getChangeHandlerName(),
-            {
-                path: "/" + _syncInfo.database,
-                query: {
-                    feed: "continuous",
-                    heartbeat: 20000,
-                    descending: true
-                }
-            },
-            function (changes) {
-                var json;
-                // Should I test for this very special case (heartbeat?)
-                // Or do I have to try catch for any invalid json?
-                if (changes == "\n") {
-                    return false;
-                }
-                console.log("change event --", changes, _syncInfo.document);
-                json = JSON.parse(changes);
-
-                // The document is the modified document is the current one
-                if (json.id == _syncInfo.document &&
+        var _syncInfo = this.getSyncInfo(),
+              handle;
+        
+        handle = CouchDBChanges.getObserver().watch('changes', function (changes) {
+                if (changes.id == _syncInfo.document &&
                     // And if it has a new revision
-                    json.changes.pop().rev != this.get("_rev")) {
+                    changes.changes.pop().rev != this.get("_rev")) {
 
-                    if (json.deleted) {
+                    if (changes.deleted) {
                         this.getStateMachine().event("remove");
                     } else {
                         this.getStateMachine().event("change");
                     }
                 }
-            }, this
-            );
+            }, this);
+            
+         this.stopListening = function(){
+                 CouchDBChanges.getObserver().unwatch(handle);
+         };
     };
 
     /**

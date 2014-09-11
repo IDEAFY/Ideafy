@@ -20,7 +20,8 @@ var olives = require("./libs/olives"),
        Config = require("./services/config"),
        Map = require("./services/map"),
        Utils = require("./services/utils"),
-       Confirm = require("./services/confirm");
+       Confirm = require("./services/confirm"),
+       CouchDBChanges = require("./libs/CouchDBTools").CouchDBChanges;
 
 //declaration
 var   _body = new Widget(),
@@ -52,6 +53,11 @@ _body.init = function init(firstStart) {
                 if (_local.get("db") && _local.get("db") !== _db){
                         _db = _local.get("db");
                 }
+                
+                // init CouchDB change API
+                CouchDBChanges.setTransport(_transport);
+                CouchDBChanges.initStream(_db);
+                
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
                 .then(function() {
@@ -103,6 +109,10 @@ _body.init = function init(firstStart) {
 _body.reload = function reload(firstStart) {
                 _user.unsync();
                 _user.reset();
+                
+                // init CouchDB change API
+                CouchDBChanges.setTransport(_transport);
+                CouchDBChanges.initStream(_db);
                 
                 // synchronize user document
                 _user.sync(_db, _local.get("currentLogin"))
@@ -237,6 +247,7 @@ else {
 * Watch for signout events
 */       
 Config.get("observer").watch("signout", function(){
+        
         // disconnect socket (will change presence status)
         Config.get("socket").disconnect();
         // clear local store
@@ -268,6 +279,7 @@ Config.get("observer").watch("reconnect", function(option){
                 checkServerStatus()
                 .then(function(){
                         _user.unsync();
+                        CouchDBChanges.initStream(_db);
                         return _user.sync(_db, _local.get("currentLogin"));
                 }, function(){
                         _login.setScreen("#maintenance-screen");        

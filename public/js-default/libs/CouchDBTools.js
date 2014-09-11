@@ -10,5 +10,6 @@ module.exports = {
         CouchDBDocument: require("./CouchDBDocument"),
         CouchDBView: require("./CouchDBView"),
         CouchDBSecurity: require("./CouchDBSecurity"),
-        CouchDBUser: require("./CouchDBUser")
+        CouchDBUser: require("./CouchDBUser"),
+        CouchDBChanges:require("./CouchDBChanges")
 };

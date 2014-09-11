@@ -8,7 +8,8 @@
 var CouchDBBase = require("./CouchDBBase");
 
 var Tools = require("emily").Tools,
-    StateMachine = require("emily").StateMachine;
+    StateMachine = require("emily").StateMachine,
+    CouchDBChanges = require("./CouchDBChanges");
 
 function CouchDBViewConstructor() {
 
@@ -74,45 +75,31 @@ function CouchDBViewConstructor() {
      */
     this.onListen = function onListen() {
 
-        var _syncInfo = this.getSyncInfo();
+        var _syncInfo = this.getSyncInfo(),
+              handle;
 
-        Tools.mixin({
-            feed: "continuous",
-            heartbeat: 20000,
-            descending: true
-        }, _syncInfo.query);
-
-        this.stopListening = this.getTransport().listen(
-            this.getChangeHandlerName(), {
-                        path: "/" + _syncInfo.database,
-                        query: _syncInfo.query
-                    },
-            function (changes) {
-                // Should I test for this very special case (heartbeat?)
-                // Or do I have to try catch for any invalid json?
-                if (changes == "\n") {
-                    return false;
-                }
-                
-                console.log("change event -- view ", changes, _syncInfo.query);
-                var json = JSON.parse(changes),
-                    action;
+        handle = CouchDBChanges.getObserver().watch('changes', function (changes) {
+               var action;
 
                 // reducedView is known on the first get view
                 if (_syncInfo.reducedView) {
                     action = "updateReduced";
                 } else {
-                    if (json.deleted) {
+                    if (changes.deleted) {
                         action = "remove";
-                    } else if (json.changes && json.changes[0].rev.search("1-") === 0) {
+                    } else if (changes.changes && changes.changes[0].rev.search("1-") === 0) {
                         action = "add";
                     } else {
                         action = "change";
                     }
                 }
 
-                this.getStateMachine().event(action, json.id);
+                this.getStateMachine().event(action, changes.id);
             }, this);
+            
+            this.stopListening = function(){
+                 CouchDBChanges.getObserver().unwatch(handle);
+         };
     };
 
     /**

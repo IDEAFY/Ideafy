@@ -13,12 +13,12 @@ var olives = require("./olives"),
       Amy = {};
        
 var hasQuerySelector = function(parent, node, selector) {
-        var getNodes = function(parent, selector) {
-                         if (parent instanceof HTMLElement || parent instanceof SVGElement) {
-                                if (!parent.parentNode) {
-                                        document.createDocumentFragment().appendChild(parent);
+        var getNodes = function(el, sel) {
+                         if (el instanceof HTMLElement || el instanceof SVGElement) {
+                                if (!el.parentNode) {
+                                        document.createDocumentFragment().appendChild(el);
                                 }
-                                return parent.parentNode.querySelectorAll(selector || "*");
+                                return el.parentNode.querySelectorAll(sel || "*");
                         }
                         else {
                                 return false;

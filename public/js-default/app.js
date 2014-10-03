@@ -22903,6 +22903,7 @@ module.exports = function DockConstructor(){
         _widget.init = function init(){
 			        
                 _widget.setDisplay();
+	/*	
 		_public = new Public();
                 console.log("public ok");
                 _library = new Library();
@@ -22922,6 +22923,7 @@ module.exports = function DockConstructor(){
         				
                 // init notification engine
                 _notify.init();
+         */
         };
 			
         /*

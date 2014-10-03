@@ -111,8 +111,8 @@ module.exports = function PublicConstructor(){
                         // function used to retrieve the currently highlighted idea in a list and display its details
                         _widget.displayHighlightedIdea = function displayHighlightedIdea(){
                                 var ideaList, ideaNode, id;
-                                ideaList = _stack.getStack().getCurrentScreen(),
-                                ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"), 
+                                ideaList = _stack.getStack().getCurrentScreen();
+                                ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']");
                                 id = 0;
                              
                                 if (ideaNode) id = ideaNode.getAttribute("data-listideas_id");
@@ -365,11 +365,11 @@ module.exports = function PublicConstructor(){
                         });
                         
                         // when a new idea is created by the user 
-                        _observer.watch("NewIdea", function(id, public){
+                        _observer.watch("NewIdea", function(id, pub){
                                 var _ideaList = listDate.getModel(),
                                       _ideaNode, _id, idx, ideaElem;
                                
-                                if (public){
+                                if (pub){
                                        
                                         // display list of ideas by date and adjust filter buttons accordingly
                                         if (_stack.getStack().getCurrentName() !== "#list-date") _stack.getStack().show("#list-date");

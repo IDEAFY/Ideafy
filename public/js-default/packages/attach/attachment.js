@@ -125,7 +125,7 @@ module.exports = new function AttachmentConstructor($type){
                                                 }     
                                         },
                                         showWriteTwocent : function(twocents){
-                                                (twocents && twocents,length) ? this .classList.add("invisible") : this.classList.remove("invisible");
+                                                (twocents && twocents.length) ? this.classList.add("invisible") : this.classList.remove("invisible");
                                         },
                                         displayEdit : function(arr){
                                                 (arr.indexOf(user.get("_id")) > -1) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");

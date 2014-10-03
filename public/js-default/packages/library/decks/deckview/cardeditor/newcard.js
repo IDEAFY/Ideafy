@@ -25,7 +25,7 @@ module.exports = function NewCardConstructor($update){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
-                            cardSetup = new Store();
+                            cardSetup = new Store(),
                             cardCDB = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),

@@ -281,7 +281,7 @@ module.exports =  function DrawingConstructor($store, $exit){
                 _widget.start = function(event, node){
                         var offsetLeft = node.offsetLeft + _LEFT;
                         deltaX = (document.body.clientWidth-1024)/2;
-                        deltaY = (document.body.clientHeight-748)/2,
+                        deltaY = (document.body.clientHeight-748)/2;
                         _line = {x : event.pageX - offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
                         event.preventDefault();

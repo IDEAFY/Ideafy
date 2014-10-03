@@ -105,6 +105,7 @@ function CouchDBChangesConstructor(){
                 }
                 json = JSON.parse(changes);
                 _observer.notify('changes', json);
+                json = null;
             }, this);
     };
     

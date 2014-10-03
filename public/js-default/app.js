@@ -6902,7 +6902,7 @@ module.exports = new function AttachmentConstructor($type){
                                                 }     
                                         },
                                         showWriteTwocent : function(twocents){
-                                                (twocents && twocents,length) ? this .classList.add("invisible") : this.classList.remove("invisible");
+                                                (twocents && twocents.length) ? this.classList.add("invisible") : this.classList.remove("invisible");
                                         },
                                         displayEdit : function(arr){
                                                 (arr.indexOf(user.get("_id")) > -1) ? this.setAttribute("style", "display:inline-block;") : this.setAttribute("style", "display:none;");
@@ -16838,7 +16838,7 @@ module.exports =  function DrawingConstructor($store, $exit){
                 _widget.start = function(event, node){
                         var offsetLeft = node.offsetLeft + _LEFT;
                         deltaX = (document.body.clientWidth-1024)/2;
-                        deltaY = (document.body.clientHeight-748)/2,
+                        deltaY = (document.body.clientHeight-748)/2;
                         _line = {x : event.pageX - offsetLeft - deltaX, y : event.pageY - node.offsetTop - deltaY};
                         _capture = true;
                         event.preventDefault();
@@ -24567,7 +24567,7 @@ module.exports = function NewCardConstructor($update){
 
                         var newCard = new Widget(),
                             _contentStack = new Stack(),
-                            cardSetup = new Store();
+                            cardSetup = new Store(),
                             cardCDB = new CouchDBDocument(),
                             labels = Config.get("labels"),
                             user = Config.get("user"),
@@ -31513,8 +31513,8 @@ module.exports = function PublicConstructor(){
                         // function used to retrieve the currently highlighted idea in a list and display its details
                         _widget.displayHighlightedIdea = function displayHighlightedIdea(){
                                 var ideaList, ideaNode, id;
-                                ideaList = _stack.getStack().getCurrentScreen(),
-                                ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']"), 
+                                ideaList = _stack.getStack().getCurrentScreen();
+                                ideaNode = ideaList.dom.querySelector(".list-item.selected") || ideaList.dom.querySelector("li[data-listideas_id='0']");
                                 id = 0;
                              
                                 if (ideaNode) id = ideaNode.getAttribute("data-listideas_id");
@@ -31767,11 +31767,11 @@ module.exports = function PublicConstructor(){
                         });
                         
                         // when a new idea is created by the user 
-                        _observer.watch("NewIdea", function(id, public){
+                        _observer.watch("NewIdea", function(id, pub){
                                 var _ideaList = listDate.getModel(),
                                       _ideaNode, _id, idx, ideaElem;
                                
-                                if (public){
+                                if (pub){
                                        
                                         // display list of ideas by date and adjust filter buttons accordingly
                                         if (_stack.getStack().getCurrentName() !== "#list-date") _stack.getStack().show("#list-date");
@@ -35540,19 +35540,19 @@ module.exports =  _widget;
 var olives = require("../libs/olives"),
       emily = require("../libs/emily"),
       CouchDBTools = require("../libs/CouchDBTools"),
-      Config =require("./config"),
-      Observable =emily.Observable,
+      Config = require("./config"),
+      Observable = emily.Observable,
       Promise = emily.Promise,
       LocalStore = olives.LocalStore,
       Transport = olives.SocketIOTransport,
       Store = CouchDBTools.CouchDBDocument;
 
-var _utils = {},
+var utils = {},
       user = Config.get("user"),
       transport = Config.get("transport"),
       socket = Config.get("socket");
 	
-_utils.formatDate = function(array){
+utils.formatDate = function(array){
         var month = array[1] + 1;
 	       
         if (user.get("lang").search("en") === 0){
@@ -35566,17 +35566,17 @@ _utils.formatDate = function(array){
         }
 };
                 
-_utils.formatDateStamp = function(stamp){
+utils.formatDateStamp = function(stamp){
         var date=new Date(stamp),
               array = [date.getFullYear(), date.getMonth()+1, date.getDate()];
                         
-        return _utils.formatDate(array);
-},
+        return utils.formatDate(array);
+};
 
 /*
 * A function used to format a duration in days, hours, min and secs from a number of milliseconds
 */
-_utils.formatDuration = function(duration){
+utils.formatDuration = function(duration){
         var d, days, hrs, min, sec, res;
                         
         if (duration){
@@ -35597,7 +35597,7 @@ _utils.formatDuration = function(duration){
         return res;
 };
                 
-_utils.formatTime = function(time){
+utils.formatTime = function(time){
         var date = new Date(time),
               hrs = date.getHours(),
               min = date.getMinutes(),
@@ -35614,7 +35614,7 @@ _utils.formatTime = function(time){
 /*
 * Compute a time stamp from a date and/or time, adding time zone offset
 */
-_utils.computeTimeStamp = function(date, time){
+utils.computeTimeStamp = function(date, time){
         var now = new Date(),
               offSet = now.getTimezoneOffset(),
               d = date ||now.getTime(),
@@ -35628,7 +35628,7 @@ _utils.computeTimeStamp = function(date, time){
 * A function to display an abtract in a list, stopping at the end of the first sentence or truncating it if it
 * goes beyond 140 characters
 */
-_utils.displayFirstSentence = function(elementid, desc){
+utils.displayFirstSentence = function(elementid, desc){
         var sentences = [];
         sentences = desc.split("."[0], 1);
         if (sentences[0].length > 140) {
@@ -35640,7 +35640,7 @@ _utils.displayFirstSentence = function(elementid, desc){
 /*
 * A function that truncates text (stops at a full word and adds ...)
 */
-_utils.truncate = function(elementid, desc) {
+utils.truncate = function(elementid, desc) {
         elementid.innerHTML = desc;
         while (elementid.scrollHeight > elementid.offsetHeight) {
 	       var text = elementid.innerHTML;
@@ -35652,7 +35652,7 @@ _utils.truncate = function(elementid, desc) {
 /*
 * A function to display the rating
 */
-_utils.setRating = function(node, rating){
+utils.setRating = function(node, rating){
         var img0 = "<img src = 'img/wall/disableIdeaVote.png'>",
               img05 = "<img src = 'img/wall/semi-activeIdeaVote.png'>",
               img1 = "<img src = 'img/wall/activeIdeaVote.png'>",
@@ -35685,7 +35685,7 @@ _utils.setRating = function(node, rating){
 /*
 * A function to search string in an array and return array of matching value(s)
 */	
-_utils.searchArray = function(array, s){
+utils.searchArray = function(array, s){
         var _keywords = s.toLowerCase().split(" "),
               _res = [], i, j, _s, _match;
 			         
@@ -35707,7 +35707,7 @@ _utils.searchArray = function(array, s){
 /*
 * A function to sort an array of objects according to a property
 */       
-_utils.sortByProperty = function(array, prop, descending){
+utils.sortByProperty = function(array, prop, descending){
         // need a special treatment for certain properties
         switch(prop){
 	       case "idea":
@@ -35719,13 +35719,13 @@ _utils.sortByProperty = function(array, prop, descending){
 			             if (!_x || !(_x instanceof Array) || !_x.length) {a="";}
 			             else {
 			                     // sort _x array by title
-			                     _utils.sortByProperty(_x, "title", true);
+			                     utils.sortByProperty(_x, "title", true);
 			                     // use the first idea title for comparison
 			                     a = _x[0].title;
 			             }
 			             if (!_y || !(_y instanceof Array) || !_y.length) {b="";}
 			             else {
-			                     _utils.sortByProperty(_y, "title", true);
+			                     utils.sortByProperty(_y, "title", true);
 			                     b = _y[0].title;
 			             }
 			             if (a<b) {return 1;}
@@ -35736,13 +35736,13 @@ _utils.sortByProperty = function(array, prop, descending){
                                         if (!_x || !(_x instanceof Array) || !_x.length) {a="";}
                                         else {
                                                 // sort _x array by title
-                                                _utils.sortByProperty(_x, "title", false);
+                                                utils.sortByProperty(_x, "title", false);
                                                 // concatenate all idea titles into a string
                                                 a = _x[0].title;
                                         }
                                         if (!_y || !(_y instanceof Array) || !_y.length) {b="";}
                                         else {
-                                                _utils.sortByProperty(_y, "title", false);
+                                                utils.sortByProperty(_y, "title", false);
                                                 b = _y[0].title;
                                         }    
                                         if (a<b) {return -1;}
@@ -35811,7 +35811,7 @@ _utils.sortByProperty = function(array, prop, descending){
 * @Param {Store} progress a store used to display upload progress
 * @Param {function} onEnd the callback when the request is complete
 */
-_utils.uploadFile = function(url, body, progress, onEnd){
+utils.uploadFile = function(url, body, progress, onEnd){
         var req = new XMLHttpRequest();
                              
         req.open('POST', Config.get("location")+url);
@@ -35842,7 +35842,7 @@ _utils.uploadFile = function(url, body, progress, onEnd){
 * @Param none
 * @Returns {Promise} promise 
 */
-_utils.checkServerStatus = function(){
+utils.checkServerStatus = function(){
         var promise = new Promise(),
               req = new XMLHttpRequest();
         req.open('GET', Config.get("location"));
@@ -35858,7 +35858,7 @@ _utils.checkServerStatus = function(){
 /*
 * Check socket status and reconnect if needed
 */
-_utils.checkSocketStatus = function(){
+utils.checkSocketStatus = function(){
         var sock = Config.get("socket"),
               obs = Config.get("observer");
         // reconnect socket if not connected
@@ -35873,7 +35873,7 @@ _utils.checkSocketStatus = function(){
 /*
 * Disconnect the socket
 */
-_utils.disconnectSocket = function(){
+utils.disconnectSocket = function(){
         Config.get("socket").socket.disconnect();
         Config.get("observer").notify("disconnect");
 };
@@ -35883,7 +35883,7 @@ _utils.disconnectSocket = function(){
 * @Param {String} lang the desired language (ab-cd)
 * @Returns {Promise} promise 
 */
-_utils.updateLabels = function(lang) {
+utils.updateLabels = function(lang) {
         var json = {"lang" : lang},
               local = new LocalStore(),
               labels = Config.get("labels"),
@@ -35909,7 +35909,7 @@ _utils.updateLabels = function(lang) {
         return promise;
 };
                 
-_utils.getAvatarById = function(id){
+utils.getAvatarById = function(id){
         var promise = new Promise,
               local = new LocalStore(),
               avatars = Config.get("avatars");
@@ -35948,7 +35948,7 @@ _utils.getAvatarById = function(id){
         return promise;
 };
                  
-_utils.getAvatarByFileName = function(filename, onEnd){
+utils.getAvatarByFileName = function(filename, onEnd){
         transport.request("GetAvatar", {file: filename}, function(result){
                 onEnd(result);    
         });         
@@ -35960,7 +35960,7 @@ _utils.getAvatarByFileName = function(filename, onEnd){
 * @Param {Function} onEnd the callback
 * @Returns {Object} result the grade information in the user's language
 */
-_utils.getGrade = function(ip, onEnd){
+utils.getGrade = function(ip, onEnd){
         transport.request("GetGrade", {ip: ip, lang: user.get("lang")}, function(res){
 	       onEnd(res);        
         });
@@ -35972,7 +35972,7 @@ _utils.getGrade = function(ip, onEnd){
 * @Param {Function} onEnd the callback
 * @Returns {Object} result the grade information in the user's language
 */
-_utils.getAchievements = function(userid, onEnd){
+utils.getAchievements = function(userid, onEnd){
         transport.request("GetAchievements", {userid: userid, lang: user.get("lang")}, function(res){
                 onEnd(res);
         });
@@ -35984,7 +35984,7 @@ _utils.getAchievements = function(userid, onEnd){
 * @Param {Function} onEnd the callback
 * @Returns {Object} result the user information (based on user privacy settings)
 */
-_utils.getUserDetails = function(userid, onEnd){
+utils.getUserDetails = function(userid, onEnd){
         transport.request("GetUserDetails", {userid: userid}, function(res){
                 onEnd(res);
         });
@@ -35993,7 +35993,7 @@ _utils.getUserDetails = function(userid, onEnd){
 /*
 *  A function that extracts a list of all user contact ids from a user document
 */
-_utils.getUserContactIds = function(){
+utils.getUserContactIds = function(){
         var res = [], contacts = user.get("connections").concat();
         contacts.forEach(function(contact){
                 if (contact.type === "user") {res.push(contact.userid);}        
@@ -36004,7 +36004,7 @@ _utils.getUserContactIds = function(){
 /*
 *  A function that extracts a list of all contact usernames from a user document
 */
-_utils.getContactUsernames = function(){
+utils.getContactUsernames = function(){
         var res = [], contacts = user.get("connections").concat();
         contacts.forEach(function(contact){
                 if (contact.type === "user") {res.push(contact.username);}        
@@ -36017,7 +36017,7 @@ _utils.getContactUsernames = function(){
 * @Param
 * @Returns {Object} percentage and if applicable an array of string with the items that are missing
 */
-_utils.checkProfileCompletion = function(){
+utils.checkProfileCompletion = function(){
         var labels = Config.get("labels"), res = {"percentage": 0, "missing":[]};
         if (user.get("firstname") && user.get("lastname")){ res.percentage += 10; }
         if (user.get("birthdate").length === 3){ res.percentage += 10; }
@@ -36044,7 +36044,7 @@ _utils.checkProfileCompletion = function(){
 /*
 * A function to convert a binary string to bytes
 */
-_utils.stringToBytes = function( str ) {
+utils.stringToBytes = function( str ) {
         var ch, st, re = [], i, j=0, k;
         for (i = 0; i < str.length; i++ ) {
                 ch = str.charCodeAt(i);  // get char 
@@ -36068,7 +36068,7 @@ _utils.stringToBytes = function( str ) {
 /*
 * A function to change the style
 */
-_utils.changeStyle = function(newStyle){
+utils.changeStyle = function(newStyle){
         var styleNode = document.querySelector(".currentStyle"),
               currentStyle = styleNode.getAttribute("href");
                         
@@ -36081,7 +36081,7 @@ _utils.changeStyle = function(newStyle){
 * @Param callback a callback function
 * returns
 */
-_utils.exitListener = function(id, callback){
+utils.exitListener = function(id, callback){
         var listener = function(e){
                 var element;
                 for (element = e.target; element; element = element.parentNode) {
@@ -36104,7 +36104,7 @@ _utils.exitListener = function(id, callback){
 /*
 * A function that deletes an attachment file from the server
 */
-_utils.deleteAttachmentFile = function(docId, fileName){
+utils.deleteAttachmentFile = function(docId, fileName){
         var json={},
               promise = new Promise();
                 
@@ -36121,7 +36121,7 @@ _utils.deleteAttachmentFile = function(docId, fileName){
 /*
 * A function that deletes an attachment document from the database
 */
-_utils.deleteAttachmentDoc = function(docId){
+utils.deleteAttachmentDoc = function(docId){
         var promise = new Promise(),
               cdb = new Store();
         cdb.setTransport(transport);
@@ -36129,7 +36129,7 @@ _utils.deleteAttachmentDoc = function(docId){
         .then(function(){
                 var type = "", id = cdb.get("docId");
                 if (id.search("I:") === 0) type = "idea";
-                return _utils.deleteAttachmentFile(type, id, cdb.get("fileName"));       
+                return utils.deleteAttachmentFile(type, id, cdb.get("fileName"));       
         })
         .then(function(){
                 return cdb.remove();
@@ -36140,7 +36140,7 @@ _utils.deleteAttachmentDoc = function(docId){
         return promise;        
 };
       
-module.exports = _utils;
+module.exports = utils;
 },{"../libs/CouchDBTools":72,"../libs/emily":97,"../libs/olives":141,"./config":245}],257:[function(require,module,exports){
 // http://wiki.commonjs.org/wiki/Unit_Testing/1.0
 //

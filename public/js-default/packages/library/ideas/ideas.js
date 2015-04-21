@@ -386,7 +386,7 @@ module.exports = function IdeasConstructor(){
                                                         // focus on new idea
                                                         ideaElem = wid.dom.querySelector("li[data-listideas_id='"+idx+"']");
                                                         ideaElem.classList.add("selected");
-                                                        _radio.init(idx);
+                                                        _radio.init(ideaElem);
                                                         
                                                         // display idea in the list and in the detail-view
                                                         ideaElem.scrollIntoView();

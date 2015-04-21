@@ -22901,7 +22901,6 @@ module.exports = function DockConstructor(){
 
         //logic
         _widget.init = function init(){
-		/*	        
                 _widget.setDisplay();	
 		_public = new Public();
                 console.log("public ok");
@@ -22922,7 +22921,6 @@ module.exports = function DockConstructor(){
         				
                 // init notification engine
                 _notify.init();
-                */
         };
 			
         /*
@@ -23073,6 +23071,7 @@ module.exports = function DockConstructor(){
 
         return _widget;
 };
+
 },{"../libs/amy2":75,"../libs/olives":141,"../services/config":245,"../services/help":248,"../services/map":249,"../services/new2c":250,"../services/new2q":251,"../services/newidea":252,"../services/tips":255,"./attach/attachment":146,"./brainstorm/brainstorm":147,"./connect/connect":177,"./dashboard/dashboard":199,"./library/library":224,"./notify":227,"./public/public":235}],206:[function(require,module,exports){
 /*
  * https://github.com/IDEAFY/Ideafy
@@ -33435,8 +33434,8 @@ var olives = require("../libs/olives"),
 
 var _location, _transport, _user, _observer, _config = new Store(), _socket, _version = "", _categories = [];
 
-        //_location = "http://app.ideafy.com:1664"; 
-        _location = "http://8.19.34.68:1664";
+        _location = "http://app.ideafy.com:1664"; 
+        //_location = "http://8.19.34.68:1664";
         //_location = location.origin;
         _version = "1.4.0";
         _socket = socketio.connect(_location);

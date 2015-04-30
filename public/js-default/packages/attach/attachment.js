@@ -21,8 +21,6 @@ var olives = require("../../libs/olives"),
       Confirm = require("../../services/confirm"),
       Promise = emily.Promise,
       Spinner = require("../../libs/spin.min");
-
-module.exports = new function AttachmentConstructor($type){
                        
                         // declaration
                         var ui = new Widget(),
@@ -546,6 +544,5 @@ module.exports = new function AttachmentConstructor($type){
                                                                
                                 return promise;
                         };
-                        
-                        return ui;
-                };
+              
+module.exports = ui;

@@ -15,7 +15,7 @@ var olives = require("./libs/olives"),
        Model = olives["Bind.plugin"],
        Place = olives["Place.plugin"],
        Event = amy.DelegatePlugin,
-       Dock = require("./packages/dock"),
+       Dock = require("./packages/dock"), 
        Login = require("./packages/login"),
        Config = require("./services/config"),
        Map = require("./services/map"),
@@ -23,6 +23,9 @@ var olives = require("./libs/olives"),
        Confirm = require("./services/confirm"),
        CouchDBChanges = require("./libs/CouchDBTools").CouchDBChanges;
 
+
+OBS = CouchDBChanges;
+CONF = Config;
 
 (function(){
         
@@ -44,15 +47,17 @@ var olives = require("./libs/olives"),
         // SETUP
 
         // init logic
-        body.startDock = function startDock(firstStart){
+        var startDock = function startDock(firstStart){
                 document.getElementById("main").classList.add("main");
                 stack.getStack().show("#dock");
                 dock.start(firstStart);         
-        };
+        },
         
-        body.init = function init(firstStart) {
+              init = function init(firstStart) {
                 // add dock UI to the stack
                 stack.getStack().add("#dock", dock);
+
+
                 // check db
                 if (local.get("db") && local.get("db") !== db){
                         db = local.get("db");
@@ -62,23 +67,25 @@ var olives = require("./libs/olives"),
                 CouchDBChanges.setTransport(transport);
                 CouchDBChanges.initStream(db);
                 
-                // synchronize user document
+                
+               // synchronize user document
                 user.sync(db, local.get("currentLogin"))
                 .then(function() {
-                        var lblUpdate = new Promise();
+                       var lblUpdate = new Promise();
                         // set uid for future queries
                         Config.set("uid", '"' + user.get("_id") + '"');
+
                         // check user defined language
                         if (user.get("lang") !== Config.get("lang")) {
-                                updateLabels(user.get("lang")).then(function(){
+                               return updateLabels(user.get("lang")).then(function(){
                                         lblUpdate.fulfill();
                                 });
                         }
-                        else {lblUpdate.fulfill();}
+                        else lblUpdate.fulfill();
                         return lblUpdate;
                 })
                 .then(function(){
-                        var loadAvatar = new Promise();
+                      var loadAvatar = new Promise();
                         // get user avatar and labels if necessary
                         if (user.get("picture_file").search("img/avatars/deedee")>-1){
                                 Config.set("avatar", user.get("picture_file"));
@@ -104,12 +111,13 @@ var olives = require("./libs/olives"),
                 .then(function(){
                         dock.init();
                         login.stopSpinner();
-                        body.startDock(firstStart);
-                });      
-        };
+                        startDock(firstStart);
+                });
+    
+        },
         
         // init after exit and re-entry
-        body.reload = function reload(firstStart) {
+      reload = function reload(firstStart) {
                 user.unsync();
                 user.reset();
                 
@@ -159,13 +167,14 @@ var olives = require("./libs/olives"),
                 .then(function(){
                         dock.reset();
                         login.stopSpinner();
-                        body.startDock(firstStart);        
+                        startDock(firstStart);        
                 });      
         };
+
        
         // uis declaration
         dock = new Dock();
-        login = new Login(body.init, body.reload, local);
+        login = new Login(init, reload, local);
         
         // add login to the stack
         stack.getStack().add("#login", login);
@@ -179,6 +188,8 @@ var olives = require("./libs/olives"),
         body.template = '<div id="main"><div data-stack="destination"></div><div data-place="place:confirm"></div></div>';
         
         body.place(document.body);
+
+
         
         // INITIALIZATION
         
@@ -193,7 +204,8 @@ var olives = require("./libs/olives"),
         stack.getStack().setCurrentScreen(login);
         
         login.init();
-        
+
+       
         // check connection
         if (navigator.connection && navigator.connection.type === "none"){
                 // get labels or assign default ones
@@ -230,7 +242,9 @@ var olives = require("./libs/olives"),
                         }
                         else {
                                 transport.request("CheckLogin", {"id" : current, "sock" : Config.get("socket").socket.sessionid}, function(result) {
-                                        if (result.authenticated) {body.init();}
+                                        if (result.authenticated) {
+                                                init();
+                                        }
                                         else {
                                                 login.setScreen("#login-screen");
                                         }
@@ -242,9 +256,8 @@ var olives = require("./libs/olives"),
                 });
         }
          
-        /*
-        * Watch for signout events
-        */       
+        //Watch for signout events
+              
         Config.get("observer").watch("signout", function(){
         
                 // disconnect socket (will change presence status)

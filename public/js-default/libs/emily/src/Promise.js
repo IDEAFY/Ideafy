@@ -121,8 +121,8 @@ module.exports = function PromiseConstructor() {
      * @returns {Promise} the new promise
      */
     this.then = function then() {
-        var promise = new PromiseConstructor();
-
+        var promise = this;
+        
         // If a fulfillment callback is given
         if (arguments[0] instanceof Function) {
             // If the second argument is also a function, then no scope is given

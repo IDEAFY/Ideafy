@@ -13,18 +13,23 @@ var olives = require("./olives"),
       Amy = {};
        
 var hasQuerySelector = function(parent, node, selector) {
-        var getNodes = function(el, sel) {
-                         if (el instanceof HTMLElement || el instanceof SVGElement) {
-                                if (!el.parentNode) {
-                                        document.createDocumentFragment().appendChild(el);
-                                }
-                                return el.parentNode.querySelectorAll(sel || "*");
-                        }
-                        else {
-                                return false;
-                        }
-                };
-        return Tools.toArray(getNodes(parent, selector)).indexOf(node) > -1;
+        var result,
+              sel = selector || "*" ,
+              frag, nodes,
+              idx = -1;
+        
+        if (parent instanceof HTMLElement || parent instanceof SVGElement){
+                if (!parent.parentNode) {
+                        frag = document.createDocumentFragment();
+                        frag.appendChild(parent);
+                }
+                nodes = parent.parentNode.querySelectorAll(sel);
+                idx = Tools.toArray(nodes).indexOf(node);
+                (idx > -1) ? result = true : result = false;
+        }
+        else result = false;
+        
+        return result;
 };
 
 Amy.TestUtils = function(){
@@ -99,10 +104,12 @@ Amy.EventController = function EventControllerConstructor($scope, $touch){
 		      "mousedown" : "touchstart",
 		      "mouseup" : "touchend",
 		      "mousemove" : "touchmove"
-	       };
+	       },
+	       that = this;
 
         this.addListener = function(node, event, callback, useCapture){
-	       node.addEventListener(this.map(event), callback, useCapture);
+                var e = that.map(event);
+	       node.addEventListener(e, callback, useCapture);
         };
 
         this.call = function(method){
@@ -147,15 +154,18 @@ Amy.EventController = function EventControllerConstructor($scope, $touch){
 var DelegatePluginConstructor = function(){
         //factorize useCapture?
         this.listen = function(node, type, listener, useCapture) {
-                var that = this;
-                this.addListener(node, type, function(event){that.call(listener, event, node);}, (useCapture=="true"));
+                var that = this,
+                      f = function(e){
+                              that.call(listener, e, node);
+                      };
+                this.addListener(node, type, f, (useCapture=="true"));
         };
 
         this.selector = function(node, selector, type, listener, useCapture){
 	       var that = this;
 	       //maper le noeur avec les event listener histoire d'optimiser le nombre de listener
-	       this.addListener(node, type, function(event){
-		      if(hasQuerySelector(node, event.target, selector)) that.call(listener, event, node);
+	       this.addListener(node, type, function(e){
+		      if(hasQuerySelector(node, e.target, selector)) that.call(listener, e, node);
 	       }, (useCapture=="true"));
         };
 };
@@ -183,6 +193,7 @@ var ControlPluginConstructor =  function(){
 		      }
 	       }, (useCapture == "true"));
         };
+
 
         this.radioClass = function(node, previous, className){
 	       node.classList.add(className);

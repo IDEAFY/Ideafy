@@ -87,6 +87,7 @@ module.exports = function DockConstructor(){
         				
                 // init notification engine
                 _notify.init();
+
         };
 			
         /*

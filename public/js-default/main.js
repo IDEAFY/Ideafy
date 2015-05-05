@@ -24,9 +24,6 @@ var olives = require("./libs/olives"),
        CouchDBChanges = require("./libs/CouchDBTools").CouchDBChanges;
 
 
-OBS = CouchDBChanges;
-CONF = Config;
-
 (function(){
         
         'use strict';

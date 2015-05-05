@@ -11,7 +11,7 @@
 
 function TaskUtils(){
        var _CouchDBDocument, _CouchDBView, Promise,
-            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin, _getBulkView, _listenToViewChange,
+            _updateUserIP, _updateDocAsAdmin, _getDocAsAdmin, _createDocAsAdmin, _getViewAsAdmin, _removeDocAsAdmin, _getBulkView,
             _sendMail, _notify,
             _io;
         
@@ -29,7 +29,6 @@ function TaskUtils(){
                 _getViewAsAdmin = cdbAdmin.getView;
                 _getBulkView = cdbAdmin.getBulkView;
                 _removeDocAsAdmin = cdbAdmin.removeDoc;
-                _listenToViewChange = cdbAdmin.listenView;
                 _sendMail = comUtils.sendMail;
                 _notify = comUtils.notify;     
         };
@@ -213,7 +212,22 @@ function TaskUtils(){
                                                 });   
                                         });
                                 });  
-                      };
+                      },
+                      
+                      manageSessions = function(){
+                                
+                                // fetch scheduled sessions from database (status waiting and scheduled not null)
+                                _getViewAsAdmin("scheduler", "sessions", null, sessions)
+                                .then(function(){
+                        
+                                        // notify initiator and participants of sessions about to start (<5min)
+                                        
+                                        // notify initiator and participants of sessions starting in one hour
+                                        
+                                        // notify initiator and participants of sessions starting the next day
+                                        
+                                });
+                       };
                       
                 setInterval(deleteExpiredSessions, 900000);
                 setInterval(notifySessions, 60000);

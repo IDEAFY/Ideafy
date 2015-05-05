@@ -1,3 +1,5 @@
+"use strict";
+
 var wellKnownHosts = require("../wellknown"),
     simplesmtp = require("simplesmtp"),
     wellKnownDomains = {};
@@ -36,14 +38,13 @@ wellKnownHosts = Object.keys(wellKnownHosts).reduce(function(lowerCaseKeys, curr
  *     <li><b>ignoreTLS</b> - ignore server support for STARTTLS</li>
  *     <li><b>debug</b> - output client and server messages to console</li>
  *     <li><b>maxConnections</b> - how many connections to keep in the pool</li>
+ *     <li><b>maxMessages</b> - limit the count of messages to send through a single connection</li>
  * </ul>
  *
  * @constructor
  * @param {Object} [options] SMTP options
  */
 function SMTPTransport(options){
-
-
     this.options = options || {};
 
     this.initOptions();
@@ -51,6 +52,11 @@ function SMTPTransport(options){
     this.pool = simplesmtp.createClientPool(this.options.port,
         this.options.host, this.options);
 }
+
+SMTPTransport.wellKnownHosts = wellKnownHosts;
+
+// Setup version info for the transport
+SMTPTransport.prototype.version = simplesmtp.version;
 
 /**
  * <p>Initializes the SMTP connection options. Needed mostly for legacy option

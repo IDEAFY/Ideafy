@@ -2,7 +2,7 @@
  * IDEAFY -- login utilities
  * ===============================
  * 
-  * https://github.com/TAIAUT/Ideafy
+ * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent.weyl@taiaut.com>
  * Copyright (c) 2013-2014 TAIAUT
@@ -194,7 +194,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                                                 "Connection": "close"
                                                                         }
                                                                 }, function (res) {
-                                                                        console.log(res);
+                                                                        return res;
                                                                 });
                                                         }        
                                                 });
@@ -251,6 +251,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                                         });
                                                 }
                                                 else {
+                                                        console.error("no session auth and/or right login name not found");
                                                         onEnd({authenticated : false});
                                                 }
                                         } 
@@ -261,6 +262,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                         }
                 },
                 function(){
+                        console.error("failed getdocasadmin");
                         onEnd({authenticated: false});
                 });
         };
@@ -318,7 +320,7 @@ var _CouchDBDocument, _CouchDBUser, _Promise,
                                 });
                         }
                 }, function(result) {
-                        console.log(result);
+                        return res;
                 });
         };
         

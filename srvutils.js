@@ -2,7 +2,7 @@
  * IDEAFY -- server-side utilities
  * ===============================
  * 
- * https://github.com/TAIAUT/Ideafy
+  * https://github.com/TAIAUT/Ideafy
  * Proprietary License - All rights reserved
  * Author: Vincent Weyl <vincent.weyl@taiaut.com>
  * Copyright (c) 2013-2014 TAIAUT
@@ -30,7 +30,6 @@ function SrvUtils(){
                       tempname, // temp name after file upload
                       dataurl, ins, outs,
                       dir;
-                
                 if (type === 'postit' || type === 'deckpic' || type === 'cardpic'){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
@@ -62,7 +61,6 @@ function SrvUtils(){
                 if (type === 'afile'){
                         dir = req.body.dir;
                         filename = _path+dir+'/'+req.body.filename;
-                        
                         fs.exists(_path+dir, function(exists){
                                 if (!exists) {
                                         fs.mkdir(_path+dir, 0777, function(err){
@@ -103,7 +101,7 @@ function SrvUtils(){
                 if (type === 'avatar'){
                         filename = _path+'avatars/'+req.body.filename;
                         dataurl = req.body.img;
-                        fs.exists(filename, function(exists){
+												fs.exists(filename, function(exists){
                                 if (exists) {
                                         fs.unlinkSync(filename);
                                 }

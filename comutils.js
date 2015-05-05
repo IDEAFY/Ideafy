@@ -433,9 +433,11 @@ function ComUtils(){
                                 eventId: Date.now() + Math.floor(Math.random()*1e6),
                                 presenceData: ({id:id, online: status})
                               };
-                _io.sockets.emit("Presence", reqData, function(res){
+                /*_io.sockets.emit("Presence", reqData, function(res){
                         console.log("socket emit callback: ", res);
-                });   
+                });*/
+
+		_io.sockets.emit("Presence", reqData);   
         };
         
         this.initPresence = function initPresence(){
@@ -488,10 +490,6 @@ function ComUtils(){
                 */
         };
 
-        // get presence updates from couchdb
-        this.sendPresenceUpdates = function(payload, onEnd, onData){
-                      
-        };
 };
 
 exports.ComUtils = ComUtils;

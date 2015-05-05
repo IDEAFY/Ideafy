@@ -1,6 +1,11 @@
 var testCase = require('nodeunit').testCase,
     nodemailer = require("../lib/nodemailer"),
-    stripHTML = require("../lib/helpers").stripHTML;
+    Transport = nodemailer.Transport,
+    stripHTML = require("../lib/helpers").stripHTML,
+    fs = require("fs");
+
+var TMP_DIR = "/tmp",
+    SENDMAIL_OUTPUT = TMP_DIR + "/nodemailer-sendmail-test";
 
 exports["General tests"] = {
 
@@ -51,11 +56,13 @@ exports["General tests"] = {
 
     "Use default Message-Id value": function(test){
         var transport = nodemailer.createTransport("Stub"),
-            mailOptions = {};
+            mailOptions = {
+                name: "test.host"
+            };
 
         transport.sendMail(mailOptions, function(error, response){
             test.ifError(error);
-            var regex = "^Message\\-Id:\\s*<[0-9\.a-fA-F]+@"+nodemailer.X_MAILER_NAME.replace(/([\(\)\\\.\[\]\-\?\:\!\{\}])/g, "\\$1")+">$";
+            var regex = "^Message\\-Id:\\s*<[0-9\.a-fA-F]+@test\.host>$";
             test.ok(response.message.match(new RegExp(regex, "m")));
             test.done();
         })
@@ -92,6 +99,24 @@ exports["General tests"] = {
         })
     },
 
+    "Use custom header value": function(test){
+        var transport = nodemailer.createTransport("Stub"),
+            value = "a\r\n b\r\nc",
+            mailOptions = {
+                messageId: value,
+                headers: {'test-key': value}
+            };
+
+        transport.sendMail(mailOptions, function(error, response){
+            test.ifError(error);
+            // should not be modified
+            test.ok(response.message.match(/Test\-Key:\s*a\r\n b\r\nc/));
+            // newlines should be removed
+            test.ok(response.message.match(/Message\-Id:\s*<abc>/));
+            test.done();
+        })
+    },
+
     "Use In-Reply-To": function(test){
         var transport = nodemailer.createTransport("Stub"),
             mailOptions = {
@@ -115,7 +140,7 @@ exports["General tests"] = {
             test.ifError(error);
             test.ok(response.message.match(/^References:\s*<abc> <def> <ghi> <jkl>$/m));
             test.done();
-        })
+        });
     },
 
     "Skip Message-Id value": function(test){
@@ -161,6 +186,43 @@ exports["General tests"] = {
             test.deepEqual(response.envelope, {from:'sender1@tr.ee',to: [ 'receiver1@tr.ee' ],stamp: 'Postage paid, Par Avion'})
             test.done();
         })
+    },
+
+    "Default X-Mailer value": function(test){
+        var transport = nodemailer.createTransport("Stub"),
+            mailOptions = {};
+
+        transport.sendMail(mailOptions, function(error, response){
+            test.ifError(error);
+            test.ok(response.message.match(/^X\-Mailer: Nodemailer/im));
+            test.done();
+        });
+    },
+
+    "Custom X-Mailer value": function(test){
+        var transport = nodemailer.createTransport("Stub",{
+                xMailer: "TEST"
+            }),
+            mailOptions = {};
+
+        transport.sendMail(mailOptions, function(error, response){
+            test.ifError(error);
+            test.ok(response.message.match(/^X\-Mailer: TEST$/im));
+            test.done();
+        });
+    },
+
+    "Missing X-Mailer value": function(test){
+        var transport = nodemailer.createTransport("Stub",{
+                xMailer: false
+            }),
+            mailOptions = {};
+
+        transport.sendMail(mailOptions, function(error, response){
+            test.ifError(error);
+            test.ok(!response.message.match(/^X\-Mailer:/im));
+            test.done();
+        });
     }
 };
 
@@ -214,3 +276,187 @@ exports["Transport close"] = {
         });
     }
 };
+
+exports["Sendmail transport"] = {
+    "MessageId value in response": function(test){
+        var transport = nodemailer.createTransport("Sendmail", {
+                path: "test/mock/sendmail"
+            }),
+            mailOptions = {};
+
+        try{
+            fs.unlinkSync(SENDMAIL_OUTPUT);
+        }catch(E){};
+        transport.sendMail(mailOptions, function(error, response){
+            test.ifError(error);
+            try{
+                fs.unlinkSync(SENDMAIL_OUTPUT);
+            }catch(E){
+                test.ifError(E);
+            };
+            test.ok(response.messageId);
+            test.done();
+        })
+    },
+
+    "Path as string parameter": function(test){
+        var transport = nodemailer.createTransport("Sendmail", "test/mock/sendmail"),
+            mailOptions = {};
+
+        try{
+            fs.unlinkSync(SENDMAIL_OUTPUT);
+        }catch(E){};
+        transport.sendMail(mailOptions, function(error, response){
+            test.ifError(error);
+            fs.readFile(SENDMAIL_OUTPUT, function(error, mail) {
+                try{
+                    fs.unlinkSync(SENDMAIL_OUTPUT);
+                }catch(E){
+                    test.ifError(E);
+                };
+                test.ifError(error);
+                test.ok(mail.toString());
+                test.done();
+            })
+        })
+    },
+
+    "Transform line endings": function(test){
+        var transport = nodemailer.createTransport("Sendmail", {path: "test/mock/sendmail"}),
+            mailOptions = {
+                html: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."+
+                      "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+            };
+
+        try{
+            fs.unlinkSync(SENDMAIL_OUTPUT);
+        }catch(E){};
+        transport.sendMail(mailOptions, function(error, response){
+            fs.readFile(SENDMAIL_OUTPUT, function(error, mail) {
+
+                try{
+                    fs.unlinkSync(SENDMAIL_OUTPUT);
+                }catch(E){
+                    test.ifError(E);
+                };
+
+                test.ok(!/\r\n/.test(mail.toString()))
+                test.done();
+            })
+        });
+    }
+};
+
+exports["Pickup transport"] = {
+    Pickup: function(test){
+        var mailOptions = {
+                subject: "pickup test",
+                text: "pickup body",
+                messageId: "test-id"
+            },
+            transport = nodemailer.createTransport("Pickup", {
+                directory: TMP_DIR
+            });
+
+        transport.sendMail(mailOptions, function(err, response){
+            test.ifError(err);
+            try{
+                fs.unlinkSync(TMP_DIR + "/" + mailOptions.messageId + ".eml");
+            }catch(E){
+                test.ifError(E);
+            }
+            test.equal(response.messageId, mailOptions.messageId);
+            test.done();
+        });
+    },
+
+    "Shorthand config": function(test){
+        var mailOptions = {
+                subject: "pickup test",
+                text: "pickup body",
+                messageId: "test-id"
+            },
+            transport = nodemailer.createTransport("Pickup", TMP_DIR);
+
+        transport.sendMail(mailOptions, function(err, response){
+            test.ifError(err);
+            try{
+                fs.unlinkSync(TMP_DIR + "/" + mailOptions.messageId + ".eml");
+            }catch(E){
+                test.ifError(E);
+            }
+            test.equal(response.messageId, mailOptions.messageId);
+            test.done();
+        });
+    },
+
+    "No callback": function(test){
+        var mailOptions = {
+                subject: "pickup test",
+                text: "pickup body",
+                messageId: "test-id"
+            },
+            transport = nodemailer.createTransport("Pickup", TMP_DIR);
+
+        transport.sendMail(mailOptions);
+
+        setTimeout(function(){
+            test.ok(1);
+            test.done();
+        }, 2000);
+    }
+}
+
+module.exports["Custom transport type"] = {
+    "Define transport": function(test){
+        test.expect(3);
+
+        function MyTransport(options){
+            this.options = options;
+            test.ok(true);
+        }
+
+        MyTransport.prototype.sendMail = function(emailMessage, callback){
+            test.ok(true);
+            emailMessage.streamMessage();
+            emailMessage.on("end", function(){
+                callback(null, true);
+            });
+        }
+
+        var transport = nodemailer.createTransport(MyTransport);
+        transport.sendMail({text: "hello world!"}, function(err, response){
+            test.equal(transport.transportType, "MYTRANSPORT");
+
+            transport.close(function(){
+                test.done();
+            });
+        });
+    },
+
+    "Close transport": function(test){
+        test.expect(2);
+
+        function MyTransport(options){
+            this.options = options;
+        }
+
+        MyTransport.prototype.sendMail = function(emailMessage, callback){
+            test.ok(true);
+            callback();
+        }
+
+        MyTransport.prototype.close = function(callback){
+            test.ok(true);
+            callback();
+        }
+
+        var transport = nodemailer.createTransport(MyTransport);
+        transport.sendMail({text: "hello world!"}, function(err, response){
+            transport.close(function(){
+                test.done();
+            });
+        });
+    }
+};
+

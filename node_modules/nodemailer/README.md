@@ -1,5 +1,4 @@
-Nodemailer
-==========
+![Nodemailer](https://raw2.github.com/andris9/Nodemailer/master/assets/nm_logo_200x136.png)
 
 **Nodemailer** is an easy to use module to send e-mails with Node.JS (using
 SMTP or sendmail or Amazon SES) and is unicode friendly - You can use any characters you like ✔
@@ -9,6 +8,7 @@ Nodemailer is Windows friendly, you can install it with *npm* on Windows just li
 **[Read about using Nodemailer from the Node Knockout blog](http://blog.nodeknockout.com/post/34641712180/sending-email-from-node-js)**
 
 [![Build Status](https://secure.travis-ci.org/andris9/Nodemailer.png)](http://travis-ci.org/andris9/Nodemailer)
+[![NPM version](https://badge.fury.io/js/nodemailer.png)](http://badge.fury.io/js/nodemailer)
 
 ## Notes and information
 
@@ -19,7 +19,7 @@ Nodemailer is Windows friendly, you can install it with *npm* on Windows just li
   * **Attachments** (including attachment **streaming** for sending larger files)
   * **Embedded images** in HTML
   * **SSL/STARTTLS** for secure e-mail delivery
-  * Different transport methods - **SMTP**, **sendmail** and **Amazon SES**
+  * Different transport methods - **SMTP**, **sendmail**, **Amazon SES** or **directly** to recipients MX server or even a **custom** method
   * SMTP **Connection pool** and connection reuse for rapid delivery
   * **Preconfigured** services for using SMTP with Gmail, Hotmail etc.
   * Use objects as header values for **SendGrid** SMTP API
@@ -41,6 +41,7 @@ Nodemailer has been tested successfully on the following PaaS platforms (using f
   * [OpenShift](https://openshift.redhat.com/app/)
   * [Nodejitsu](http://nodejitsu.com/)
   * [Windows Azure](http://www.windowsazure.com/)
+  * [Modulus](https://modulus.io/)
 
 ### Check out my other mail related modules
 
@@ -95,6 +96,21 @@ smtpTransport.sendMail(mailOptions, function(error, response){
 
     // if you don't want to use this transport object anymore, uncomment following line
     //smtpTransport.close(); // shut down the connection pool, no more messages
+});
+```
+
+Or if you want to go the really easy (but not the best) route, you can try to send e-mails directly to
+the recipients MX server without a relaying service:
+
+```javascript
+var mail = require("nodemailer").mail;
+
+mail({
+    from: "Fred Foo ✔ <foo@blurdybloop.com>", // sender address
+    to: "bar@blurdybloop.com, baz@blurdybloop.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world ✔", // plaintext body
+    html: "<b>Hello world ✔</b>" // html body
 });
 ```
 
@@ -155,11 +171,25 @@ transport.sendMail({
 
 ### Possible transport methods
 
-Required `type` parameter can be one of the following:
+`type` parameter can be one of the following:
 
   * **SMTP** for using SMTP
   * **SES** for using Amazon SES
   * **Sendmail** for utilizing systems *sendmail* command
+  * **Pickup** for storing the e-mail in a directory on your machine
+  * **Direct** for sending e-mails directly to recipients MTA servers
+
+If `type` is not set, "direct" will be used
+
+If you want to use custom transport method, you need to provide the transport handler constructor as the `type` parameter. See [Custom Transport Methods](#custom-transport-methods) for details
+
+### Global transport options
+
+In addition to any specific configuration for a selected transport type, a few global
+ones exist.
+
+  * **resolveHostname** - if set to true, resolves the public hostname for the current machine (makes an external HTTP request to [remoteAddress.net](http://www.remoteaddress.net/) for resolving it). The value is used when generating `Message-ID` values (as the domain part) and when identifying itself to a SMTP server
+  * **xMailer** - if the value is a string it replaces the default `X-Mailer` header value. If the value is `false` then `X-Mailer` is stripped from the header
 
 ### Setting up SMTP
 
@@ -180,6 +210,7 @@ Possible SMTP options are the following:
  * **ignoreTLS** - ignore server support for STARTTLS (defaults to `false`)
  * **debug** - output client and server messages to console
  * **maxConnections** - how many connections to keep in the pool (defaults to 5)
+ * **maxMessages** - limit the count of messages to send through a single connection (no limit by default)
 
 Example:
 
@@ -245,7 +276,7 @@ var transportOptions = {
 
 ##### XOAUTH
 
-Older XOAUTH is also supporteb by **nodemailer** for SMTP. XOAUTH is based on OAuth protocol 1.0 and is considered deprecated.
+Older XOAUTH is also supported by **nodemailer** for SMTP. XOAUTH is based on OAuth protocol 1.0 and is considered deprecated.
 
 To use this, include `XOAuthToken` option in `auth` instead of the regular `user` and `pass`.
 
@@ -298,7 +329,8 @@ Possible SES options are the following:
 
  * **AWSAccessKeyID** - AWS access key (required)
  * **AWSSecretKey** - AWS secret (required)
- * **ServiceUrl** - optional API end point URL (defaults to *"https://email.us-east-1.amazonaws.com"*)
+ * **ServiceUrl** - *optional* API end point URL (defaults to *"https://email.us-east-1.amazonaws.com"*)
+ * **AWSSecurityToken** - *optional* security token
 
 Example:
 
@@ -317,7 +349,13 @@ command.
 Options object is optional, possible sendmail options are the following:
 
   * **path** - path to the `sendmail` command (defaults to *"sendmail"*)
-  * **args** - an array of extra command line options to pass to the `sendmail` command (ie. `["-f foo@blurdybloop.com"]`)
+  * **args** - an array of extra command line options to pass to the `sendmail` command (ie. `["-f", "foo@blurdybloop.com"]`).
+
+Currently the command to be spawned is built up like this: the command is either using `sendmail -i -f from_addr to_addr[]` (by default) or `sendmail -i list_of_args[]` (if `args` property was given). `-i` is ensured to be present on either case.
+
+In the default case (no `args` defined) From and To addresses are either taken from `From`,`To`, `Cc` and `Bcc` properties or from the `envelope` property if one is present.
+
+Be wary when using the `args` property - no recipients are defined by default, you need to ensure these by yourself, for example by using the `-t` flag.
 
 Example:
 
@@ -330,9 +368,117 @@ or
 ```javascript
 var transport = nodemailer.createTransport("sendmail", {
     path: "/usr/local/bin/sendmail",
-    args: ["-f foo@blurdybloop.com"]
+    args: ["-t", "-f", "foo@blurdybloop.com"]
 });
 ```
+
+Sendmail uses a Transform stream, which is available in NodeJS >= 0.10. For
+previous versions you can include [`readable-stream`](https://github.com/isaacs/readable-stream)
+in your depencies, which provides a polyfill.
+
+### Setting up Pickup
+
+When choosing `Pickup` all e-mails will be stored in a directory so that they can be picked up by your SMTP server.
+
+Possible options are the following:
+
+ * **directory** - The directory where applications save e-mail for later processing by the SMTP server (required)
+
+Example:
+
+```javascript
+var transport = nodemailer.createTransport("PICKUP", {
+    directory: "C:\\inetpub\\mailroot\\Pickup"
+});
+```
+
+or the shorthand version:
+
+```javascript
+var transport = nodemailer.createTransport("PICKUP", "C:\\inetpub\\mailroot\\Pickup");
+```
+
+### Setting up Direct transport
+
+*Direct* transport is useful when you can not or want not to use a relaying service or the sendmail command.
+
+To set it up, you do not need to provide anything, just run the following to create a transport object:
+
+```
+var transport = nodemailer.createTransport();
+```
+
+If you want to use debug logging, use the following form:
+
+```
+var transport = nodemailer.createTransport("direct", {debug: true});
+```
+
+There is also a shorthand method `mail` if you do not like to set up a transport object (see [E-mail message fields](#e-mail-message-fields) for options for the `mailOptions` object).
+
+```javascript
+var mail = require("nodemailer").mail;
+mail(mailOptions);
+```
+
+*Direct* can be quite inefficient as it queues all e-mails to be sent into memory. Additionally, if a message is not yet sent and the process is closed, all data about queued messages are lost. Thus *direct* is only suitable for low throughput systems, like password remainders and such, where the message can be processed immediatelly.
+
+*Direct* is able to handle sending errors, graylisting and such. If a message can not be sent, it is requeued and retried later.
+
+To raise the odds of getting your emails into recipients inboxes, you should setup [SPF records](http://en.wikipedia.org/wiki/Sender_Policy_Framework) for your domain. Using [DKIM](#dkim-signing) wouldn't hurt either. Dynamic IP addresses are frequently treated as spam sources, so using static IPs is advised.
+
+#### Handling responses
+
+*Direct* exposes an event emitter for receiving status updates. If the message includes several recipients, the message
+is not sent to everyone at once but is sharded in chunks based on the domain name of the addresses. For example
+if your message includes the following recipients: *user1@example.com*, *user2@example.com* and *user3@blurdybloop.com*, then 2 separate messages are sent out - one for *user1@example.com* and *user2@example.com* and one for *user3@blurdybloop.com*. This means that sending to different recipients may succeed or fail independently. All information about messages being delivered, failed or requeued is emitted by the status emitter `statusHandler`.
+
+*Direct* exposes the following events:
+
+  * **'sent'** - message was sent successfully
+  * **'failed'** - message was failed permanently
+  * **'requeue'** - message failed but the error might not be permanent, so the message is requeued for later (once the message is retried an event is fired again).
+
+All events get the same argument which is an object with the following properties:
+
+  * **domain** - is the domain part of the e-mail addresses
+  * **response** - is the last line form the SMTP transmission
+
+**Usage example**
+
+```javascript
+transport.sendMail(messageOptions, function(error, response){
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    // response.statusHandler only applies to 'direct' transport
+    response.statusHandler.once("failed", function(data){
+        console.log(
+          "Permanently failed delivering message to %s with the following response: %s",
+          data.domain, data.response);
+    });
+
+    response.statusHandler.once("requeue", function(data){
+        console.log("Temporarily failed delivering message to %s", data.domain);
+    });
+
+    response.statusHandler.once("sent", function(data){
+        console.log("Message was accepted by %s", data.domain);
+    });
+});
+```
+
+**NB!** If you want to provide instant feedback to the user, listen for the first `'sent'`, `'failed'`, or `'requeued'` event only. The first event should arrive quickly but once the message gets requeued, the delay until the next event for this particular domain is fired is at least 15 minutes.
+
+> This example uses `.once` for listening to the events which is ok if you have just one recipient. For several recipients with different domains, the events get called several times and thus would need a more complex handling.
+
+#### When would you use Direct transport?
+
+  * When prototyping your application
+  * If you do not have or do not want to use a relaying service account
+  * When running under Windows as a Sendmail replacement (by default Sendmail is not available in Windows)
 
 ### DKIM Signing
 
@@ -389,8 +535,11 @@ Currently supported services are:
   * **mail.ee**
   * **Mail.Ru**
   * **Mailgun**
+  * **Mailjet**
   * **Mandrill**
   * **Postmark**
+  * **QQ**
+  * **QQex** (Tencent Business Email)
   * **SendGrid**
   * **SES**
   * **Yahoo**
@@ -404,6 +553,17 @@ case insensitive, so using "gmail" instead of "Gmail" is totally fine.
 Example:
 
 ```javascript
+var smtpTransport = nodemailer.createTransport("Gmail",{
+    auth: {
+        user: "gmail.user@gmail.com",
+        pass: "userpass"
+    }
+});
+```
+
+or alternatively
+
+```javascript
 var smtpTransport = nodemailer.createTransport("SMTP",{
     service: "Gmail", // sets automatically host, port and connection security settings
     auth: {
@@ -413,7 +573,7 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
 });
 ```
 
-Actually, if you are authenticatinw with an e-mail address that has a domain name
+Actually, if you are authenticating with an e-mail address that has a domain name
 like @gmail.com or @yahoo.com etc., then you don't even need to provide the service name,
 it is detected automatically.
 
@@ -441,7 +601,7 @@ The following are the possible fields of an e-mail message:
   - **text** - The plaintext version of the message
   - **html** - The HTML version of the message
   - **generateTextFromHTML** - if set to true uses HTML to generate plain text body part from the HTML if the text is not defined
-  - **headers** - An object of additional header fields `{"X-Key-Name": "key value"}` (NB! values are passed as is, you should do your own encoding to 7bit if needed)
+  - **headers** - An object of additional header fields `{"X-Key-Name": "key value"}` (NB! values are passed as is, you should do your own encoding to 7bit and folding if needed)
   - **attachments** - An array of attachment objects.
   - **alternatives** - An array of alternative text contents (in addition to text and html parts)
   - **envelope** - optional SMTP envelope, if auto generated envelope is not suitable
@@ -449,6 +609,7 @@ The following are the possible fields of an e-mail message:
   - **date** - optional Date value, current UTC string will be used if not set
   - **encoding** - optional transfer encoding for the textual parts (defaults to "quoted-printable")
   - **charset** - optional output character set for the textual parts (defaults to "utf-8")
+  - **dsn** - An object with methods `success`, `failure` and `delay`. If any of these are set to true, DSN will be used
 
 All text fields (e-mail addresses, plaintext body, html body) use UTF-8 as the encoding.
 Attachments are streamed as binary.
@@ -712,6 +873,8 @@ Return callback gets two parameters
   * **responseStatus** - an object with some information about the status on success
     * **responseStatus.messageId** - message ID used with the message
 
+> Different transport methods may expose additional properties to the `responseStatus` object, eg. *direct* transport exposes `statusHandler`, see the docs for the particular transport type for more info.
+
 Example:
 
 ```javascript
@@ -724,6 +887,62 @@ nodemailer.sendMail(mailOptions, function(error, responseStatus){
 ```
 
 **NB!** Message-ID used might not be the same that reaches recipients inbox since some providers (like **SES**) may change the value.
+
+
+## Custom Transport Methods
+
+If you want to use a custom transport method you need to define a constructor function with the following API
+
+```javascript
+function MyCustomHandler(options){}
+MyCustomHandler.prototype.sendMail = function(emailMessage, callback){};
+MyCustomHandler.prototype.close = function(closeCallback){};
+```
+
+Where
+
+  * `options` is the optional options object passed to `createTransport`
+  * `sendMail()` is the function that is going to deliver the message
+  * `emailMessage` is a paused [MailComposer](https://github.com/andris9/mailcomposer#create-a-new-mailcomposer-instance) object. You should call `emailMessage.streamMessage()` once you have everything set up for streaming the message
+  * `callback` is the function to run once the message has been sent or an error occurred. The response object *should* include `messageId` property (you can get the value from `emailMessage._messageId`)
+  * `close()` is an optional method (no need to define it) to close the transport method
+  * `closeCallback` is the function to run once the transport method is closed
+
+### Example usage
+
+```javascript
+var nodemailer = require("nodemailer");
+// Pipes all messages to stdout
+function MyTransport(options){
+    this.options = options;
+}
+MyTransport.prototype.sendMail = function(emailMessage, callback) {
+    console.log("Envelope: ", emailMessage.getEnvelope());
+    emailMessage.pipe(process.stdout);
+    emailMessage.on("error", function(err){
+        callback(err);
+    });
+    emailMessage.on("end", function(){
+        callback(null, {
+            messageId: emailMessage._messageId
+        });
+    });
+    // everything set up, start streaming
+    emailMessage.streamMessage();
+};
+// Use MyTransport as the transport method
+var transport = nodemailer.createTransport(MyTransport, {
+    name: "my.host" // hostname for generating Message-ID values
+});
+transport.sendMail({
+    from: "sender@example.com",
+    to: "receiver@example.com",
+    subject: "hello",
+    text: "world"
+}, function(err, response){
+    console.log(err || response);
+});
+```
 
 ## Command line usage
 
@@ -752,3 +971,9 @@ message composing/sending process you should look at the  appropriate module.
 ## License
 
 **Nodemailer** is licensed under [MIT license](https://github.com/andris9/Nodemailer/blob/master/LICENSE). Basically you can do whatever you want to with it.
+
+----
+
+The Nodemailer logo was designed by [Sven Kristjansen](https://www.behance.net/kristjansen).
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/andris9/nodemailer/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

@@ -17,7 +17,8 @@ var olives = require("../libs/olives"),
 function DateWidgetConstructor(){
                 
         var _labels = Config.get("labels"),
-              date = new Store({"day":"", "month":"", "year":""});
+              date = new Store({"day":"", "month":"", "year":""}),
+              _widget = this;
                         
         this.seam.addAll({
                 "label" : new Model(_labels),
